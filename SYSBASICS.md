@@ -1,6 +1,8 @@
 layout: page
-title: "System Design Basics"
+title: System Design Basics
 permalink: /basic/
+
+
 
 Scalability
 What is it that we really mean by scalability? 
