@@ -1,6 +1,6 @@
 layout: page
 title: "System Design Basics"
-permalink: /sysdesbasics
+permalink: /basic/
 
 Scalability
 What is it that we really mean by scalability? 
