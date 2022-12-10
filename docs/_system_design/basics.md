@@ -1,7 +1,6 @@
 ---
 layout: page
 title: System Design Basics
-# permalink: /system-design-index/
 ---
 
 
