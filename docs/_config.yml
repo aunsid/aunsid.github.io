@@ -35,6 +35,23 @@ theme: minima
 plugins:
   - jekyll-feed
 
+collections:
+  system_design:
+    output: true
+    # permalink: /:collection/:name
+
+# collections:
+#   system-design:
+#     output: true
+#     order:
+#       - _sytem
+#       - _system-design/dummy3md
+#       - _system-design/dummy2.md
+#       - _system-design/dummy1.md
+
+
+  
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
