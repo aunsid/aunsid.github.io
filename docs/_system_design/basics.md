@@ -62,6 +62,7 @@ downtime can be said to have a high availability.
 #### Reliability vs Availability
 If a system is reliable, it is available. A system can reach high availability without being reliable by minimizing repair time and ensuring that spares are always available when needed.
 
+
 # Load Balancing
 It distributes incoming requests to available servers inorder to improve reponsiveness and availability of applications. Load balancers are effective at:
 * _Preventing requests from going to unhealthy servers._
@@ -88,6 +89,67 @@ Load balancers should only forward traffic to healthy server nodes. To makes sur
 * **Round Robin Method** - Cycles through the list of available servers, sending each new request to the next server.
 * **Weighted Round Robin** - Cycles through the list of available servers while considering the processing the capabilities of the servers as well. Each server is assigned a weight based on the processing capacity.
 * **IP HASH** - A hash of the IP address of the client is calculated to redirect the request to a server.
+
+
+
+# Application Layer
+Seperating out the web layer from the application layer allows you to scale and configure both layers independently. Adding a anew API result in addinf application servers without necessarily adding additional webservers. The single responsibility principle advocates for small and autonomous services that work together.
+
+Workers in the application layer also help enable asynchronism.
+
+### Microservices
+These are independently deployable, small, and modular service. Each service runs a unique process and communicates through a well-defined, lightweight mechanism to serve a business goal.
+
+Pinterest, for example, could have the following microservices: user profile, follower, feed, search, photo upload, etc.
+
+
+# Database
+
+## Relational Database Management System (RDBMS)
+A relational database like SQL is a collection of item organized in tables.
+
+**ACID** is a set of properties of relational databse transaction.
+* **Atomicity** -  Each is transaction is all or nothing.
+* **Consistency**- Any transaction will bring database from one valid state to another
+* **Isolation** - Executing transactions concurrently has the same results as if the transactions were executed serially.
+* **Durability** - Once a transaction is commited it will remain so
+
+
+### Master-Slave replication
+The master serves reads and writes, replicating writes to one or more slaves, which serve only reads. Slaves can also replicato to additional slaves in a tree like fashion. If master goes offline, the system continues to operate only in read-only mode until a slave is promoted to master or a new master is provisioned.
+
+![Alt text](https://github.com/donnemartin/system-design-primer/blob/master/images/C9ioGtn.png?raw=true)
+[Source](https://www.slideshare.net/jboner/scalability-availability-stability-patterns/)
+
+### Master-Master replication
+Both master serves reads and writes and coordinates with each other on writes. If either master goes down, the system can continue to operate with both reads and writes.
+
+![Alt text](https://github.com/donnemartin/system-design-primer/blob/master/images/krAHLGg.png?raw=true)
+[Source](https://www.slideshare.net/jboner/scalability-availability-stability-patterns/)
+
+
+**Disdavantages:**
+* You'll need a load balancer or changes to your application logic to determined where to write.
+* Most master-master sytems are either loosely consitent (violating ACID) or have increased write latency due to synchronization.
+* Conflict resolution comes more into play as more nodes are attached and latency increases.
+
+**Disadvantages of replication:**
+* There is a potential for loss of data if the master fails before any newly written data can be replicated to other nodes.
+* Writes are replayed to read replicas. Lost of writes, the read replicas can get bogged down with replaying writes and can't do as many reads.
+* The more read slaves, the more you have to replicate. Which leads to greater lag.
+* Adds to complexity
+
+
+### Federation
+Federation splits up database by function. For exampl, instead of a single monolithic database, you could have 3 databases: forums, users, and products, resulting in less read and write traffic to each database and therefore less replication lag. Smaller databases result in more data that can fit in memory. With no single master serializing writes you can write in paraller, increasing throughput.
+
+
+**Disadvantages:**
+* Federation is not efective if your schema requires huge functions or tables.
+* You'll need to update your application logic to determine what database to write to.
+* Joining data is more complex.
+* Added complexity.
+
 
 # Caching
 Improves page load times and can reduce the load on your servers and databases. A cache is like short-term memory: it has limited amount of space, but is typically faster than the original data and contains the most recently accessed items. 
@@ -184,4 +246,18 @@ Write-through is a slow operation due to the write operatio, but subsequent read
 4. **Most recently used (MRU):** Discards the most recently used item first.
 5. **Least Frequently used(LFU):** Discards the least frequent items first. Stores count/frequencies. 
 6. **Random Replacement:** Randomly selects a candidate and discards it to free up space.
- 
+
+
+
+
+# Sharding/ Data Partitioning
+
+Seperates large databases into smaller, easily managed parts called shards. Each shard shares the same schema, though the actual data is unique to the shard.
+
+#### Partitioning methods:
+1. **Horizontal Partitioning:** Put different rows into different tables.
+Eg, if we are storing different places in a table, we can decide that locations with the zip less than 10000 are stored in one table and places with zip more than 10000 are stored in a different table. This is also called _range based sharding._
+
+The key problem is that if the ranges are not carefully chosen, it will lead to unbalanced servers.
+
+2. **Vertical Partitioning:** Put different 
