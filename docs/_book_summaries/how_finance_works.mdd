@@ -9,7 +9,7 @@ Using ratios to analyze performance
  For e.g., Haagen Dasz owns the _ice cream_ that it is going to sell, the _factories_ and _raw materials_ to make the ice cream, and the _trucks_ to deliver it.
 
 
- Assets are ordered by the degree to which they can be turned into cash.
+ Assets are ordered by the degree to which they can be turned into cash. Assets that can easily be converted into cash are called current assets, and they appear at the top.
 
  Cash and Marketable securities.
  Large cash holdings can generally be understood as
@@ -47,3 +47,26 @@ This section provides information on how companies finance themselves. There are
 
 Liabilities are ordered by the length of time companies have to repay them and liabilites that need to be paid back soon are labeled "current."
 
+Accounts payable and notes payable
+Accounts payable represent amounts due to others, often over ashort time, and typically to the company's suppliers. 
+
+Accrued items
+Broadly represents amount due to others for acitivities already delivered. One example is salaries: a balance sheet may be produced in the middle of a pay period, and the company may owe salaries that have not been paid yet.
+
+
+Long-term debt
+Unlike other liabilities, debt is distinctive because it has an explicit interest rate. 
+
+Preferred and common stock
+Shareholder's equity represents an ownership claim with a viable return. - in effect the owners get all residual cash from the business after costs and liabilities. Debt has a fixed return (i.e. interest rate) and no ownership claim. It gets paid before equity holders in the event of a bankruptcy. Equity holders have a variable return and an ownership claim but can be left with nothing if a company goes bankrupt. Typically, shareholders' equity, net wroth, owner's equity and common stock are all synonyms effectively. Shareholders' equity is not the amount originally invested in the company by the owners. As a company earns net profits, those profits can be paid out as dividends or be reinvested in the company. These retained earnings are a component of shareholders; quity as if the owners received a dividend and reinvested it in the company.
+
+Preferred stock is often called a hybrid instrument. It combines elements of both debt and equity claims. Like debt, preferred stock dividend can be fixed and paid before common stock dividends. But like equity, it is paid after debt in the event of a bankruptcy. The unique attributes of preferred stock can allow a company to finance itself during precarious times.
+
+
+Understanding Ratios
+Provides comparability across companies through time. 
+
+Liquidity 
+Measure the risk by emphasizing the company's ability to meet short-term obligations with assets that can be quickly be converted into cash. 
+
+`Current Ratio = Current assets / current liabilities`
