@@ -1,32 +1,36 @@
- 
- # Financial Analysis
+---
+layout: page
+title: How Finance Works - Mihir Desai
+--- 
+
+# 1. Financial Analysis
 Using ratios to analyze performance 
  
 
- ## Understanding the numbers
+## Understanding the numbers
 
- ### Assets
+### Assets
 
- An asset is a resource with economic value that an individual, corporation, or a country owns with the expections.
+An asset is a resource with economic value that an individual, corporation, or a country owns with the expections.
 
- For e.g., Haagen Dasz owns the _ice cream_ that it is going to sell, the _factories_ and _raw materials_ to make the ice cream, and the _trucks_ to deliver it.
-
-
- Assets are ordered by the degree to which they can be turned into cash. Assets that can easily be converted into cash are called current assets, and they appear at the top.
-
- #### Cash and Marketable securities.
- Large cash holdings can generally be understood as
- * an insurance policy during uncertain times
- * a war chest for making future acquistions
- * a manifestation of the absence of investment opportunities.
-
- Much of the cash is held in government securities so that they can quickly be converted into cash if the need arises.
+For e.g., Haagen Dasz owns the _ice cream_ that it is going to sell, the _factories_ and _raw materials_ to make the ice cream, and the _trucks_ to deliver it.
 
 
- #### Accounts receivable 
- Accounts receivable are amounts that a company expects to receive from its customer in the future. As trust grows in a relationship between a company and its customers, the company might be willing to allow customers to pay later.
+Assets are ordered by the degree to which they can be turned into cash. Assets that can easily be converted into cash are called current assets, and they appear at the top.
 
- Companies that sell to other companies have a higher amount of sales reflected as receivables compared to businesses that sell direct to consumers.
+#### Cash and Marketable securities.
+Large cash holdings can generally be understood as
+* an insurance policy during uncertain times
+* a war chest for making future acquistions
+* a manifestation of the absence of investment opportunities.
+
+Much of the cash is held in government securities so that they can quickly be converted into cash if the need arises.
+
+
+#### Accounts receivable 
+Accounts receivable are amounts that a company expects to receive from its customer in the future. As trust grows in a relationship between a company and its customers, the company might be willing to allow customers to pay later.
+
+Companies that sell to other companies have a higher amount of sales reflected as receivables compared to businesses that sell direct to consumers.
 
 #### Inventories
 Are the goods or raw materials that become the goods that a company intends to sell. 
@@ -34,7 +38,7 @@ Are the goods or raw materials that become the goods that a company intends to s
 #### Property, plant, and equipment
 It is the term for the tangible, long-term assets that a company uses to produce or distribute its products.
 
-Other assets:
+#### Other assets:
 Likely to be intangible assets. Things you cannot put your hands on ut are valuable nonetheless - things like patents and brands.
 
 For e.g., Coca-Cola has a very valuable brand, maybe the most valuable thing it owns but it really does not know valuable it is. So accountants ignore it. That's the accounting principle of conservatism.
@@ -63,7 +67,7 @@ Unlike other liabilities, debt is distinctive because it has an explicit interes
 #### Preferred and common stock
 Shareholder's equity represents an ownership claim with a viable return. - in effect the owners get all residual cash from the business after costs and liabilities. Debt has a fixed return (i.e. interest rate) and no ownership claim. It gets paid before equity holders in the event of a bankruptcy. Equity holders have a variable return and an ownership claim but can be left with nothing if a company goes bankrupt. Typically, shareholders' equity, net wroth, owner's equity and common stock are all synonyms effectively. Shareholders' equity is not the amount originally invested in the company by the owners. As a company earns net profits, those profits can be paid out as dividends or be reinvested in the company. These retained earnings are a component of shareholders; quity as if the owners received a dividend and reinvested it in the company.
 
-Preferred stock is often called a hybrid instrument. It combines elements of both debt and equity claims. Like debt, preferred stock dividend can be fixed and paid before common stock dividends. But like equity, it is paid after debt in the event of a bankruptcy. The unique attributes of preferred stock can allow a company to finance itself during precarious times.
+`Preferred stock` is often called a hybrid instrument. It combines elements of both debt and equity claims. Like debt, preferred stock dividend can be fixed and paid before common stock dividends. But like equity, it is paid after debt in the event of a bankruptcy. The unique attributes of preferred stock can allow a company to finance itself during precarious times.
 
 
 ## Understanding Ratios
@@ -90,20 +94,144 @@ For every dollar of quity that shareholders invest in a business, what is their 
 
 `Return on Equity = Net profit/ Shareholders' equity`
 
-
 Return on assets answers the question: How much profit does a company generate for every dollar of assets? This explains how effectively a company's assets are generating profits.
 
-EBIT is also known as operating profit. Since some companies have different tax burdens and capital structures, EBIT provides a way to compare companies more directly.
+`Return on Assets = Net Profit/ Total Assets`
 
-Depreciation refers to how physical assets such as vehicles and equipment lose value over time. 
 
-Amortization refers to the same phenomenon but for intangible assets.
+`EBIT`is also known as _operating profit_. Since some companies have different tax burdens and capital structures, EBIT provides a way to compare companies more directly.
+
+`Depreciation` refers to how physical assets such as vehicles and equipment lose value over time. 
+
+`Amortization` refers to the same phenomenon but for intangible assets.
 
 
 ### Financing and Leverage.
 Let's consider your own personal balance sheet after buying a home. What if no mortgages were available for you to buy a home? If you had $100, you could only buy a home that was worth $100. With a mortgage market, you can borrow money to buy a home that is worth, say, $500.
 
-[Alt text](/_book_summaries/images/balancesheet_house_financeworks.png)
+![alt text](./images/balancesheet_house_financeworks.png)
+
+In effect, leverage allows you to live in a house you have no write to live in.
+Here's the big question: Are you richer in case A or case B? - No difference, you have a shareholders' equity of $100.
+
+If the value of the house increases by 10 percent. In case A, the return to your shareholders' equity is 10 percent, but in case B, the return in 50 percent if the house value goes to $550. The mortgage remains at $400.
+
+If the house declines by 20 percent the return in case A is -20 percent. But in case B, the return is -100 percent! So managing leverage is critical because it enables you to do things couldn't do otherwise. 
+
+_It magnifies returns in both directions._
+
+The ratio of total debt to total assets measures the proportion of all assets financed by debt. It provides a balance sheet perspective on leverage.
+
+`Debt to Assets = Total Debt/ Total Assets`
+
+The ratio of long term debt to capitalization provies a somewhat more subtle measure of leverage by emphasizing the mix of debt and equity. 
+
+`Debt to capitalization = Debt / Debt + Shareholders' equity`
+
+Leverage provides the ability to control more assets an owner would otherwise have the right to control. Assets to Shareholders' Equity tells us precisely how many more assets an owner can control relative to their own equity capital. As a consequence it also measure _how returns are magnified_ through the use of leverage.
+
+`Assets to Shareholders' Equity = Assets / Shareholders' Equity`
+
+The ratio of EBIT to interest expense measure a company's ability to fund interest payment from its operations.
+
+`Interest Coverage Ratio = EBIT/ Interest Expense`
+
+### Productivity or Efficiency
+
+Asset turnover measures how effectively a company is using its assets to generate revenue. This is a critical measure of a company's productivity.
+
+`Asset Turnover = Revenue / Total Assets`
+
+Inventory turnover measures how many times a company turns overs or sells all its inventory in a given year. The higher the number, the more effectively the company is managing its inventory as it sells products.
+
+`Inventory Turnover = Costs of Goods SOLD (COGS) / Inventory`
+
+We can use this turnover number to get another measure of inventory management: days of inventory. 
+It provides the average number of days a piece of inventory is kept inside a acompany before it is sold. 
+
+`Days of inventory = 365 / Inventory Turnover`
+
+After a company sells its inventory, it needs to get paid for it. The lower this figure, the faster a company is getting cash from its sales. 
+
+`Receivable Collection Period = 365 / (Sales/ Receivables)`
+
+### Identifying industries based of Ratios
+![alt text](./images/industries_finance_words.png)
+
+#### Service Companies
+Since these provide services rather than tangible goods, they do not hold any inventories - E, G, M, and N. 
 
 
+![alt text](./images/servicecompanies_financeworks.png)
 
+##### Company N
+Owns a lot of receivables and takes a long time to collect. Large part of their financing comes from notes payable.- Bank. 
+The loans that you consider as your liabilities are a bank's assets. Banks run a "spread" business. Where they charge you more for loans than they give you on your deposits. 
+
+
+##### Capital-intensive service providers
+Companies E and M have much more property, plant and equipemnt. The most significant differences between these two companies is that M gets paid in seven days on average which likely means it sells mostly to individuals. In contrast E takes longer to collect, which would suggest that it's much more likely to be selling to other businesses. 
+Company E has a lot of other liabilities. These liabilities are pension obligations to retirees. 
+
+##### Cash rich, equity-dependent service company
+Company G has a large amount of equity and lots of cash. This company is Facebook. High equity number can coincide with younder companies. As, the company has matured it has completed a number of large acquisitions: Whatsapp and Instagram. These would reduce cash on the balance sheet and show up of goodwill.
+
+
+#### Retailers
+Since retailers sell goods directly to customers, their receivables collection period is going to be shorter because the customers pay immediately via cash or credit. In contrast, businesses that do business with other businesses give credit of a minimum of 30 days. - A, B, H, I and K.
+
+![alt text](./images/retailers_finance.png)
+
+##### Companies with distinctive inventory turnover
+Company H turns their inventory over 32 times a year. THey have eleven days of inventory at any time. This is Yum! Grocery chain also has perishable goods but it also has a selection of dry and canned foods making it turnover considerably slower than a restaurant chain.
+
+At the other extreme, B turns over inventory really slow ~90 days. This is a bookstore. It is also losing money, shows up in the negative profit margin. B also is the only company that has preferred stock indicating its troubled financial position.
+
+##### The final three retailers
+Out of the remaining 3 retailers, A has the lowest property, plant and equipment. This could be Amazon. A has a large amount of payables which could mean that it is in trouble or that it is granted credit easily by suppliers because of its size. Given the amount of cash that they have on their balance sheet, we know they are not in financial trouble. 
+
+Company I has more PP&E compared to K. Company I also receives more immediate payments and inventory turnover is faster indicating its a grocery chain. Whereas K, is a drug store that gets revenue from insurance companies. 
+
+
+#### The Stragglers
+
+Three companies have barely any PP&E while the remaining two have significant PP&E. One is likely Duke Energy whereas the other is Nordstorm. The other 3 companies Microsoft, Pfizer and Dell dont really do any heavy amnufacturing so it makes sense. 
+
+![alt text](./images/stragglers_finance.png)
+
+The key differentiating factor between Duke and Nordstorm is that Nordstorm would have more inventory compared to an Energy company. So L is Duke and J is a retailer Nordstorm. ALso, the big EBITDA margin for company L means large amount of depreciation and amortization. That's what utilities do. 
+
+OF the last three C has a really low profit margin. Whereas D and F, have astounding profit margins and EBITDA margins. This type of commodification has happened in the laptop industry. Also C holds inventory for 10 days, which matches Dell's just-in-time business model. Only starts manufacturing after it takes orders, keeping inventories as low as possible.
+
+Out of the remaining two companies, D has a lot of other assets, it probably means an intangible capital-intensive industry that has been consolidating. Pfizer has had a long string of acquisitions. D is Pfizer and F is Microsoft. Another piece of confirmatory evidence is that D has more other liabilities than F. Confirming that Pfizer has an old-style pension plan, and F holds large balances.
+
+
+### DuPont Framework
+![alt text](./images/dupont_framework_finance.png)
+
+The dupont framework breaks return on equity(ROE) into 3 ingredients. Profitability, Productivity and Leverage. 
+**Profitability**: Goes back to the notion of profit margin. For every dollar of revenue, how much does it earn in profit.
+**Productivity**: Use asset turnover ration, which measures how efficiently a company can use its assets to generate sales.
+**Leverage**: Magnifies returns. Divide company's assets by its shareholders' equity.
+
+![alt text](./images/dupont_analysis_finance.png)
+
+
+### Profound changes at Timberland
+![alt text](./images/timberlan_init_finance.png)
+Timberland is a manufacturer and retailer of rugged outdoor activity. Looking at its numbers and comparing it with the industry, we see that ROE is almost close to the average but it largely comes from leverage. That means that it is overcoming its poor operational performance by taking more risk.
+
+Return on capital also known return on invested capital. It considers both capital providers and their combined return. 
+
+`Return on Capital = EBIAT/(debt+equity)` 
+
+Other numbers that also tell us about poor performance is "times interest earned " (how many times it can cover its interest payments from operating earnings) and inventory turnover rate.
+
+Its receivables are also out of whack (73.5 vs 39.1). the management not being aggressive about collecting cash owed to the company. 
+
+![alt text](./images/dupont_1_finance.png)
+
+A year later we can see that the ROE is negative, which is driven by negative profitability. Productivity is up a little and leverage has decreased. The times interest earned went from over three to one. Indicating that Timberland did not have enoudh operating profit to make its interest payments. First, inventory turnover increased markedly, while gross margins dipped significantly. This indicates a fire sale of sorts. Liquidating goods to raise cash to make payments. Its receivables collection period dropped by 20 days. The payable period also decreased, indicating that the suppliers were unlikely to extend credit based on the financial situation.
+
+![alt text](./images/dupont_2_finance.png)
+Timberland was moving more inventory not by cutting prices. Its profit margin was improving and leverage coming down. Its gross margin indicates pricing power just as it was moving more goods.
