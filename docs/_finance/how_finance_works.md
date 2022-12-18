@@ -183,7 +183,7 @@ Since retailers sell goods directly to customers, their receivables collection p
 ![alt text](./images/retailers_finance.png)
 
 #### Companies with distinctive inventory turnover
-Company H turns their inventory over 32 times a year. THey have eleven days of inventory at any time. This is Yum! Grocery chain also has perishable goods but it also has a selection of dry and canned foods making it turnover considerably slower than a restaurant chain.
+Company H turns their inventory over 32 times a year. They have eleven days of inventory at any time. This is Yum! Grocery chain also has perishable goods but it also has a selection of dry and canned foods making it turnover considerably slower than a restaurant chain.
 
 At the other extreme, B turns over inventory really slow ~90 days. This is a bookstore. It is also losing money, shows up in the negative profit margin. B also is the only company that has preferred stock indicating its troubled financial position.
 
