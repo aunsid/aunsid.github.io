@@ -240,3 +240,37 @@ A year later we can see that the ROE is negative, which is driven by negative pr
 ![alt text](./images/dupont_2_finance.png)
 
 Timberland was moving more inventory not by cutting prices. Its profit margin was improving and leverage coming down. Its gross margin indicates pricing power just as it was moving more goods.
+
+
+
+# 2. The Finance Perspective
+
+**The Conservatism Principle** 
+Implies that the companies should record lower estimated values of their assets and higher estimation of their liabilities. They err on the side of being conservative. Thus, balance sheets typically record assets at their historical cost, not their current replacement value. 
+
+**The Rules of Accrual Accounting**
+Try to smooth out both revenues and costs in an effort to better reflect the accounting reality. They allow a company to capitalize an investment as an asset, and to expense it as depriciation charges every year over the asset's entire life. Foer example, Airbus Group, built a new factory that cost $600 million. Because of accrual accounting Airbus would report more moderate profits over time rather than losses in 2015 and then profits after the plant started production. This represenation of profits is quite distinct from their true cash outflows, obscures time value of money, and may reflect managerial discretion while cash flows would not.
+
+## What we talk about When talk about Cash
+Accounting asks managers to make decisions in order to smooth returns, as accountants consider that to be more consistent with reality. For e.g., an up-front payment for piece of equipment has to be capitalized, placed on the balance sheet, and then depcriated over time. Revenue similarly may need to be recognized over time. But this process of smoothing measures of performance is subjective, which allows managers to manipulate profits to their advantage. In contrast, cash is cash and, arguably, is not susceptivle to similar levels of managerial discretion.
+
+To build an alternative foundation for assessing economic returns, we need to identify cash flows as opposed to profits. 
+
+![alt text](./images/ebit_finance.png)
+
+`EBIT` is gives a view of how efficient and profitable a company is relative to net profit by not considering taxes and interest(not related to operational performance). It is still not quite a measure of cash, because it is calculated by subtracting noncash expenses such as depreciation and amortization. 
+
+For a fuller picture, finance professionals turn to `EBITDA`: earnings before interest, taxes, depriciation, and amortization.
+
+![alt text](./images/ebitda_finance.png)
+
+
+### Amazon's Net Profit, EBIT and EBITDA
+
+![alt text](./images/amazon_incomestatement2014_finance.png)
+
+In 2014, Amazon's EBIT was $178 million, and Net Profit was -$241 million, and EBITDA was $4.76 billion. So Amazon generated a lot of cash as measured by EBITDA, but gas losses according to profitability measures. 
+
+
+
+

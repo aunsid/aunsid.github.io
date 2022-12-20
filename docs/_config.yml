@@ -36,8 +36,6 @@ plugins:
 collections:
   system_design:
     output: true
-
-collections:
   finance:
     output: true
 
