@@ -265,6 +265,9 @@ For a fuller picture, finance professionals turn to `EBITDA`: earnings before in
 ![alt text](./images/ebitda_finance.png)
 
 
+EBITDA can be more relevant for some industries than others. In 2015, the depriciation to net income ratios of EA, The Michaels Comapies, and Comcast were 17%, 34% and 106%. Comcast heavily invested to create a nationwide cable and internet network. Because of those heavy investements, using net profit as a measure can be flawed in comparison to EA that is a software company.
+
+
 ### Amazon's Net Profit, EBIT and EBITDA
 
 ![alt text](./images/amazon_incomestatement2014_finance.png)
@@ -272,5 +275,73 @@ For a fuller picture, finance professionals turn to `EBITDA`: earnings before in
 In 2014, Amazon's EBIT was $178 million, and Net Profit was -$241 million, and EBITDA was $4.76 billion. So Amazon generated a lot of cash as measured by EBITDA, but gas losses according to profitability measures. 
 
 
+### From EBITDA to Operating Cash Flows
+Given the obsession with cash, there exists another statement dedicated to it - Cashflow statement. It is often considered the most important financila statement.
+
+Income statement has the problem noncash expenses as well as managerial discretion, whereas, the balance sheet, has the problems of historical accounting and conservatism.
+
+![alt text](./images/operatingcashflow_finance.png)
+
+Operating cash flow is distinct from EBITDA in several ways. First, it cosiders the cost of working capital, and, second, it considers tax and interest payments by beginning with net profit. It includes noncash expenses other than depriciation and amortization and stock based compensation in its final calculation.
+
+The investing section emphasizes the ongoing investments that bypass the income statement and go straight into the balance sheet. Such as CapEx, and acquisitions.
+
+The financing section examines whether a company has offered debt or paid back debt, or issued equity or brought back stock, and reveals the cash consequences of doing so.
+
+![alt text](./images/starbucks_cashflow_finance.png)
+
+### Working Capital
+It is the capital required by the company to fund its day to day operations. 
+
+`Working Capital = Current Assets - Current Liabilities`
+
+A slightly more narrow way to define working capital
+
+`Working Captial = Accounts Receivable + Inventories - Accounts Payable`
+
+One simple way to think about the consequences of working capital is to note that the daily operations of the company result in an amount that needs to financed like any other asset. If the amount of working capital is lowered, that lowers the financing needs of the company. '
+
+###k The cash conversion cycle
+
+A powerful way to frame the financing consequences of working capital is to frame woring capital temporally rather than monetarily. This framing is called the cash conversion cycle.
+
+![alt text](./images/cashconversioncycle_finance.png)
+
+For example, if you had a store where you bought hammers from wholesellers and sold them to home improvement professionals. There are several transactions with a single hammer and they dont happen all at once. You first buy the hammer, pay for it, sell it and collect the cash for the sale. If you sell the hammers 70 days from the day you bought it, and you dont get paid for another 40 days. It takes a total of 110 days from the time that you have bought the hammer to getting cash for it. In addition, you pay cash for the hammer 30 days after you have bought it. 
+
+From a cash perspective, you need to generate cash to pay for the hammer - 80 Days if companies pay before getting paid, they must finance these shortfalls in their cash conversion cycles.
+
+In a recession, companies hold on to their inventories for longer and even when they do sell a hammer, the contractor who is getting squeezed by his customers will take longer to pay up. 
+
+Let's return to the hardware store. A supplier encourages you pay within 10 days by offering a 2% discount is that a good deal? The alternative is a bank that charges 12% a year. That is less than 1% to fund the 20 days if you took the deal from the supplier. 
+
+**Note:** Companies such as Salesforce.com that have a software-as-a-service business, they typically, have a negative cash conversion cycle. It has no inventory. By taking payments first and then providing services, these payments are used to finance its operations.
+
+
+#### How Amazon Grows ... and Grows 
+
+Amazon manages its inventories, receivables, and payables in such a way that it has a negative working capital. In 2014, Amazon averaged 46 days of inventory, and it collected from its customers after 21 days. Due to its market dominance, it can make it suppliers wait before getting paid. And it averaged 91 days to pay its suppliers. This becomes a source of cash. Likewise Apple, uses it negative working cycle to grow rapidly without seeking external financing. 
+
+### Free Cash Flow
+
+The final cash measure is free cash flows, one of the most important measures of economic performance in finance. The equation for calculating free cash flows provides a measure of the amount of cash flows unencumbered by the operations of a business. It's the purest measure of cash andforms the basis of valuation. It removes the distorting effects of non cash charges such as Depriciation and Amortization, accounts for changes in the working capital and acknowledges capital expenditures required for growth.
+
+![alt text](./images/freecashflow_finance.png)
+
+
+The net assets side of the balance sheet is divided in working capital and fixed assets (PPE) and the financing side of the balance sheet is divided into debt and equity. This modified balance sheet now distinguishes between the operations and the the capital providers. The flow of operations generate that end up with the capital providers. 
+
+The operations of the business generate EBIT, but the government takes it shares to make it EBIAT. From there, you must consider the company's ongoing investment into working capital and fixed assets as it grows. Finally, noncash expenses that should have never been expensed must be added back. What's left is the free cash flow.
+
+
+### Amazon vs Netflix.
+
+![alt text](./images/amazonvsnetflix_finance.png)
+
+Amazon seems not to have made profits at least until very recently. By the profit metric, Netflix appears to be more profitable than Amazon. With a profit margin of 5% relative to Amazon's 2%. 
+
+Now, look at their respective operating cash flows. In Amazon's case, the cash flow engine is being driven by all its noncash expenses and its management in working capital. On the other hand, Netflix, has negative cash flows because og its heavy investments in content. In short , they are buying increasing amounts of content and quickly ammortizing it, creating a cash drain.
+
+Finally, looking at their free cash flows. Considering capital expenditure changes the view a bit more. Netflix doesn't have significant CapEx, or free cash flow aren't considerbly worse than cash from operations. Amazon has more significant CapEx so it is free cash flow negative. 
 
 
