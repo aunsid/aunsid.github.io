@@ -360,4 +360,21 @@ The present value of $1000 received a year from now is $952.38 as $952.38 put in
 
 ### Multiyear Discounting
 
+What if you have cash flow over multiple years into the future? You can simply discount the multiple cashflows. 
+
+![alt text](./images/multiplecashflow_finance.png)
+
+Suppose the bank is offering a $1000 payment for each of the next three years and the prevailing interest rate is still 5% percent. 
+
+When you add the three values together, you arrive at how much the much the bank's offer is worth today
+
+(1000 / (1 + 0.05)) + (1000 / (1+0.05) ^ 2) + (1000 / (1+0.05) ^ 3) = 952.38 + 907.03 + 863.84 = $2723.25
+
+
+**The impact of discount rates**
+
+![alt text](./images/discountrate_finance.png)
+
+
+
 
