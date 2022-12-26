@@ -334,7 +334,7 @@ The net assets side of the balance sheet is divided in working capital and fixed
 The operations of the business generate EBIT, but the government takes it shares to make it EBIAT. From there, you must consider the company's ongoing investment into working capital and fixed assets as it grows. Finally, noncash expenses that should have never been expensed must be added back. What's left is the free cash flow.
 
 
-### Amazon vs Netflix.
+#### Amazon vs Netflix.
 
 ![alt text](./images/amazonvsnetflix_finance.png)
 
@@ -342,6 +342,22 @@ Amazon seems not to have made profits at least until very recently. By the profi
 
 Now, look at their respective operating cash flows. In Amazon's case, the cash flow engine is being driven by all its noncash expenses and its management in working capital. On the other hand, Netflix, has negative cash flows because og its heavy investments in content. In short , they are buying increasing amounts of content and quickly ammortizing it, creating a cash drain.
 
-Finally, looking at their free cash flows. Considering capital expenditure changes the view a bit more. Netflix doesn't have significant CapEx, or free cash flow aren't considerbly worse than cash from operations. Amazon has more significant CapEx so it is free cash flow negative. 
+Finally, looking at their free cash flows. Considering capital expenditure changes the view a bit more. Netflix doesn't have significant CapEx, or free cash flow aren't considerbly worse than cash from operations. Amazon has more significant CapEx so it is free cash flow negative.
+
+## Fixated on the Future
+
+The source of all value today is future performance manifested in cash flows. That creates a problem for finance as not all future cash flows are created equal. $1 today is worth more than $1 tomorrow. Similarly, $1 a year from now. But how much less? That depends of the opportunity cost of that money. What could you have done with the money if you did not have to wait? Once you figure that out, you then "punish" future cash flows by assessing penalty that accounts for that oppotunity cost. That's called a discount rate.
+
+### Discounting
+
+Let's say you get 10% by keeping your money in a bank. So after a year you have $1.10. That's the first clue that $1 today is worth more than a $1 1 year from now.
+
+As a consequence, now you know how to punish future cash flows for making you wait to receive them. Every time you have to wait a year, you "haircut" future cash flows by _one plus the interest - (1 + r)_ because that's what you would have earned if you hadn't had to wait.
+
+For example, you want to figure out how much $1000 received 1 year from now is worth today. Assume that a bank would have offered you an interest rate of 5%. 
+The present value of $1000 received a year from now is $952.38 as $952.38 put in a bank today would give you $1000 after a year. If the interest rates rises to 10% it would be $909.09.
+
+
+### Multiyear Discounting
 
 
