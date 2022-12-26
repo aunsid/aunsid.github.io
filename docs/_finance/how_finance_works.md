@@ -376,5 +376,36 @@ When you add the three values together, you arrive at how much the much the bank
 ![alt text](./images/discountrate_finance.png)
 
 
+### Sunk Costs and Net Present Value
+
+Sunk costs are costs that have alredy nee incurred and can't be recovered. While accounting carefully considers them in balance sheets and income statements, finance professionals view the amount paid for an asset as gone forever.
+
+For example, a company spends $100,000 to research a new product. Those amounts are gone and can never be recovered. Even the time spent on planning, creating and launching the product are gone.
+
+In short, assessing the values requires you to:
+* look into the future
+* think abou the incremental cashflows that will be generated over time
+* discount them back to the present value
+
+
+For example, assume Nike is building a new shoe factory at a cost of $75 million. The plant will produce $25 million in cash every year from the shoes Nike is able to make and sell, fro the next five years. Assuming a 10% percent discount rate for this project
+
+Nike Factory Present Value = (25/(1.10)^1) + (25/(1.10)^2) + (25/(1.10)^3) +(25/(1.10)^4) + (25/(1.10)^5) = $94.8 million
+
+By paying $75 million for a project, Nike is able to generate $19.8 million in additional value. And, Nike should go ahead and build the factory.  Companies should undertake projects with positive net present value.
+
+Now, for example, the sales have not been good. And the new factory makes only $10 million and expects this trend to continue.
+
+Nike Factory Present Value = (10/(1.10)^1) + (10/(1.10)^2) + (10/(1.10)^3) +(10/(1.10)^4) + (10/(1.10)^5) = $31.7 million
+
+The present value of the company is $31.7 million, if a rival company approaches Nike and offers to buy the factory for $40 million. Nike should sell it. Nike gives the future cash flows in the process.
+
+![alt images](./images/presentvalue_finance.png)
+
+![alt images](./images/netpresentvalue_finance.png)
+
+If managers care about value creation, then the most important financial decision rule is to undertake only positive net present value projects.
+
+
 
 
