@@ -407,5 +407,43 @@ The present value of the company is $31.7 million, if a rival company approaches
 If managers care about value creation, then the most important financial decision rule is to undertake only positive net present value projects.
 
 
+## Equity Analysis for Corning Glass
+
+Corning makes glass for the displays on smartphones, televisions, and laptops. It is one of the few companues that has mastered the art of manufacturing these type of glasses as they are extremely difficult to make. 
+
+Corning grew rapidly in the early 2000s as the demand for flatscreen televisions and smartphones skyrocketed. Eventually, the demand started began to slow. Eventually, it started underperforming the market, despite its technology, and market leadership.
+
+**__Would you buy or sell Corning?__**
+
+It looks like Corning's customers are in trouble. LG's margin and the margins of all other display makers are compressing which is limiting their cash flow. In fact, glass prices which impact Corning's margin hadn't dropped in the same way that display prices had. That's because Corning's competitive edge it pricing power. Since display makers are beholden to Corning, the company can maintain high prices even when the cost of displays decreases. 
+
+Corning grew rapidly in the 2000's by investing heavily in manufacturing facilities. So it had large amount of depreciation which reduced its EBIT. That would have resulted in a large difference between its EBIT/revenue and EBITDA/revenue ratios. The EBITDA margin is more reliable in this case. In 2012, EBIT/revenue margin was 14% compared to an EBITDA?revenue margin of 27%. 
 
 
+#### Forecasted Cash Flows
+
+The next step is to forecast cash flows, and then discount it back to get the present value.
+
+![alt text](./images/corningvaluation_finance.png)
+
+Using the free cash flow formula we get (2014E) = 2195 + 1108 - 1491 - 50 = 1762
+
+Assuming, a discount rate of 6%.
+
+![alt text](./images/completevaluationcorning_finance.png)
+
+**To figure the whether buying the stock is a good investment is to add the cash on  the balance and subtract the value of debt. And add all the future cash flows should be added as well after discounting it.**
+
+So Corning's valuation was $21,152 and given 1,400 shares outstanding the the value per share was $15.12. The stock price was $11. By understaning the source of Corning's profit margins, and knowing EBITDA was a more reliable metric than EBIT one could make the decision whether to buy or sell the stock.
+
+
+## Hon Hai Sharp
+
+Let's look at Japan's Sharp Corporation, which designs and manufactures electronic products such as TV sets, and Hon Hai Precision Industry Co.the world's largest electronic manufacturer.
+The cornerstone of the case is Sharps' Sakai LCD plant. Sharp was the first company to makeand commercialize flat-panel displays, and it had to decide whether to build even largers displays. LCD displays were once very small, and Sharp thought over time it could gain a competitive advantage throught scale economies by making bigger displays. But this came with some manufacturing challenges as large displays require massive sheets of glass which require large factories.
+
+In 2011, Sharp estimated that it would require an investment of $$.8 billion spread over threee years to build the worlds largest display factory in Sakai, near OSaka in Japan. Once the plant was commissioned in 2014, it would start generating cash for the company. Assuming a discount rate of 8 percent, let's calculate the net present value to decide whether Sharp should build the plant.
+
+The net present value was -$2,988.11 million, should Sharp have built the plant? Everything we've discussed just suggests that it should not. Despite the negative NPV, Sharp decided to build the plant because it was so enamored with both the technological challenge and the desire to be on the cutting edge. 
+
+Sharp soon ran into problems and had to sell 46% percent of the plant to Terry Gou, chairman of Hon Hai Precision for $780 million. This transaction implied the valuation of the plant to be $1.7 billion. 
