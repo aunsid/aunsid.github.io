@@ -413,7 +413,7 @@ Corning makes glass for the displays on smartphones, televisions, and laptops. I
 
 Corning grew rapidly in the early 2000s as the demand for flatscreen televisions and smartphones skyrocketed. Eventually, the demand started began to slow. Eventually, it started underperforming the market, despite its technology, and market leadership.
 
-**__Would you buy or sell Corning?__**
+**Would you buy or sell Corning?**
 
 It looks like Corning's customers are in trouble. LG's margin and the margins of all other display makers are compressing which is limiting their cash flow. In fact, glass prices which impact Corning's margin hadn't dropped in the same way that display prices had. That's because Corning's competitive edge it pricing power. Since display makers are beholden to Corning, the company can maintain high prices even when the cost of displays decreases. 
 
@@ -447,3 +447,6 @@ In 2011, Sharp estimated that it would require an investment of $$.8 billion spr
 The net present value was -$2,988.11 million, should Sharp have built the plant? Everything we've discussed just suggests that it should not. Despite the negative NPV, Sharp decided to build the plant because it was so enamored with both the technological challenge and the desire to be on the cutting edge. 
 
 Sharp soon ran into problems and had to sell 46% percent of the plant to Terry Gou, chairman of Hon Hai Precision for $780 million. This transaction implied the valuation of the plant to be $1.7 billion. 
+
+
+# 3. The Financial Ecosystem. 
