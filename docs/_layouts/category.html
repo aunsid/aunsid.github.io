@@ -1,0 +1,48 @@
+---
+layout: default
+---
+
+<div class="category-page">
+  <header class="category-header">
+    <nav class="breadcrumb">
+      <a href="{{ '/' | relative_url }}">Home</a>
+      <span class="sep">›</span>
+      <span>{{ page.title }}</span>
+    </nav>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="category-desc">{{ page.description }}</p>
+    {% endif %}
+  </header>
+
+  {% assign posts = site[page.collection_name] %}
+  {% assign topics = posts | map: 'topic' | uniq | sort %}
+
+  {% if posts.size == 0 %}
+    <p class="empty-state">No notes yet. Check back soon.</p>
+  {% else %}
+    {% for topic in topics %}
+      {% assign topic_posts = posts | where: 'topic', topic | sort: 'date' | reverse %}
+      <section class="topic-section">
+        <h2 class="topic-heading">{{ topic | replace: '-', ' ' | capitalize }}</h2>
+        <ul class="post-list">
+          {% for post in topic_posts %}
+            <li class="post-item">
+              <div class="post-item-main">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                {% if post.date %}
+                  <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}">
+                    {{ post.date | date: "%b %d, %Y" }}
+                  </time>
+                {% endif %}
+              </div>
+              {% if post.description %}
+                <p class="post-excerpt">{{ post.description }}</p>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+  {% endif %}
+</div>

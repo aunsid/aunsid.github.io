@@ -1,7 +1,11 @@
 ---
-layout: page
-title: How Finance Works - Mihir Desai
---- 
+layout: post
+title: "How Finance Works - Mihir Desai"
+category: finance
+topic: financial-analysis
+date: 2023-01-01
+description: "Financial ratios, DuPont framework, cash flows, valuation, and case studies from Mihir Desai's How Finance Works."
+---
 
 # 1. Financial Analysis
 Using ratios to analyze performance 
@@ -113,7 +117,7 @@ The reason to emphasize on DA is beacuse they are expenses that are not associat
 ### Financing and Leverage.
 Let's consider your own personal balance sheet after buying a home. What if no mortgages were available for you to buy a home? If you had $100, you could only buy a home that was worth $100. With a mortgage market, you can borrow money to buy a home that is worth, say, $500.
 
-![alt text](./images/balancesheet_house_financeworks.png)
+![alt text](/finance/images/balancesheet_house_financeworks.png)
 
 In effect, leverage allows you to live in a house you have no write to live in.
 Here's the big question: Are you richer in case A or case B? - No difference, you have a shareholders' equity of $100.
@@ -160,13 +164,13 @@ After a company sells its inventory, it needs to get paid for it. The lower this
 `Receivable Collection Period = 365 / (Sales/ Receivables)`
 
 ### Identifying industries based of Ratios
-![alt text](./images/industries_finance_words.png)
+![alt text](/finance/images/industries_finance_words.png)
 
 #### Service Companies
 Since these provide services rather than tangible goods, they do not hold any inventories - E, G, M, and N. 
 
 
-![alt text](./images/servicecompanies_financeworks.png)
+![alt text](/finance/images/servicecompanies_financeworks.png)
 
 #### Company N
 Owns a lot of receivables and takes a long time to collect. Large part of their financing comes from notes payable.- Bank. 
@@ -184,7 +188,7 @@ Company G has a large amount of equity and lots of cash. This company is Faceboo
 #### Retailers
 Since retailers sell goods directly to customers, their receivables collection period is going to be shorter because the customers pay immediately via cash or credit. In contrast, businesses that do business with other businesses give credit of a minimum of 30 days. - A, B, H, I and K.
 
-![alt text](./images/retailers_finance.png)
+![alt text](/finance/images/retailers_finance.png)
 
 #### Companies with distinctive inventory turnover
 Company H turns their inventory over 32 times a year. They have eleven days of inventory at any time. This is Yum! Grocery chain also has perishable goods but it also has a selection of dry and canned foods making it turnover considerably slower than a restaurant chain.
@@ -201,7 +205,7 @@ Company I has more PP&E compared to K. Company I also receives more immediate pa
 
 Three companies have barely any PP&E while the remaining two have significant PP&E. One is likely Duke Energy whereas the other is Nordstorm. The other 3 companies Microsoft, Pfizer and Dell dont really do any heavy amnufacturing so it makes sense. 
 
-![alt text](./images/stragglers_finance.png)
+![alt text](/finance/images/stragglers_finance.png)
 
 The key differentiating factor between Duke and Nordstorm is that Nordstorm would have more inventory compared to an Energy company. So L is Duke and J is a retailer Nordstorm. ALso, the big EBITDA margin for company L means large amount of depreciation and amortization. That's what utilities do. 
 
@@ -211,7 +215,7 @@ Out of the remaining two companies, D has a lot of other assets, it probably mea
 
 
 ### DuPont Framework
-![alt text](./images/dupont_framework_finance.png)
+![alt text](/finance/images/dupont_framework_finance.png)
 
 The dupont framework breaks return on equity(ROE) into 3 ingredients. Profitability, Productivity and Leverage. 
 
@@ -221,11 +225,11 @@ The dupont framework breaks return on equity(ROE) into 3 ingredients. Profitabil
 
 **Leverage**: Magnifies returns. Divide company's assets by its shareholders' equity.
 
-![alt text](./images/dupont_analysis_finance.png)
+![alt text](/finance/images/dupont_analysis_finance.png)
 
 
 ### Profound changes at Timberland
-![alt text](./images/timberlan_init_finance.png)
+![alt text](/finance/images/timberlan_init_finance.png)
 
 Timberland is a manufacturer and retailer of rugged outdoor activity. Looking at its numbers and comparing it with the industry, we see that ROE is almost close to the average but it largely comes from leverage. That means that it is overcoming its poor operational performance by taking more risk.
 
@@ -237,11 +241,11 @@ Other numbers that also tell us about poor performance is "times interest earned
 
 Its receivables are also out of whack (73.5 vs 39.1). the management not being aggressive about collecting cash owed to the company. 
 
-![alt text](./images/dupont_1_finance.png)
+![alt text](/finance/images/dupont_1_finance.png)
 
 A year later we can see that the ROE is negative, which is driven by negative profitability. Productivity is up a little and leverage has decreased. The times interest earned went from over three to one. Indicating that Timberland did not have enoudh operating profit to make its interest payments. First, inventory turnover increased markedly, while gross margins dipped significantly. This indicates a fire sale of sorts. Liquidating goods to raise cash to make payments. Its receivables collection period dropped by 20 days. The payable period also decreased, indicating that the suppliers were unlikely to extend credit based on the financial situation.
 
-![alt text](./images/dupont_2_finance.png)
+![alt text](/finance/images/dupont_2_finance.png)
 
 Timberland was moving more inventory not by cutting prices. Its profit margin was improving and leverage coming down. Its gross margin indicates pricing power just as it was moving more goods.
 
@@ -260,13 +264,13 @@ Accounting asks managers to make decisions in order to smooth returns, as accoun
 
 To build an alternative foundation for assessing economic returns, we need to identify cash flows as opposed to profits. 
 
-![alt text](./images/ebit_finance.png)
+![alt text](/finance/images/ebit_finance.png)
 
 `EBIT` is gives a view of how efficient and profitable a company is relative to net profit by not considering taxes and interest(not related to operational performance). It is still not quite a measure of cash, because it is calculated by subtracting noncash expenses such as depreciation and amortization. 
 
 For a fuller picture, finance professionals turn to `EBITDA`: earnings before interest, taxes, depriciation, and amortization.
 
-![alt text](./images/ebitda_finance.png)
+![alt text](/finance/images/ebitda_finance.png)
 
 
 EBITDA can be more relevant for some industries than others. In 2015, the depriciation to net income ratios of EA, The Michaels Comapies, and Comcast were 17%, 34% and 106%. Comcast heavily invested to create a nationwide cable and internet network. Because of those heavy investements, using net profit as a measure can be flawed in comparison to EA that is a software company.
@@ -274,7 +278,7 @@ EBITDA can be more relevant for some industries than others. In 2015, the depric
 
 ### Amazon's Net Profit, EBIT and EBITDA
 
-![alt text](./images/amazon_incomestatement2014_finance.png)
+![alt text](/finance/images/amazon_incomestatement2014_finance.png)
 
 In 2014, Amazon's EBIT was $178 million, and Net Profit was -$241 million, and EBITDA was $4.76 billion. So Amazon generated a lot of cash as measured by EBITDA, but gas losses according to profitability measures. 
 
@@ -284,7 +288,7 @@ Given the obsession with cash, there exists another statement dedicated to it - 
 
 Income statement has the problem noncash expenses as well as managerial discretion, whereas, the balance sheet, has the problems of historical accounting and conservatism.
 
-![alt text](./images/operatingcashflow_finance.png)
+![alt text](/finance/images/operatingcashflow_finance.png)
 
 Operating cash flow is distinct from EBITDA in several ways. First, it cosiders the cost of working capital, and, second, it considers tax and interest payments by beginning with net profit. It includes noncash expenses other than depriciation and amortization and stock based compensation in its final calculation.
 
@@ -292,7 +296,7 @@ The investing section emphasizes the ongoing investments that bypass the income 
 
 The financing section examines whether a company has offered debt or paid back debt, or issued equity or brought back stock, and reveals the cash consequences of doing so.
 
-![alt text](./images/starbucks_cashflow_finance.png)
+![alt text](/finance/images/starbucks_cashflow_finance.png)
 
 ### Working Capital
 It is the capital required by the company to fund its day to day operations. 
@@ -309,7 +313,7 @@ One simple way to think about the consequences of working capital is to note tha
 
 A powerful way to frame the financing consequences of working capital is to frame woring capital temporally rather than monetarily. This framing is called the cash conversion cycle.
 
-![alt text](./images/cashconversioncycle_finance.png)
+![alt text](/finance/images/cashconversioncycle_finance.png)
 
 For example, if you had a store where you bought hammers from wholesellers and sold them to home improvement professionals. There are several transactions with a single hammer and they dont happen all at once. You first buy the hammer, pay for it, sell it and collect the cash for the sale. If you sell the hammers 70 days from the day you bought it, and you dont get paid for another 40 days. It takes a total of 110 days from the time that you have bought the hammer to getting cash for it. In addition, you pay cash for the hammer 30 days after you have bought it. 
 
@@ -330,7 +334,7 @@ Amazon manages its inventories, receivables, and payables in such a way that it 
 
 The final cash measure is free cash flows, one of the most important measures of economic performance in finance. The equation for calculating free cash flows provides a measure of the amount of cash flows unencumbered by the operations of a business. It's the purest measure of cash and forms the basis of valuation. It removes the distorting effects of non cash charges such as Depriciation and Amortization, accounts for changes in the working capital and acknowledges capital expenditures required for growth.
 
-![alt text](./images/freecashflow_finance.png)
+![alt text](/finance/images/freecashflow_finance.png)
 
 
 The net assets side of the balance sheet is divided in working capital and fixed assets (PP&E) and the financing side of the balance sheet is divided into debt and equity. This modified balance sheet now distinguishes between the operations and the the capital providers. The flow of operations generate that end up with the capital providers. 
@@ -340,7 +344,7 @@ The operations of the business generate EBIT, but the government takes it shares
 
 #### Amazon vs Netflix.
 
-![alt text](./images/amazonvsnetflix_finance.png)
+![alt text](/finance/images/amazonvsnetflix_finance.png)
 
 Amazon seems not to have made profits at least until very recently. By the profit metric, Netflix appears to be more profitable than Amazon. With a profit margin of 5% relative to Amazon's 2%. 
 
@@ -366,7 +370,7 @@ The present value of $1000 received a year from now is $952.38 as $952.38 put in
 
 What if you have cash flow over multiple years into the future? You can simply discount the multiple cashflows. 
 
-![alt text](./images/multiplecashflow_finance.png)
+![alt text](/finance/images/multiplecashflow_finance.png)
 
 Suppose the bank is offering a $1000 payment for each of the next three years and the prevailing interest rate is still 5% percent. 
 
@@ -377,7 +381,7 @@ When you add the three values together, you arrive at how much the much the bank
 
 **The impact of discount rates**
 
-![alt text](./images/discountrate_finance.png)
+![alt text](/finance/images/discountrate_finance.png)
 
 
 ### Sunk Costs and Net Present Value
@@ -404,9 +408,9 @@ Nike Factory Present Value = (10/(1.10)^1) + (10/(1.10)^2) + (10/(1.10)^3) +(10/
 
 The present value of the company is $31.7 million, if a rival company approaches Nike and offers to buy the factory for $40 million. Nike should sell it. Nike gives the future cash flows in the process.
 
-![alt images](./images/presentvalue_finance.png)
+![alt images](/finance/images/presentvalue_finance.png)
 
-![alt images](./images/netpresentvalue_finance.png)
+![alt images](/finance/images/netpresentvalue_finance.png)
 
 If managers care about value creation, then the most important financial decision rule is to undertake only positive net present value projects.
 
@@ -428,13 +432,13 @@ Corning grew rapidly in the 2000's by investing heavily in manufacturing facilit
 
 The next step is to forecast cash flows, and then discount it back to get the present value.
 
-![alt text](./images/corningvaluation_finance.png)
+![alt text](/finance/images/corningvaluation_finance.png)
 
 Using the free cash flow formula we get (2014E) = 2195 + 1108 - 1491 - 50 = 1762
 
 Assuming, a discount rate of 6%.
 
-![alt text](./images/completevaluationcorning_finance.png)
+![alt text](/finance/images/completevaluationcorning_finance.png)
 
 **To figure the whether buying the stock is a good investment is to add the cash on  the balance and subtract the value of debt. And add all the future cash flows should be added as well after discounting it.**
 

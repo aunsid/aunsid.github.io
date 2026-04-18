@@ -1,0 +1,36 @@
+---
+layout: default
+---
+
+<div class="home">
+  <div class="hero">
+    <h1>{{ site.title }}</h1>
+    <p class="hero-desc">{{ site.description }}</p>
+  </div>
+
+  <div class="categories-grid">
+    <a href="{{ '/ml/' | relative_url }}" class="category-card">
+      <div class="card-icon">🤖</div>
+      <h2>Machine Learning</h2>
+      <p>Neural networks, optimization, deep learning architectures, and ML theory.</p>
+      {% assign ml_count = site.ml | size %}
+      <span class="post-count">{{ ml_count }} note{% if ml_count != 1 %}s{% endif %}</span>
+    </a>
+
+    <a href="{{ '/finance/' | relative_url }}" class="category-card">
+      <div class="card-icon">📈</div>
+      <h2>Finance</h2>
+      <p>Financial analysis, valuation, cash flows, and investment frameworks.</p>
+      {% assign finance_count = site.finance | size %}
+      <span class="post-count">{{ finance_count }} note{% if finance_count != 1 %}s{% endif %}</span>
+    </a>
+
+    <a href="{{ '/others/' | relative_url }}" class="category-card">
+      <div class="card-icon">🔧</div>
+      <h2>Others</h2>
+      <p>System design, algorithms, and miscellaneous technical topics.</p>
+      {% assign others_count = site.others | size %}
+      <span class="post-count">{{ others_count }} note{% if others_count != 1 %}s{% endif %}</span>
+    </a>
+  </div>
+</div>

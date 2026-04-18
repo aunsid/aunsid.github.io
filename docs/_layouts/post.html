@@ -1,0 +1,34 @@
+---
+layout: default
+---
+
+<article class="post-page">
+  <header class="post-header">
+    <nav class="breadcrumb">
+      <a href="{{ '/' | relative_url }}">Home</a>
+      <span class="sep">›</span>
+      <a href="{{ '/' | append: page.category | append: '/' | relative_url }}">{{ page.category | capitalize }}</a>
+      {% if page.topic %}
+        <span class="sep">›</span>
+        <span>{{ page.topic | replace: '-', ' ' | capitalize }}</span>
+      {% endif %}
+      <span class="sep">›</span>
+      <span>{{ page.title }}</span>
+    </nav>
+
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.date %}
+      <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%B %d, %Y" }}
+      </time>
+    {% endif %}
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  <footer class="post-footer">
+    <a href="{{ '/' | append: page.category | append: '/' | relative_url }}" class="back-link">← Back to {{ page.category | capitalize }}</a>
+  </footer>
+</article>
