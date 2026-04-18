@@ -1,0 +1,55 @@
+title: Notes
+email: aunsid@gmail.com
+description: >-
+  Stuff that I need to be constantly reminded of.
+domain: aunsid.github.io
+baseurl: ""
+url: "https://aunsid.github.io"
+twitter_username: aunsid
+github_username: aunsid
+
+theme: minima
+
+plugins:
+  - jekyll-feed
+
+# Pages shown in site navigation
+header_pages:
+  - ml.md
+  - finance.md
+  - others.md
+  - about.markdown
+
+# Collections: ml, finance, others
+collections:
+  ml:
+    output: true
+    permalink: /ml/:path/
+  finance:
+    output: true
+    permalink: /finance/:path/
+  others:
+    output: true
+    permalink: /others/:path/
+
+# Default layout and metadata for each collection
+defaults:
+  - scope:
+      path: ""
+      type: "ml"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "finance"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "others"
+    values:
+      layout: "post"
+
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
