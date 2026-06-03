@@ -31,13 +31,44 @@ nav:
   - About: about.md
   - ML:
     - ml/index.md
-    - "Chapter 1 — Backpropagation":
-      - ml/backpropagation/index.md
-      - CNNs: ml/backpropagation/cnn.md
-    - "Chapter 2 — Language Models From Scratch":
+    - "Chapter 1 — Language Models From Scratch":
       - ml/tokenizer/index.md
-      - Tokens: ml/tokenizer/tokens.md
-      - Byte Pair Encoding: ml/tokenizer/notes.md
+      - Tokenization:
+        - Tokens: ml/tokenizer/tokens.md
+        - Byte Pair Encoding: ml/tokenizer/notes.md
+      - Embeddings: ml/embeddings/index.md
+      - Attention:
+        - Self-Attention: ml/attention/index.md
+        - Types of Attention: ml/attention/types.md
+      - Normalization:
+        - Layer Norm & RMS Norm: ml/normalization/index.md
+        - Pre-Norm vs Post-Norm: ml/normalization/pre_post.md
+      - Feed-Forward Networks: ml/feed_forward/index.md
+      - Transformer Architecture: ml/transformer/index.md
+      - Training:
+        - Backpropagation & Loss: ml/training/index.md
+        - Optimizers: ml/training/optimizers.md
+        - Learning Rates: ml/training/learning_rates.md
+      - Inference:
+        - Decoding Strategies: ml/inference/index.md
+        - Top-k & Top-p Sampling: ml/inference/sampling.md
+        - KV Cache: ml/inference/kv_cache.md
+      - Scaling:
+        - Scaling Laws: ml/scaling/index.md
+        - Parallelism: ml/scaling/parallelism.md
+    - "Chapter 2 — Vision":
+      - ml/vision/index.md
+      - Image Representation: ml/vision/image_representation.md
+      - Convolutions & CNNs: ml/vision/cnn.md
+      - CNN Architectures: ml/vision/architectures.md
+      - Normalization: ml/vision/normalization.md
+      - Vision Transformers: ml/vision/vit.md
+    - "Chapter 3 — Vision-Language Models":
+      - ml/vlm/index.md
+      - Contrastive Learning: ml/vlm/contrastive.md
+      - CLIP: ml/vlm/clip.md
+      - Architectures: ml/vlm/architectures.md
+      - Training VLMs: ml/vlm/training.md
   - Finance:
     - finance/index.md
     - How Finance Works: finance/how_finance_works.md

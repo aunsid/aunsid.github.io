@@ -1,3 +1,3 @@
-# Chapter 2 — Language Models From Scratch
+# Chapter 1 — Language Models From Scratch
 
-Before a language model sees text, it must be converted into a sequence of integers. This chapter covers tokenization strategies, how BPE learns a vocabulary from data, and a full implementation walkthrough.
+This chapter builds a language model from the ground up — starting with how text is represented as tokens, through the transformer architecture, training, and inference.
