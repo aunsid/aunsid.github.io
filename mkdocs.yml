@@ -34,8 +34,9 @@ nav:
     - "Chapter 1 — Backpropagation":
       - ml/backpropagation/index.md
       - CNNs: ml/backpropagation/cnn.md
-    - "Chapter 2 — Tokenization":
+    - "Chapter 2 — Language Models From Scratch":
       - ml/tokenizer/index.md
+      - Tokens: ml/tokenizer/tokens.md
       - Byte Pair Encoding: ml/tokenizer/notes.md
   - Finance:
     - finance/index.md
