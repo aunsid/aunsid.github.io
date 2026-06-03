@@ -1,8 +1,5 @@
 ---
-layout: post
 title: "System Design Basics"
-category: others
-topic: system-design
 date: 2023-01-01
 description: "Scalability, reliability, load balancing, databases, caching, and sharding."
 ---

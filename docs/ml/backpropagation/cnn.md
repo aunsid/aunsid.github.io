@@ -1,8 +1,5 @@
 ---
-layout: post
 title: "Convolutional Neural Networks"
-category: ml
-topic: backpropagation
 date: 2026-04-17
 description: "Forward pass, backpropagation through conv layers, and a minimal PyTorch implementation."
 ---

@@ -1,8 +1,5 @@
 ---
-layout: post
 title: "Shortest Unique Substring (Sliding Window)"
-category: others
-topic: algorithms
 date: 2023-01-01
 description: "Find the shortest substring of a string that contains all characters from a given array."
 ---

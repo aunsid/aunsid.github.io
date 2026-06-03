@@ -1,8 +1,5 @@
 ---
-layout: post
 title: "Byte Pair Encoding"
-category: ml
-topic: tokenizer
 date: 2026-06-03
 description: "A walkthrough of Byte-Pair Encoding tokenization — from unicode code points to a full BPE implementation."
 ---
@@ -82,7 +79,7 @@ For every iteration:
 
 To restore the original text, look up each id in the look up table to get its byte sequence, concatenate all byte sequences, then decode the result as UTF-8
 
-![BPE Algorithm](/assets/images/bpe_algorithm.png)
+![BPE Algorithm](../../assets/images/bpe_algorithm.png)
 
 ## BPE Implementation Walkthrough
 

@@ -1,0 +1,63 @@
+site_name: Aun
+site_url: https://aunsid.github.io
+site_description: Machine learning, finance, and software engineering — notes and tutorials.
+site_author: Aun
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - About: about.md
+  - ML:
+    - ml/index.md
+    - Backpropagation:
+      - CNNs: ml/backpropagation/cnn.md
+    - Tokenizer:
+      - Byte Pair Encoding: ml/tokenizer/notes.md
+  - Finance:
+    - finance/index.md
+    - How Finance Works: finance/how_finance_works.md
+  - Others:
+    - others/index.md
+    - Algorithms:
+      - Sliding Window: others/algorithms/sliding_window.md
+    - System Design:
+      - Basics: others/system_design/basics.md
+      - References: others/system_design/references.md
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - tables
+  - admonition
+  - pymdownx.details
+  - attr_list
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

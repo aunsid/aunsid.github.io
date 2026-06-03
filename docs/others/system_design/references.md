@@ -1,8 +1,5 @@
 ---
-layout: post
 title: "System Design References"
-category: others
-topic: system-design
 date: 2023-01-01
 description: "Curated references for system design study."
 ---
