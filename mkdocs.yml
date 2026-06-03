@@ -21,6 +21,8 @@ theme:
     - navigation.sections
     - navigation.top
     - navigation.indexes
+    - navigation.footer
+    - navigation.path
     - search.highlight
     - content.code.copy
 
@@ -29,9 +31,11 @@ nav:
   - About: about.md
   - ML:
     - ml/index.md
-    - Backpropagation:
+    - "Chapter 1 — Backpropagation":
+      - ml/backpropagation/index.md
       - CNNs: ml/backpropagation/cnn.md
-    - Tokenizer:
+    - "Chapter 2 — Tokenization":
+      - ml/tokenizer/index.md
       - Byte Pair Encoding: ml/tokenizer/notes.md
   - Finance:
     - finance/index.md
