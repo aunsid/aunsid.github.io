@@ -7,7 +7,7 @@
 - [x] Byte Pair Encoding (`docs/ml/tokenizer/notes.md`)
 
 ### Embeddings
-- [ ] Token Embeddings + Positional Encodings (sinusoidal, RoPE, ALiBi) (`docs/ml/embeddings/index.md`)
+- [x] Token Embeddings + Positional Encodings (sinusoidal, RoPE, ALiBi) (`docs/ml/embeddings/index.md`)
 
 ### Attention
 - [ ] Self-Attention & Multi-Head Attention (`docs/ml/attention/index.md`)
