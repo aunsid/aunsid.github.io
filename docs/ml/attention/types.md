@@ -26,6 +26,8 @@ Since $e^{-\infty} = 0$, the softmax naturally assigns zero weight to all future
 
 $$M = \begin{pmatrix} 0 & -\infty & -\infty & -\infty \\ 0 & 0 & -\infty & -\infty \\ 0 & 0 & 0 & -\infty \\ 0 & 0 & 0 & 0 \end{pmatrix}$$
 
+![Causal mask for the sequence "The dog barks at"](causal_mask.png)
+
 ```python
 T = queries.shape[-2]
 # upper triangle (excluding diagonal) filled with -inf
