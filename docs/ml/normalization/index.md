@@ -57,7 +57,7 @@ RMS Norm drops the mean-centering step entirely, normalizing only by the root me
 
 $$\text{RMSNorm}(x) = \gamma \cdot \frac{x}{\text{RMS}(x)}, \quad \text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2 + \varepsilon}$$
 
-There is no $\beta$ term — the shift is removed along with the mean subtraction. This is cheaper to compute and empirically matches the performance of full layer norm. It is used in LLaMA and most modern LLMs.
+There is no $\beta$ term — the shift is removed along with the mean subtraction. This is <u>cheaper to compute and empirically matches the performance of full layer norm</u>. It is used in LLaMA and most modern LLMs.
 
 
 ```python
