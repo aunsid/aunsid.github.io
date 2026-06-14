@@ -10,11 +10,12 @@
 - [x] Token Embeddings + Positional Encodings (sinusoidal, RoPE, ALiBi) (`docs/ml/embeddings/index.md`)
 
 ### Attention
-- [ ] Self-Attention & Multi-Head Attention (`docs/ml/attention/index.md`)
-- [ ] Types of Attention — causal, cross, GQA, MQA, Flash Attention (`docs/ml/attention/types.md`)
+- [x] Self-Attention & Multi-Head Attention (`docs/ml/attention/index.md`)
+- [x] Types of Attention — causal, cross, GQA, MQA, Flash Attention (`docs/ml/attention/types.md`)
+    - [ ] Add code snippest for causal cross gqa mqa and flash attention
 
 ### Normalization
-- [ ] Layer Norm & RMS Norm (`docs/ml/normalization/index.md`)
+- [x] Layer Norm & RMS Norm (`docs/ml/normalization/index.md`)
 - [ ] Pre-Norm vs Post-Norm (`docs/ml/normalization/pre_post.md`)
 
 ### Feed-Forward Networks

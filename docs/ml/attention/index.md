@@ -83,9 +83,97 @@ return out
 The image below shows a single attention head that we computed earlier.
 ![alt text](image.png)
 
-But in practice we stack multiple attention heads together. This is done by running multiple single attention heads in parallel, each with their own separate query, key, and value matrices. Having multiple attention heads allows us to learn better feature representations. A common example: one head could be learning the dependencies of pronouns to nouns in the input sequence, while another could be learning the relationship between nouns and adjectives.
+But in practice we stack multiple attention heads together. This is done by running multiple single attention heads in parallel, each with their own separate query, key, and value matrices. Having multiple attention heads allows us to learn better feature representations. A common example: one head could be learning the dependencies of pronouns to nouns in the input sequence, while another could be learning the relationship between nouns and adjectives. Each head has its own specialization that reflects teh real structure language that is learnt automagically while training.
 
 ![alt text](image-1.png)
 
-Reference:
+The combined effect each head is then combined using a weighted sum shown in the diagram below 
+
+![alt text](image-3.png)
+
+```python
+
+class MHSA(nn.Module):
+    """
+    Implementation of Multihead Self Attention
+    """
+    def __init__(self, d_model, num_heads, theta=None, max_seq_len=None, device=None):
+        super().__init__()
+        # embedding dimension
+        self.d_model = d_model
+        # num of heads
+        self.num_heads = num_heads
+        # embedding dimension of each head
+        self.head_dim = d_model // num_heads
+        self.device = device
+        self.max_seq_len = max_seq_len
+        
+        # Wq, Wk, Wv Matrices
+        self.q_proj = Linear(d_model, d_model, device=device)
+        self.k_proj = Linear(d_model, d_model, device=device)
+        self.v_proj = Linear(d_model, d_model, device=device)
+        # Additional Wo matrix to get combined effect all heads
+        self.o_proj = Linear(d_model, d_model, device=device)
+
+    def forward(self, x):
+        # Queries
+        q = self.q_proj(x)
+        # Rearrange from shape seq_len, d_model -> num_heads, seq_len, d_model
+        q = rearrange(
+            q,
+            "... s (nh nd) -> ... nh s nd ",
+            nh=self.num_heads,
+            nd=self.head_dim
+        )
+        # Keys
+        k = self.k_proj(x)
+        # Rearrange from shape seq_len, d_model -> num_heads, seq_len, d_model
+        k = rearrange(
+            k,
+            "... s (nh nd) -> ... nh s nd ",
+            nh=self.num_heads,
+            nd=self.head_dim
+        )
+        # Values
+        v = self.v_proj(x)
+        # Rearrange from shape seq_len, d_model -> num_heads, seq_len, d_model
+        v = rearrange(
+            v,
+            "... s (nh nd) -> ... nh s nd ",
+            nh=self.num_heads,
+            nd=self.head_dim
+        )
+
+        # scaled attentions
+        dk = self.head_dim
+        scale = dk ** 0.5
+        attn = einsum(q, k,"... h m dh, ... h n dh -> ... h m n")
+        scaled_attn = attn / scale
+        # apply masking
+        L = attn.shape[-1]
+        mask = torch.tril(torch.ones(L, L, device=x.device), diagonal=0).to(torch.bool)
+        scaled_attn = torch.masked_fill(scaled_attn, ~mask, float("-inf"))
+        # normalized attention
+        normalized_scaled_attn = softmax(scaled_attn, -1)
+
+        # context vector i.e. dot product of norm attn with values
+        out = einsum(normalized_scaled_attn, v,"... h m n, ... h n d -> ... h m d")
+        # rearrange from num_heads, seq_length, head_dim -> seq_len, d_model
+        out = rearrange(
+            out,
+            "... nh s hd -> ... s (nh hd)",
+            nh=self.num_heads,
+            hd = self.head_dim
+            )
+        # combine effects of all head
+        out = self.o_proj(out)
+        
+        return out
+```
+
+Reference: 
 1. https://sebastianraschka.com/blog/2023/self-attention-from-scratch.html
+2. Attention is all you need https://arxiv.org/pdf/1706.03762
+
+Further Reading:
+1. https://mbrenndoerfer.com/writing/self-attention-concept
