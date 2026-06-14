@@ -16,7 +16,7 @@
 
 ### Normalization
 - [x] Layer Norm & RMS Norm (`docs/ml/normalization/index.md`)
-- [ ] Pre-Norm vs Post-Norm (`docs/ml/normalization/pre_post.md`)
+- [x] Pre-Norm vs Post-Norm (`docs/ml/normalization/pre_post.md`)
 
 ### Feed-Forward Networks
 - [ ] FFN variants — ReLU, GELU, SwiGLU, GeGLU (`docs/ml/feed_forward/index.md`)
