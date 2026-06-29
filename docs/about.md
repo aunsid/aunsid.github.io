@@ -10,6 +10,8 @@ Before Meta, I spent three years at DEKA Research and Development building deep 
 
 My background is in mechanical engineering and robotics. I got into ML through a perception and HRI lab in grad school working on Bayesian deep learning for gaze prediction. These days I'm most interested in post-training, recommendation systems, and the engineering side of running large models at scale. I keep [notes](ml/index.md) on what I'm learning.
 
+On the side, I'm building [nano-vlm](https://github.com/aunsid/vlm-from-scratch) — a minimal vision-language model from scratch.
+
 ## Skills
 
 - **Languages:** Python, C++, C, SQL, Bash
