@@ -2,31 +2,30 @@
 title: About
 ---
 
-# About Me
+# About
 
-<!-- TODO: Add your bio here -->
-[Your 2-3 sentence intro — who you are, what you work on, what you're interested in]
+I'm a Machine Learning Engineer at Meta on the Modern Recommendation team, currently working on post-training methods (GRPO) for a generative recommendation system used to improve Instagram Feed. Before this role within Meta, I worked at Meta Superintelligence Labs on evaluation frameworks for large generative models — fine-tuning VLM judges to benchmark diffusion model outputs.
 
-## Experience
+Before Meta, I spent three years at DEKA Research and Development building deep learning systems for an autonomous last-mile delivery robot — image segmentation for HD map generation, self-supervised contrastive pretraining for high-resolution aerial imagery, and active learning loops driven by uncertainty quantification.
 
-**[Job Title]** — [Company] *(dates)*
-- [Key accomplishment or responsibility]
-- [Key accomplishment or responsibility]
-
-**[Job Title]** — [Company] *(dates)*
-- [Key accomplishment or responsibility]
+My background is in mechanical engineering and robotics. I got into ML through a perception and HRI lab in grad school working on Bayesian deep learning for gaze prediction. These days I'm most interested in post-training, recommendation systems, and the engineering side of running large models at scale. I keep [notes](ml/index.md) on what I'm learning.
 
 ## Skills
 
-- **Machine Learning:** [e.g. PyTorch, transformers, training pipelines]
-- **Languages:** [e.g. Python, Go, SQL]
-- **Tools:** [e.g. Docker, AWS, Git]
+- **Languages:** Python, C++, C, SQL, Bash
+- **ML:** PyTorch, TensorFlow, Keras, scikit-learn, ONNX, TensorRT
+- **Infra:** AWS, Airflow, Docker, Linux, Git
+- **Other:** OpenCV, ROS, Gazebo, MATLAB, Eigen, PCL
 
 ## Education
 
-**[Degree]** — [University] *(year)*
+**M.S., Mechanical Engineering (Robotics specialization)** — Colorado School of Mines, May 2019
+
+**B.E., Mechanical Engineering** — University of Mumbai, May 2016
 
 ## Links
 
 - GitHub: [github.com/aunsid](https://github.com/aunsid)
+- LinkedIn: [linkedin.com/in/aunsid](https://linkedin.com/in/aunsid)
 - Email: [aunsid@gmail.com](mailto:aunsid@gmail.com)
+- Resume: [PDF](AunSiddiqui_Resume.pdf)
