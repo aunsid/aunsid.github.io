@@ -53,11 +53,6 @@ nav:
       - ml/post_training/index.md
       - RLHF: ml/post_training/rlhf.md
       - GRPO: ml/post_training/grpo.md
-    - Algorithms:
-      - Sliding Window: others/algorithms/sliding_window.md
-    - System Design:
-      - Basics: others/system_design/basics.md
-      - References: others/system_design/references.md
 
 markdown_extensions:
   - pymdownx.arithmatex:
