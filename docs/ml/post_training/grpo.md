@@ -6,7 +6,7 @@ In traditional RL, we think about a policy $π$ which takes in a state $s_t$, an
 
 A language model $π_\theta$ with parameters $\theta$ defines a probability distribution over the next token $y_t$ given the the current text prefix $y_{<t} = (y_1, \dots, y_{t-1})$.
 In the context for RL, we can think of the next token $y_t$ as our action $a_t$ and the current text prefix $y<t$ as the state $s_t$. Hence, the LM is a categorical stochastic policy.
-$$a_t \sim π_{\theta}(.|s_t) = [softmax(f_{\theta}(s_t))]_{a_{t}}$$
+$$ a_t \sim π_{\theta}(.|s_t) = [softmax(f_{\theta}(s_t))]_{a_{t}} $$
 
 To optimize a policy with policy gradients, we need two operations:
 1. Sampling from the policy: drawing an action $a_{t}$ from the distribution

@@ -29,7 +29,8 @@ theme:
 nav:
   - Home: index.md
   - About: about.md
-  - ML:
+  - Experience: experience.md
+  - Notes:
     - ml/index.md
     - "Chapter 1 — Language Models From Scratch":
       - ml/tokenizer/index.md
@@ -52,8 +53,6 @@ nav:
       - ml/post_training/index.md
       - RLHF: ml/post_training/rlhf.md
       - GRPO: ml/post_training/grpo.md
-  - Others:
-    - others/index.md
     - Algorithms:
       - Sliding Window: others/algorithms/sliding_window.md
     - System Design:
@@ -73,6 +72,9 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - attr_list
+
+extra_css:
+  - stylesheets/extra.css
 
 extra_javascript:
   - javascripts/mathjax.js

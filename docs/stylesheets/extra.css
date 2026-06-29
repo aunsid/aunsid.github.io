@@ -1,0 +1,86 @@
+:root {
+  --hero-mono: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace;
+}
+
+/* ===== Hero (home page) ===== */
+.hero {
+  max-width: 1000px;
+  margin: 4rem auto 6rem;
+  padding: 0 1rem;
+}
+
+.hero__intro {
+  font-family: var(--hero-mono);
+  color: var(--md-accent-fg-color, var(--md-primary-fg-color));
+  font-size: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.hero__name {
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.hero__tagline {
+  color: var(--md-default-fg-color--light);
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 2rem;
+  letter-spacing: -0.02em;
+}
+
+.hero__bio {
+  color: var(--md-default-fg-color--light);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 600px;
+  margin: 0 0 2.5rem;
+}
+
+.hero__cta {
+  display: inline-block;
+  font-family: var(--hero-mono);
+  font-size: 0.95rem;
+  color: var(--md-primary-fg-color);
+  background: transparent;
+  border: 1px solid currentColor;
+  padding: 1rem 1.6rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.hero__cta:hover {
+  background: var(--md-accent-fg-color--transparent, rgba(0,0,0,0.05));
+}
+
+/* ===== Experience timeline ===== */
+.exp-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+.exp-item {
+  border-left: 2px solid var(--md-default-fg-color--lightest);
+  padding: 0.25rem 0 1.5rem 1.5rem;
+  margin-left: 0.25rem;
+}
+.exp-item__role {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+}
+.exp-item__company {
+  font-family: var(--hero-mono);
+  font-size: 0.95rem;
+  color: var(--md-primary-fg-color);
+}
+.exp-item__dates {
+  color: var(--md-default-fg-color--light);
+  font-family: var(--hero-mono);
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0.75rem;
+}

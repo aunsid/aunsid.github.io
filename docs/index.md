@@ -1,9 +1,22 @@
 ---
 title: Home
+hide:
+  - navigation
+  - toc
 ---
 
-# Hi, I'm Aun
+<div class="hero">
 
-I write about machine learning, finance, and software engineering — notes and tutorials I want to be able to reference and share.
+<p class="hero__intro">Hi, my name is</p>
 
-[About Me](about.md){ .md-button } [ML Notes](ml/index.md){ .md-button } [Finance Notes](finance/index.md){ .md-button }
+<h1 class="hero__name">Your Name.</h1>
+
+<h2 class="hero__tagline">I build something.</h2>
+
+<p class="hero__bio">
+One- or two-line bio goes here. Talk about what you do, where, and what you're focused on. Use <a href="#">links</a> to highlight roles or projects.
+</p>
+
+<a href="mailto:aunsid@gmail.com" class="hero__cta">Get In Touch</a>
+
+</div>
