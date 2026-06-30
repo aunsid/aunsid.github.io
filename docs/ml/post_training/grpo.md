@@ -2,20 +2,20 @@
 
 
 ###  Language Model as policies
-In traditional RL, we think about a policy $π$ which takes in a state $s_t$, and outputs an action $a_t$. This action results in a reward $r_t = r(s_t, a_t)$, and a subsequent state $s_{t+1} \sim$ next_state $(s_t, a_t)$
+In traditional RL, we think about a policy $\pi$ which takes in a state $s_t$, and outputs an action $a_t$. This action results in a reward $r_t = r(s_t, a_t)$, and a subsequent state $s_{t+1} \sim \text{next\_state}(s_t, a_t)$.
 
-A language model $π_\theta$ with parameters $\theta$ defines a probability distribution over the next token $y_t$ given the the current text prefix $y_{<t} = (y_1, \dots, y_{t-1})$.
-In the context for RL, we can think of the next token $y_t$ as our action $a_t$ and the current text prefix $y<t$ as the state $s_t$. Hence, the LM is a categorical stochastic policy.
-$$ a_t \sim π_{\theta}(.|s_t) = [softmax(f_{\theta}(s_t))]_{a_{t}} $$
+A language model $\pi_\theta$ with parameters $\theta$ defines a probability distribution over the next token $y_t$ given the the current text prefix $y_{<t} = (y_1, \dots, y_{t-1})$.
+In the context for RL, we can think of the next token $y_t$ as our action $a_t$ and the current text prefix $y_{<t}$ as the state $s_t$. Hence, the LM is a categorical stochastic policy.
+$$ a_t \sim \pi_{\theta}(\cdot \mid s_t) = [\text{softmax}(f_{\theta}(s_t))]_{a_{t}} $$
 
 To optimize a policy with policy gradients, we need two operations:
 1. Sampling from the policy: drawing an action $a_{t}$ from the distribution
-2. Scoring the log-likelihood of an action: evaluatng $log π_{\theta}(a_t | s_t)$
+2. Scoring the log-likelihood of an action: evaluatng $\log \pi_{\theta}(a_t \mid s_t)$
 
 $s_t$ is the partial completion and each $a_t$ is the next token of the solution. The episode ends with the <|end_of_text|> token.
 
 ###  Trajectories
-In reinforcement learning, we start at an initial state drawn from starting distribtion. We then sample an action$a_t$ from the policy $π_t$, transistion to the next state according to some next state distribution $s_{t+1} \sim$ next_state $(s_t, a_t)$ and repeat. This series of states and actions then forms a trajectory.
+In reinforcement learning, we start at an initial state drawn from starting distribtion. We then sample an action $a_t$ from the policy $\pi_t$, transistion to the next state according to some next state distribution $s_{t+1} \sim \text{next\_state}(s_t, a_t)$ and repeat. This series of states and actions then forms a trajectory.
 
 $$ \tau = (s_0, a_0, s_1, a_1, \dots , s_T, a_T)$$
 
@@ -25,18 +25,18 @@ where T is the length of the trajectoru, i.e., $a_T$ is an end-of-text token or 
 ### Rewards and Return
 In RL, a scalar reward  $r_t = r(s_t, a_t)$ judges the immediate quality of action $a_t$ taken at state $s_t$. But for our use case, we observe zero reward for intermediate reasoning steps, until we output the answer. We then receive a verified reward on the terminal action.
 
-$$r_T = r(s_T, a_T) := \begin{cases} 1 & \text{if trajectory } \tau \text{ matches the ground-truth according to our reward function} \\ 0 & \text{otherwise} \end{cases}.$$
+$$ r_T = r(s_T, a_T) := \begin{cases} 1 & \text{if trajectory } \tau \text{ matches the ground-truth according to our reward function} \\ 0 & \text{otherwise} \end{cases}.$$
 
-In our case, $r_t$ is 1 if our final answer is correct, and 0 otherwise. The Return$R(\tau)$ aggregates the rewards along the trajectory, and in our case it just $r_T$
+In our case, $r_t$ is 1 if our final answer is correct, and 0 otherwise. The Return $R(\tau)$ aggregates the rewards along the trajectory, and in our case it just $r_T$.
 
 
 The objective is to maximize the expected return
-$$J_\theta = E_{\tau \sim π_{\theta}}[r(\tau)]$$
+$$ J_\theta = \mathbb{E}_{\tau \sim \pi_{\theta}}[r(\tau)] $$
 
-where $\tau \sim π_{\theta}$ is the distribution over trajectories where we first sample $s_0 \sim \rho $ and we then sample actions from the policy and the next states from the next state distribution.
-In our case, this means we first sampling our math problem from out dataset, and then sampling tokens until we hit the end of our response. A process we can denote by $y \sim π_{\theta}(y|x)$. This objective leads to the optimization of 
+where $\tau \sim \pi_{\theta}$ is the distribution over trajectories where we first sample $s_0 \sim \rho$ and we then sample actions from the policy and the next states from the next state distribution.
+In our case, this means we first sampling our math problem from out dataset, and then sampling tokens until we hit the end of our response. A process we can denote by $y \sim \pi_{\theta}(y \mid x)$. This objective leads to the optimization of 
 
-$$\theta^* = \arg\max_\theta J_\theta$$
+$$ \theta^* = \arg\max_\theta J_\theta $$
 
 ### Policy Gradients
 Instead of using action $a_t$ and states $s_t$ we will use $(x, y)$ denoting prompts and responses. 
@@ -46,12 +46,12 @@ We want to optimize the model's expected reward(i.e accuracy), given by
 $$J_\theta = \mathbb{E}_{x \sim \rho} \mathbb{E}_{y \sim \pi_\theta(y \mid x)} [r(y \mid x)]\tag{1}$$
 
 
-where r(y|x) denotes whether the response y is correct for prompt x. Our approach will be to do gradient ascent on the objective -
+where $r(y \mid x)$ denotes whether the response $y$ is correct for prompt $x$. Our approach will be to do gradient ascent on the objective -
 
 $$\theta_{k+1} = \theta_k + \alpha \nabla_\theta J_{\theta_k},\tag{2}$$
 
 The way that equation 1 is read, that we draw a prompt from our training dataset of prompts. The inner expectation, given the prompt, we draw a responsey the policy could reproduce from the policy's distribution. 
-$$\mathbb{E}{y \sim \pi\theta(\cdot \mid x)}[r(y \mid x)] = \sum_{y} \pi_\theta(y \mid x) , r(y \mid x). \tag{3}$$
+$$\mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)}[r(y \mid x)] = \sum_{y} \pi_\theta(y \mid x) \, r(y \mid x). \tag{3}$$
 
 This sum is astronomical and there are many possible token sequences that we cannot ennumerate. 
 
