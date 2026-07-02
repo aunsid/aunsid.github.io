@@ -83,11 +83,11 @@ return out
 The image below shows a single attention head that we computed earlier.
 ![alt text](image.png)
 
-But in practice we stack multiple attention heads together. This is done by running multiple single attention heads in parallel, each with their own separate query, key, and value matrices. Having multiple attention heads allows us to learn better feature representations. A common example: one head could be learning the dependencies of pronouns to nouns in the input sequence, while another could be learning the relationship between nouns and adjectives. Each head has its own specialization that reflects teh real structure language that is learnt automagically while training.
+But in practice we stack multiple attention heads together. This is done by running multiple single attention heads in parallel, each with their own separate query, key, and value matrices. Having multiple attention heads allows us to learn better feature representations. A common example: one head could be learning the dependencies of pronouns to nouns in the input sequence, while another could be learning the relationship between nouns and adjectives. Each head has its own specialization that reflects the real structure of language, learnt automatically during training.
 
 ![alt text](image-1.png)
 
-The combined effect each head is then combined using a weighted sum shown in the diagram below 
+The outputs of the heads are then combined using a weighted sum, shown in the diagram below.
 
 ![alt text](image-3.png)
 

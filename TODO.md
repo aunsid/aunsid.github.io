@@ -12,7 +12,7 @@
 ### Attention
 - [x] Self-Attention & Multi-Head Attention (`docs/ml/attention/index.md`)
 - [x] Types of Attention — causal, cross, GQA, MQA, Flash Attention (`docs/ml/attention/types.md`)
-    - [ ] Add code snippest for causal cross gqa mqa and flash attention
+    - [ ] Add code snippets for causal, cross, GQA, MQA, and flash attention
 
 ### Normalization
 - [x] Layer Norm & RMS Norm (`docs/ml/normalization/index.md`)

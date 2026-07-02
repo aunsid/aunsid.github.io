@@ -30,7 +30,7 @@ test_string
 'This is an example string'
 ```
 
-To convert a string into bytes we simply use the .encode() in python
+To convert a string into bytes we use `.encode()`:
 
 ```python
 print(test_string.encode("utf-8"))
@@ -87,7 +87,7 @@ The implementation has three layers: pre-tokenization splits raw text into chunk
 
 ### Pre-tokenization
 
-Before BPE runs, raw text is split into chunks using a regex pattern. This is done so that merges happen only between letters and digits separately, whitespaces are not included into the merges, and punctuations are not a part as well.
+Before BPE runs, raw text is split into chunks using a regex pattern. This ensures that merges happen only within letter or digit runs, and that whitespace and punctuation are not folded into the merges.
 
 ```python
 PAT = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+"""
@@ -327,7 +327,7 @@ class BPE:
         self.inverse_vocab = {v: k for k, v in self.vocab.items()}
         self.special_tokens = special_tokens
         self.merges = {}
-        # merges are in-order when the merge occured.
+        # merges are in-order when the merge occurred.
         if isinstance(merges, list):
             for i, pair in enumerate(merges):
                 self.merges[self.inverse_vocab[pair[0]], self.inverse_vocab[pair[1]]] = self.inverse_vocab[pair[0] + pair[1]]
@@ -483,7 +483,7 @@ class BPE:
         # iterate over chunks
         for chunk in special_chunks:
             # if chunk is a special chunk
-            # get correspoining id
+            # get corresponding id
             if chunk in special_bank:
                 encoding.append(self.inverse_special_tokens[chunk.encode("utf-8")])
             else:

@@ -73,7 +73,7 @@ class GPT(nn.Module):
     def forward(self, idx: torch.Tensor):
         x = self.transformer(idx)
         ....
-        last_hidden = x[:, -1, :] # use the last tokens hidden state!!!!
+        last_hidden = x[:, -1, :] # use the last token's hidden state!!!!
         reward = self.reward_head(last_hidden)
         return reward 
 ```
