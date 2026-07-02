@@ -1,0 +1,1950 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Financial ratios, DuPont framework, cash flows, valuation, and case studies from Mihir Desai's How Finance Works.">
+      
+      
+        <meta name="author" content="Aun">
+      
+      
+        <link rel="canonical" href="https://aunsid.github.io/finance/how_finance_works/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>How Finance Works - Mihir Desai - Aun</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-financial-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Aun" class="md-header__button md-logo" aria-label="Aun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Aun
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How Finance Works - Mihir Desai
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../experience/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Experience
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ml/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Aun" class="md-nav__button md-logo" aria-label="Aun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Aun
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../experience/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experience
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ml/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ml/tokenizer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 — Language Models From Scratch
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 — Language Models From Scratch
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_2" id="__nav_4_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokenization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tokenization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/tokenizer/tokens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/tokenizer/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Byte Pair Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/embeddings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embeddings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ml/attention/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attention
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_4" id="__nav_4_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Attention
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/attention/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Types of Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ml/normalization/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Normalization
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_5" id="__nav_4_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Normalization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/normalization/pre_post/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pre-Norm vs Post-Norm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_6" id="__nav_4_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/inference/kv_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KV Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ml/vision/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 — Vision
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 — Vision
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/vision/cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolutions & CNNs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ml/post_training/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 — Post-Training
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 — Post-Training
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/post_training/rlhf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RLHF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/post_training/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GRPO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the numbers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cash-and-marketable-securities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cash and Marketable Securities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accounts-receivable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accounts receivable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inventories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inventories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-plant-and-equipment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Property, plant, and equipment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liabilities-and-shareholders-equity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liabilities and Shareholders' Equity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Liabilities and Shareholders&#39; Equity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accounts-payable-and-notes-payable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accounts payable and notes payable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accrued-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accrued items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#long-term-debt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Long-term debt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preferred-and-common-stock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preferred and common stock
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding Ratios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Ratios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liquidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liquidity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profitability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profitability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#financing-and-leverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Financing and Leverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#productivity-or-efficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Productivity or Efficiency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identifying-industries-based-on-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identifying industries based on ratios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identifying industries based on ratios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-companies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Companies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Company N
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capital-intensive-service-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capital-intensive service providers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cash-rich-equity-dependent-service-company" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cash-rich, equity-dependent service company
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retailers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retailers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#companies-with-distinctive-inventory-turnover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companies with distinctive inventory turnover
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-final-three-retailers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The final three retailers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-stragglers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Stragglers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupont-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DuPont Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profound-changes-at-timberland" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profound changes at Timberland
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="1-financial-analysis">1. Financial Analysis</h1>
+<p>Using ratios to analyze performance.</p>
+<h2 id="understanding-the-numbers">Understanding the numbers</h2>
+<h3 id="assets">Assets</h3>
+<p>An asset is a resource with economic value that an individual, corporation, or country owns with the expectation of future benefit.</p>
+<p>For e.g., Haagen-Dazs owns the <em>ice cream</em> it is going to sell, the <em>factories</em> and <em>raw materials</em> to make the ice cream, and the <em>trucks</em> to deliver it.</p>
+<p>Assets are ordered by the degree to which they can be turned into cash. Assets that can easily be converted into cash are called current assets, and they appear at the top.</p>
+<h4 id="cash-and-marketable-securities">Cash and Marketable Securities</h4>
+<p>Large cash holdings can generally be understood as:
+* an insurance policy during uncertain times
+* a war chest for making future acquisitions
+* a manifestation of the absence of investment opportunities.</p>
+<p>Much of this cash is held in government securities so that it can quickly be converted into cash if the need arises.</p>
+<h4 id="accounts-receivable">Accounts receivable</h4>
+<p>Accounts receivable are amounts that a company expects to receive from its customers in the future. As trust grows in a relationship between a company and its customers, the company might be willing to allow customers to pay later.</p>
+<p>Companies that sell to other companies have a higher amount of sales reflected as receivables compared to businesses that sell direct to consumers.</p>
+<h4 id="inventories">Inventories</h4>
+<p>The goods or raw materials that become the goods a company intends to sell.</p>
+<h4 id="property-plant-and-equipment">Property, plant, and equipment</h4>
+<p>The term for the tangible, long-term assets that a company uses to produce or distribute its products.</p>
+<h4 id="other-assets">Other assets</h4>
+<p>Likely to be intangible assets — things you cannot put your hands on but are valuable nonetheless, like patents and brands.</p>
+<p>For e.g., Coca-Cola has a very valuable brand, maybe the most valuable thing it owns, but it does not really know how valuable it is. So accountants ignore it. That's the accounting principle of conservatism.</p>
+<p>When a company acquires another company for more than the value of its assets on the balance sheet, the difference is typically recorded on the acquiring company's balance sheet as goodwill.</p>
+<p>Microsoft spent $26.2 billion in 2016 to acquire LinkedIn, which had assets with a book value of $7.0 billion. The $19.2 billion Microsoft paid above the book value will show up as goodwill.</p>
+<h3 id="liabilities-and-shareholders-equity">Liabilities and Shareholders' Equity</h3>
+<p>This section provides information on how companies finance themselves. There are two sources of finance for purchasing assets — lenders and owners. Liabilities represent those amounts financed by lenders to whom the company owes amounts. Shareholders' equity, or net worth, corresponds to the funds that shareholders provide.</p>
+<p><code>Shareholders' equity = Assets - Liabilities</code></p>
+<p>Liabilities are ordered by the length of time companies have to repay them, and liabilities that need to be paid back soon are labeled "current."</p>
+<h4 id="accounts-payable-and-notes-payable">Accounts payable and notes payable</h4>
+<p>Accounts payable represent amounts due to others, often over a short time, and typically to the company's suppliers.</p>
+<h4 id="accrued-items">Accrued items</h4>
+<p>Broadly represents amounts due to others for activities already delivered. One example is salaries: a balance sheet may be produced in the middle of a pay period, and the company may owe salaries that have not been paid yet.</p>
+<h4 id="long-term-debt">Long-term debt</h4>
+<p>Unlike other liabilities, debt is distinctive because it has an explicit interest rate.</p>
+<h4 id="preferred-and-common-stock">Preferred and common stock</h4>
+<p>Shareholders' equity represents an ownership claim with a variable return — in effect, the owners get all residual cash from the business after costs and liabilities. Debt has a fixed return (i.e., interest rate) and no ownership claim. It gets paid before equity holders in the event of a bankruptcy. Equity holders have a variable return and an ownership claim but can be left with nothing if a company goes bankrupt. Typically, shareholders' equity, net worth, owner's equity, and common stock are all effectively synonyms. Shareholders' equity is not the amount originally invested in the company by the owners. As a company earns net profits, those profits can be paid out as dividends or reinvested in the company. These retained earnings are a component of shareholders' equity — as if the owners received a dividend and reinvested it in the company.</p>
+<p><code>Preferred stock</code> is often called a hybrid instrument. It combines elements of both debt and equity claims. Like debt, preferred stock dividends can be fixed and paid before common stock dividends. But like equity, it is paid after debt in the event of a bankruptcy. The unique attributes of preferred stock can allow a company to finance itself during precarious times.</p>
+<h2 id="understanding-ratios">Understanding Ratios</h2>
+<p>Provides comparability across companies through time.</p>
+<h4 id="liquidity">Liquidity</h4>
+<p>Measures risk by emphasizing the company's ability to meet short-term obligations with assets that can quickly be converted into cash.</p>
+<p><code>Current Ratio = Current assets / Current liabilities</code></p>
+<p>The current ratio asks a question on behalf of a company's suppliers: will this company be able to pay its suppliers if it needs to close?</p>
+<p><code>Quick Ratio = (Current assets - inventory) / Current liabilities</code></p>
+<p>The quick ratio resembles the current ratio, but excludes inventory. When a product goes obsolete the inventory should be considered worthless. It provides a more skeptical view of the company's finances.</p>
+<h4 id="profitability">Profitability</h4>
+<p>For every dollar of revenue, how much money does a firm get to keep after all relevant costs?</p>
+<p><code>Profit Margin = Net Profit / Revenue</code></p>
+<p>For every dollar of equity that shareholders invest in a business, what is their annual flow of income?</p>
+<p><code>Return on Equity = Net profit / Shareholders' equity</code></p>
+<p>Return on assets answers the question: How much profit does a company generate for every dollar of assets? This explains how effectively a company's assets are generating profits.</p>
+<p><code>Return on Assets = Net Profit/ Total Assets</code></p>
+<p><code>EBIT</code> is also known as <em>operating profit</em>. Since some companies have different tax burdens and capital structures, EBIT provides a way to compare companies more directly.</p>
+<p><code>Depreciation</code> refers to how physical assets such as vehicles and equipment lose value over time.</p>
+<p><code>Amortization</code> refers to the same phenomenon but for intangible assets.</p>
+<p><code>EBITDA</code> — earnings before interest, taxes, depreciation, and amortization — is a measure of the cash generated by operations.</p>
+<p>The reason to emphasize DA is because they are expenses that are not associated with the outlay of cash — they are just an approximation of the loss of value of an asset. Suppose you build a factory. In accounting, you have to depreciate it and charge yourself an expense for that depreciation. But in finance, we emphasize cash, and there was no cash outlay.</p>
+<h3 id="financing-and-leverage">Financing and Leverage</h3>
+<p>Let's consider your own personal balance sheet after buying a home. What if no mortgages were available for you to buy a home? If you had $100, you could only buy a home that was worth $100. With a mortgage market, you can borrow money to buy a home that is worth, say, $500.</p>
+<p><img alt="alt text" src="../images/balancesheet_house_financeworks.png" /></p>
+<p>In effect, leverage allows you to live in a house you have no right to live in.
+Here's the big question: are you richer in case A or case B? No difference — you have shareholders' equity of $100 in each.</p>
+<p>If the value of the house increases by 10 percent, in case A, the return to your shareholders' equity is 10 percent. But in case B, the return is 50 percent if the house value goes to $550 — the mortgage remains at $400.</p>
+<p>If the house declines by 20 percent, the return in case A is -20 percent. But in case B, the return is -100 percent. So managing leverage is critical because it enables you to do things you couldn't do otherwise.</p>
+<p><em>It magnifies returns in both directions.</em></p>
+<p>The ratio of total debt to total assets measures the proportion of all assets financed by debt. It provides a balance sheet perspective on leverage.</p>
+<p><code>Debt to Assets = Total Debt/ Total Assets</code></p>
+<p>The ratio of long-term debt to capitalization provides a somewhat more subtle measure of leverage by emphasizing the mix of debt and equity.</p>
+<p><code>Debt to capitalization = Debt / (Debt + Shareholders' equity)</code></p>
+<p>Leverage provides the ability to control more assets than an owner would otherwise have the right to control. Assets to Shareholders' Equity tells us precisely how many more assets an owner can control relative to their own equity capital. As a consequence, it also measures <em>how returns are magnified</em> through the use of leverage.</p>
+<p><code>Assets to Shareholders' Equity = Assets / Shareholders' Equity</code></p>
+<p>The ratio of EBIT to interest expense measures a company's ability to fund interest payments from its operations.</p>
+<p><code>Interest Coverage Ratio = EBIT / Interest Expense</code></p>
+<h3 id="productivity-or-efficiency">Productivity or Efficiency</h3>
+<p>Asset turnover measures how effectively a company is using its assets to generate revenue. This is a critical measure of a company's productivity.</p>
+<p><code>Asset Turnover = Revenue / Total Assets</code></p>
+<p>Inventory turnover measures how many times a company turns over or sells all its inventory in a given year. The higher the number, the more effectively the company is managing its inventory as it sells products.</p>
+<p><code>Inventory Turnover = Cost of Goods Sold (COGS) / Inventory</code></p>
+<p>We can use this turnover number to get another measure of inventory management: days of inventory.
+It provides the average number of days a piece of inventory is kept inside a company before it is sold.</p>
+<p><code>Days of inventory = 365 / Inventory Turnover</code></p>
+<p>After a company sells its inventory, it needs to get paid for it. The lower this figure, the faster a company is getting cash from its sales.</p>
+<p><code>Receivable Collection Period = 365 / (Sales / Receivables)</code></p>
+<h3 id="identifying-industries-based-on-ratios">Identifying industries based on ratios</h3>
+<p><img alt="alt text" src="../images/industries_finance_words.png" /></p>
+<h4 id="service-companies">Service Companies</h4>
+<p>Since these provide services rather than tangible goods, they do not hold any inventories — E, G, M, and N.</p>
+<p><img alt="alt text" src="../images/servicecompanies_financeworks.png" /></p>
+<h4 id="company-n">Company N</h4>
+<p>Owns a lot of receivables and takes a long time to collect. A large part of their financing comes from notes payable — this is a bank.
+The loans that you consider as your liabilities are a bank's assets. Banks run a "spread" business, where they charge you more for loans than they give you on your deposits.</p>
+<h4 id="capital-intensive-service-providers">Capital-intensive service providers</h4>
+<p>Companies E and M have much more property, plant, and equipment. The most significant difference between these two companies is that M gets paid in seven days on average, which likely means it sells mostly to individuals. In contrast, E takes longer to collect, which would suggest that it is much more likely to be selling to other businesses.
+Company E has a lot of other liabilities. These liabilities are pension obligations to retirees.</p>
+<h4 id="cash-rich-equity-dependent-service-company">Cash-rich, equity-dependent service company</h4>
+<p>Company G has a large amount of equity and lots of cash. This company is Facebook. A high equity number can coincide with younger companies. As the company has matured, it has completed a number of large acquisitions: WhatsApp and Instagram. These would reduce cash on the balance sheet and show up as goodwill.</p>
+<h4 id="retailers">Retailers</h4>
+<p>Since retailers sell goods directly to customers, their receivables collection period is going to be shorter because the customers pay immediately via cash or credit. In contrast, businesses that do business with other businesses give credit of a minimum of 30 days — A, B, H, I, and K.</p>
+<p><img alt="alt text" src="../images/retailers_finance.png" /></p>
+<h4 id="companies-with-distinctive-inventory-turnover">Companies with distinctive inventory turnover</h4>
+<p>Company H turns its inventory over 32 times a year. They have eleven days of inventory at any time. This is Yum! A grocery chain also has perishable goods, but it also has a selection of dry and canned foods, making its turnover considerably slower than a restaurant chain.</p>
+<p>At the other extreme, B turns over inventory really slowly (~90 days). This is a bookstore. It is also losing money, which shows up in the negative profit margin. B is also the only company that has preferred stock, indicating its troubled financial position.</p>
+<h4 id="the-final-three-retailers">The final three retailers</h4>
+<p>Out of the remaining 3 retailers, A has the lowest property, plant, and equipment. This could be Amazon. A has a large amount of payables, which could mean that it is in trouble or that it is granted credit easily by suppliers because of its size. Given the amount of cash they have on their balance sheet, we know they are not in financial trouble.</p>
+<p>Company I has more PP&amp;E compared to K. Company I also receives more immediate payments and inventory turnover is faster, indicating it is a grocery chain. K, on the other hand, is a drug store that gets revenue from insurance companies.</p>
+<h4 id="the-stragglers">The Stragglers</h4>
+<p>Three companies have barely any PP&amp;E while the remaining two have significant PP&amp;E. One is likely Duke Energy, and the other is Nordstrom. The other 3 companies — Microsoft, Pfizer, and Dell — don't really do any heavy manufacturing, so that makes sense.</p>
+<p><img alt="alt text" src="../images/stragglers_finance.png" /></p>
+<p>The key differentiating factor between Duke and Nordstrom is that Nordstrom would have more inventory compared to an energy company. So L is Duke and J is the retailer, Nordstrom. Also, the big EBITDA margin for company L means a large amount of depreciation and amortization — that's what utilities do.</p>
+<p>Of the last three, C has a really low profit margin. Whereas D and F have astounding profit margins and EBITDA margins. This type of commodification has happened in the laptop industry. C also holds inventory for 10 days, which matches Dell's just-in-time business model — only starts manufacturing after it takes orders, keeping inventories as low as possible.</p>
+<p>Out of the remaining two companies, D has a lot of other assets, which probably means an intangible capital-intensive industry that has been consolidating. Pfizer has had a long string of acquisitions. D is Pfizer and F is Microsoft. Another piece of confirmatory evidence is that D has more other liabilities than F — confirming that Pfizer has an old-style pension plan, while F holds large balances.</p>
+<h3 id="dupont-framework">DuPont Framework</h3>
+<p><img alt="alt text" src="../images/dupont_framework_finance.png" /></p>
+<p>The DuPont framework breaks return on equity (ROE) into 3 ingredients: profitability, productivity, and leverage.</p>
+<p><strong>Profitability</strong>: Goes back to the notion of profit margin. For every dollar of revenue, how much does the company earn in profit?</p>
+<p><strong>Productivity</strong>: Uses the asset turnover ratio, which measures how efficiently a company can use its assets to generate sales.</p>
+<p><strong>Leverage</strong>: Magnifies returns. Divide the company's assets by its shareholders' equity.</p>
+<p><img alt="alt text" src="../images/dupont_analysis_finance.png" /></p>
+<h3 id="profound-changes-at-timberland">Profound changes at Timberland</h3>
+<p><img alt="alt text" src="../images/timberlan_init_finance.png" /></p>
+<p>Timberland is a manufacturer and retailer of rugged outdoor gear. Looking at its numbers and comparing them with the industry, we see that ROE is close to the average but it largely comes from leverage. That means it is overcoming its poor operational performance by taking on more risk.</p>
+<p>Return on capital, also known as return on invested capital, considers both capital providers and their combined return.</p>
+<p><code>Return on Capital = EBIAT / (Debt + Equity)</code></p>
+<p>Other numbers that also tell us about poor performance are "times interest earned" (how many times it can cover its interest payments from operating earnings) and inventory turnover rate.</p>
+<p>Its receivables are also out of whack (73.5 vs. 39.1) — management is not being aggressive about collecting cash owed to the company.</p>
+<p><img alt="alt text" src="../images/dupont_1_finance.png" /></p>
+<p>A year later, we can see that the ROE is negative, driven by negative profitability. Productivity is up a little and leverage has decreased. Times interest earned went from over three to one, indicating that Timberland did not have enough operating profit to make its interest payments. Inventory turnover increased markedly, while gross margins dipped significantly. This indicates a fire sale of sorts — liquidating goods to raise cash to make payments. Its receivables collection period dropped by 20 days. The payable period also decreased, indicating that suppliers were unlikely to extend credit given the financial situation.</p>
+<p><img alt="alt text" src="../images/dupont_2_finance.png" /></p>
+<p>Timberland was moving more inventory, not by cutting prices. Its profit margin was improving and leverage was coming down. Its gross margin indicates pricing power even as it was moving more goods.</p>
+<h1 id="2-the-finance-perspective">2. The Finance Perspective</h1>
+<p><strong>The Conservatism Principle</strong>
+Implies that companies should record lower estimated values of their assets and higher estimates of their liabilities. They err on the side of being conservative. Thus, balance sheets typically record assets at their historical cost, not their current replacement value.</p>
+<p><strong>The Rules of Accrual Accounting</strong>
+Try to smooth out both revenues and costs in an effort to better reflect the accounting reality. They allow a company to capitalize an investment as an asset, and to expense it as depreciation charges every year over the asset's entire life. For example, Airbus Group built a new factory that cost $600 million. Because of accrual accounting, Airbus would report more moderate profits over time rather than losses in 2015 and then profits after the plant started production. This representation of profits is quite distinct from their true cash outflows, obscures the time value of money, and may reflect managerial discretion — cash flows would not.</p>
+<h2 id="what-we-talk-about-when-we-talk-about-cash">What We Talk About When We Talk About Cash</h2>
+<p>Accounting asks managers to make decisions in order to smooth returns, as accountants consider that to be more consistent with reality. For e.g., an up-front payment for a piece of equipment has to be capitalized, placed on the balance sheet, and then depreciated over time. Revenue similarly may need to be recognized over time. But this process of smoothing measures of performance is subjective, which allows managers to manipulate profits to their advantage. In contrast, cash is cash and, arguably, is not susceptible to similar levels of managerial discretion.</p>
+<p>To build an alternative foundation for assessing economic returns, we need to identify cash flows as opposed to profits.</p>
+<p><img alt="alt text" src="../images/ebit_finance.png" /></p>
+<p><code>EBIT</code> gives a view of how efficient and profitable a company is by not considering taxes and interest (not related to operational performance). It is still not quite a measure of cash, because it is calculated by subtracting noncash expenses such as depreciation and amortization.</p>
+<p>For a fuller picture, finance professionals turn to <code>EBITDA</code>: earnings before interest, taxes, depreciation, and amortization.</p>
+<p><img alt="alt text" src="../images/ebitda_finance.png" /></p>
+<p>EBITDA can be more relevant for some industries than others. In 2015, the depreciation-to-net-income ratios of EA, The Michaels Companies, and Comcast were 17%, 34%, and 106%. Comcast invested heavily to create a nationwide cable and internet network. Because of those heavy investments, using net profit as a measure can be flawed in comparison to EA, which is a software company.</p>
+<h3 id="amazons-net-profit-ebit-and-ebitda">Amazon's Net Profit, EBIT, and EBITDA</h3>
+<p><img alt="alt text" src="../images/amazon_incomestatement2014_finance.png" /></p>
+<p>In 2014, Amazon's EBIT was <span class="arithmatex">\(178 million, Net Profit was -\)</span>241 million, and EBITDA was $4.76 billion. So Amazon generated a lot of cash as measured by EBITDA, but had losses according to profitability measures.</p>
+<h3 id="from-ebitda-to-operating-cash-flows">From EBITDA to Operating Cash Flows</h3>
+<p>Given the obsession with cash, there exists another statement dedicated to it — the cash flow statement. It is often considered the most important financial statement.</p>
+<p>The income statement has the problem of noncash expenses as well as managerial discretion, whereas the balance sheet has the problems of historical accounting and conservatism.</p>
+<p><img alt="alt text" src="../images/operatingcashflow_finance.png" /></p>
+<p>Operating cash flow is distinct from EBITDA in several ways. First, it considers the cost of working capital, and second, it considers tax and interest payments by beginning with net profit. It also includes noncash expenses other than depreciation and amortization (such as stock-based compensation) in its final calculation.</p>
+<p>The investing section emphasizes the ongoing investments that bypass the income statement and go straight into the balance sheet. Such as CapEx, and acquisitions.</p>
+<p>The financing section examines whether a company has offered debt or paid back debt, or issued equity or bought back stock, and reveals the cash consequences of doing so.</p>
+<p><img alt="alt text" src="../images/starbucks_cashflow_finance.png" /></p>
+<h3 id="working-capital">Working Capital</h3>
+<p>It is the capital required by the company to fund its day-to-day operations.</p>
+<p><code>Working Capital = Current Assets - Current Liabilities</code></p>
+<p>A slightly narrower way to define working capital:</p>
+<p><code>Working Capital = Accounts Receivable + Inventories - Accounts Payable</code></p>
+<p>One simple way to think about the consequences of working capital is to note that the daily operations of the company result in an amount that needs to be financed like any other asset. If the amount of working capital is lowered, that lowers the financing needs of the company.</p>
+<h4 id="the-cash-conversion-cycle">The cash conversion cycle</h4>
+<p>A powerful way to frame the financing consequences of working capital is to frame working capital temporally rather than monetarily. This framing is called the cash conversion cycle.</p>
+<p><img alt="alt text" src="../images/cashconversioncycle_finance.png" /></p>
+<p>For example, suppose you have a store where you buy hammers from wholesalers and sell them to home improvement professionals. There are several transactions with a single hammer and they don't happen all at once. You first buy the hammer, pay for it, sell it, and collect the cash for the sale. If you sell the hammers 70 days from the day you bought them, and you don't get paid for another 40 days, it takes a total of 110 days from the time you bought the hammer to getting cash for it. In addition, you pay cash for the hammer 30 days after you have bought it.</p>
+<p>From a cash perspective, you need to generate cash to pay for the hammer — 80 days. If companies pay before getting paid, they must finance these shortfalls in their cash conversion cycles.</p>
+<p>In a recession, companies hold on to their inventories for longer, and even when they do sell a hammer, the contractor who is getting squeezed by his customers will take longer to pay up.</p>
+<p>Let's return to the hardware store. A supplier encourages you to pay within 10 days by offering a 2% discount — is that a good deal? The alternative is a bank that charges 12% a year. That is less than 1% to fund the 20 days if you took the deal from the supplier.</p>
+<p><strong>Note:</strong> Companies such as Salesforce.com that have a software-as-a-service business typically have a negative cash conversion cycle. They have no inventory. By taking payments first and then providing services, those payments are used to finance operations.</p>
+<h4 id="how-amazon-grows-and-grows">How Amazon Grows ... and Grows</h4>
+<p>Amazon manages its inventories, receivables, and payables in such a way that it has negative working capital. In 2014, Amazon averaged 46 days of inventory, and it collected from its customers after 21 days. Due to its market dominance, it can make its suppliers wait before getting paid — it averaged 91 days to pay its suppliers. This becomes a source of cash. Likewise, Apple uses its negative working cycle to grow rapidly without seeking external financing.</p>
+<h3 id="free-cash-flow">Free Cash Flow</h3>
+<p>The final cash measure is free cash flow, one of the most important measures of economic performance in finance. The equation for calculating free cash flow provides a measure of the amount of cash flow unencumbered by the operations of a business. It's the purest measure of cash and forms the basis of valuation. It removes the distorting effects of non-cash charges such as depreciation and amortization, accounts for changes in working capital, and acknowledges capital expenditures required for growth.</p>
+<p><img alt="alt text" src="../images/freecashflow_finance.png" /></p>
+<p>The net assets side of the balance sheet is divided into working capital and fixed assets (PP&amp;E), and the financing side of the balance sheet is divided into debt and equity. This modified balance sheet now distinguishes between operations and the capital providers. The flow from operations ultimately ends up with the capital providers.</p>
+<p>The operations of the business generate EBIT, but the government takes its share to make it EBIAT. From there, you must consider the company's ongoing investment into working capital and fixed assets as it grows. Finally, noncash expenses that should never have been expensed must be added back. What's left is the free cash flow.</p>
+<h4 id="amazon-vs-netflix">Amazon vs. Netflix</h4>
+<p><img alt="alt text" src="../images/amazonvsnetflix_finance.png" /></p>
+<p>Amazon seems not to have made profits, at least until very recently. By the profit metric, Netflix appears to be more profitable than Amazon, with a profit margin of 5% relative to Amazon's 2%.</p>
+<p>Now, look at their respective operating cash flows. In Amazon's case, the cash flow engine is being driven by all its noncash expenses and its management of working capital. On the other hand, Netflix has negative cash flows because of its heavy investments in content. In short, they are buying increasing amounts of content and quickly amortizing it, creating a cash drain.</p>
+<p>Finally, looking at their free cash flows: considering capital expenditure changes the view a bit more. Netflix doesn't have significant CapEx, so its free cash flow isn't considerably worse than cash from operations. Amazon has more significant CapEx, so it is free-cash-flow negative.</p>
+<h2 id="fixated-on-the-future">Fixated on the Future</h2>
+<p>The source of all value today is future performance manifested in cash flows. That creates a problem for finance, as not all future cash flows are created equal. $1 today is worth more than $1 tomorrow, and similarly more than $1 a year from now. But how much more? That depends on the opportunity cost of that money. What could you have done with the money if you did not have to wait? Once you figure that out, you then "punish" future cash flows by assessing a penalty that accounts for that opportunity cost. That's called a discount rate.</p>
+<h3 id="discounting">Discounting</h3>
+<p>Let's say you get 10% by keeping your money in a bank. So after a year you have $1.10. That's the first clue that $1 today is worth more than $1 a year from now.</p>
+<p>As a consequence, now you know how to punish future cash flows for making you wait to receive them. Every time you have to wait a year, you "haircut" future cash flows by <em>one plus the interest — (1 + r)</em> because that's what you would have earned if you hadn't had to wait.</p>
+<p>For example, you want to figure out how much $1000 received 1 year from now is worth today. Assume that a bank would have offered you an interest rate of 5%.
+The present value of $1000 received a year from now is $952.38, as $952.38 put in a bank today would give you $1000 after a year. If the interest rate rises to 10%, it would be $909.09.</p>
+<h3 id="multiyear-discounting">Multiyear Discounting</h3>
+<p>What if you have cash flow over multiple years into the future? You can simply discount the multiple cash flows.</p>
+<p><img alt="alt text" src="../images/multiplecashflow_finance.png" /></p>
+<p>Suppose the bank is offering a $1000 payment for each of the next three years and the prevailing interest rate is still 5%.</p>
+<p>When you add the three values together, you arrive at how much the bank's offer is worth today:</p>
+<p>(1000 / (1 + 0.05)) + (1000 / (1 + 0.05)^2) + (1000 / (1 + 0.05)^3) = 952.38 + 907.03 + 863.84 = $2723.25</p>
+<p><strong>The impact of discount rates</strong></p>
+<p><img alt="alt text" src="../images/discountrate_finance.png" /></p>
+<h3 id="sunk-costs-and-net-present-value">Sunk Costs and Net Present Value</h3>
+<p>Sunk costs are costs that have already been incurred and can't be recovered. While accounting carefully considers them in balance sheets and income statements, finance professionals view the amount paid for an asset as gone forever.</p>
+<p>For example, a company spends $100,000 to research a new product. Those amounts are gone and can never be recovered. Even the time spent on planning, creating, and launching the product is gone.</p>
+<p>In short, assessing value requires you to:
+* look into the future
+* think about the incremental cash flows that will be generated over time
+* discount them back to the present value</p>
+<p>For example, assume Nike is building a new shoe factory at a cost of $75 million. The plant will produce $25 million in cash every year from the shoes Nike is able to make and sell, for the next five years. Assuming a 10% discount rate for this project:</p>
+<p>Nike Factory Present Value = (25/(1.10)^1) + (25/(1.10)^2) + (25/(1.10)^3) + (25/(1.10)^4) + (25/(1.10)^5) = $94.8 million</p>
+<p>By paying $75 million for the project, Nike is able to generate $19.8 million in additional value, so Nike should go ahead and build the factory. Companies should undertake projects with positive net present value.</p>
+<p>Now, for example, suppose sales have not been good and the new factory makes only $10 million and expects this trend to continue.</p>
+<p>Nike Factory Present Value = (10/(1.10)^1) + (10/(1.10)^2) + (10/(1.10)^3) + (10/(1.10)^4) + (10/(1.10)^5) = $31.7 million</p>
+<p>The present value of the factory is $31.7 million. If a rival company approaches Nike and offers to buy the factory for $40 million, Nike should sell it — Nike gives up the future cash flows in the process, but receives more than they are worth today.</p>
+<p><img alt="alt images" src="../images/presentvalue_finance.png" /></p>
+<p><img alt="alt images" src="../images/netpresentvalue_finance.png" /></p>
+<p>If managers care about value creation, then the most important financial decision rule is to undertake only positive net present value projects.</p>
+<h2 id="equity-analysis-for-corning-glass">Equity Analysis for Corning Glass</h2>
+<p>Corning makes glass for the displays on smartphones, televisions, and laptops. It is one of the few companies that has mastered the art of manufacturing this type of glass, as it is extremely difficult to make.</p>
+<p>Corning grew rapidly in the early 2000s as demand for flat-screen televisions and smartphones skyrocketed. Eventually, demand began to slow, and Corning started underperforming the market despite its technology and market leadership.</p>
+<p><strong>Would you buy or sell Corning?</strong></p>
+<p>It looks like Corning's customers are in trouble. LG's margin and the margins of all other display makers are compressing, which is limiting their cash flow. In fact, glass prices — which impact Corning's margin — hadn't dropped in the same way that display prices had. That's because of Corning's competitive edge and its pricing power. Since display makers are beholden to Corning, the company can maintain high prices even when the cost of displays decreases.</p>
+<p>Corning grew rapidly in the 2000s by investing heavily in manufacturing facilities, so it had a large amount of depreciation, which reduced its EBIT. That would have resulted in a large difference between its <code>EBIT/revenue</code> and <code>EBITDA/revenue</code> ratios. The EBITDA margin is more reliable in this case because Corning had already invested in growing its manufacturing resources earlier in the 2000s. In 2012, the EBIT/revenue margin was 14% compared to an EBITDA/revenue margin of 27%.</p>
+<h4 id="forecasted-cash-flows">Forecasted Cash Flows</h4>
+<p>The next step is to forecast cash flows, and then discount them back to get the present value.</p>
+<p><img alt="alt text" src="../images/corningvaluation_finance.png" /></p>
+<p>Using the free cash flow formula, we get (2014E) = 2195 + 1108 - 1491 - 50 = 1762.</p>
+<p>Assuming a discount rate of 6%:</p>
+<p><img alt="alt text" src="../images/completevaluationcorning_finance.png" /></p>
+<p><strong>To figure out whether buying the stock is a good investment, add the cash on the balance sheet and subtract the value of debt. All the future cash flows should be added as well, after discounting them.</strong></p>
+<p>So Corning's valuation was $21,152 million, and given 1,400 million shares outstanding, the value per share was $15.12. The stock price was $11. By understanding the source of Corning's profit margins and knowing EBITDA was a more reliable metric than EBIT, one could make the decision whether to buy or sell the stock.</p>
+<h2 id="hon-hai-sharp">Hon Hai Sharp</h2>
+<p>Let's look at Japan's Sharp Corporation, which designs and manufactures electronic products such as TV sets, and Hon Hai Precision Industry Co., the world's largest electronic manufacturer.
+The cornerstone of the case is Sharp's Sakai LCD plant. Sharp was the first company to make and commercialize flat-panel displays, and it had to decide whether to build even larger displays. LCD displays were once very small, and Sharp thought that over time it could gain a competitive advantage through scale economies by making bigger displays. But this came with some manufacturing challenges, as large displays require massive sheets of glass, which require large factories.</p>
+<p>In 2011, Sharp estimated that it would require an investment of $5.8 billion spread over three years to build the world's largest display factory in Sakai, near Osaka, Japan. Once the plant was commissioned in 2014, it would start generating cash for the company. Assuming a discount rate of 8 percent, let's calculate the net present value to decide whether Sharp should build the plant.</p>
+<p>The net present value was -$2,988.11 million. Should Sharp have built the plant? Everything we've discussed suggests that it should not. Despite the negative NPV, Sharp decided to build the plant because it was so enamored with both the technological challenge and the desire to be on the cutting edge.</p>
+<p>Sharp soon ran into problems and had to sell 46 percent of the plant to Terry Gou, chairman of Hon Hai Precision, for $780 million. This transaction implied a valuation of the plant of $1.7 billion.</p>
+<h1 id="3-the-financial-ecosystem">3. The Financial Ecosystem</h1>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "navigation.path", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2345 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Machine learning, finance, and software engineering — notes and tutorials.">
+      
+      
+        <meta name="author" content="Aun">
+      
+      
+        <link rel="canonical" href="https://aunsid.github.io/ml/post_training/grpo/">
+      
+      
+        <link rel="prev" href="../rlhf/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>GRPO - Aun</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#grpo" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Aun" class="md-header__button md-logo" aria-label="Aun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Aun
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GRPO
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experience/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Experience
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Aun" class="md-nav__button md-logo" aria-label="Aun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Aun
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experience/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experience
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tokenizer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 — Language Models From Scratch
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 — Language Models From Scratch
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_2" id="__nav_4_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokenization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tokenization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenizer/tokens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenizer/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Byte Pair Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embeddings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embeddings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../attention/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attention
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_4" id="__nav_4_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Attention
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../attention/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Types of Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../normalization/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Normalization
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_5" id="__nav_4_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Normalization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../normalization/pre_post/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pre-Norm vs Post-Norm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_6" id="__nav_4_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/kv_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KV Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../vision/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 — Vision
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 — Vision
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vision/cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolutions & CNNs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 — Post-Training
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 — Post-Training
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rlhf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RLHF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GRPO
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GRPO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#language-models-as-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language Models as Policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trajectories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trajectories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rewards-and-return" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rewards and Return
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy Gradients
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-log-derivative-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Log-Derivative Trick
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-token-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-Token Decomposition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-variance-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Variance Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-relative-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group-Relative Advantage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normalizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normalizations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Normalizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantage-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advantage Normalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequence-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequence Normalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-on-policy-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing On-Policy GRPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rl-algorithm-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RL Algorithm Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RL Algorithm Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dr-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dr. GRPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rejection-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rejection Fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maxrl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MaxRL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-between-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing between variants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#off-policy-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Off-Policy RL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Off-Policy RL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importance-sampling-and-clipping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importance Sampling and Clipping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-regularization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KL Regularization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-full-off-policy-grpo-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Full Off-Policy GRPO Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-grpo-works-for-reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why GRPO Works for Reasoning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gspo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GSPO
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#language-models-as-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language Models as Policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trajectories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trajectories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rewards-and-return" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rewards and Return
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy Gradients
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-log-derivative-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Log-Derivative Trick
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-token-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-Token Decomposition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-variance-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Variance Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-relative-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group-Relative Advantage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normalizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normalizations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Normalizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantage-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advantage Normalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequence-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequence Normalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-on-policy-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing On-Policy GRPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rl-algorithm-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RL Algorithm Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RL Algorithm Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dr-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dr. GRPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rejection-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rejection Fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maxrl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MaxRL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-between-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing between variants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#off-policy-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Off-Policy RL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Off-Policy RL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importance-sampling-and-clipping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importance Sampling and Clipping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-regularization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KL Regularization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-full-off-policy-grpo-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Full Off-Policy GRPO Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-grpo-works-for-reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why GRPO Works for Reasoning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gspo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GSPO
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 3 — Post-Training
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="grpo">GRPO</h1>
+<h3 id="language-models-as-policies">Language Models as Policies</h3>
+<p>In traditional RL, we think about a policy <span class="arithmatex">\(\pi\)</span> which takes in a state <span class="arithmatex">\(s_t\)</span>, and outputs an action <span class="arithmatex">\(a_t\)</span>. This action results in a reward <span class="arithmatex">\(r_t = r(s_t, a_t)\)</span>, and a subsequent state <span class="arithmatex">\(s_{t+1} \sim \text{next\_state}(s_t, a_t)\)</span>.</p>
+<p>A language model <span class="arithmatex">\(\pi_\theta\)</span> with parameters <span class="arithmatex">\(\theta\)</span> defines a probability distribution over the next token <span class="arithmatex">\(y_t\)</span> given the current text prefix <span class="arithmatex">\(y_{&lt;t} = (y_1, \dots, y_{t-1})\)</span>.
+In the context of RL, we can think of the next token <span class="arithmatex">\(y_t\)</span> as our action <span class="arithmatex">\(a_t\)</span> and the current text prefix <span class="arithmatex">\(y_{&lt;t}\)</span> as the state <span class="arithmatex">\(s_t\)</span>. Hence, the LM is a categorical stochastic policy.
+$$ a_t \sim \pi_{\theta}(\cdot \mid s_t) = [\text{softmax}(f_{\theta}(s_t))]<em t="t">{a</em> $$}</p>
+<p>To optimize a policy with policy gradients, we need two operations:
+1. Sampling from the policy: drawing an action <span class="arithmatex">\(a_{t}\)</span> from the distribution.
+2. Scoring the log-likelihood of an action: evaluating <span class="arithmatex">\(\log \pi_{\theta}(a_t \mid s_t)\)</span>.</p>
+<p><span class="arithmatex">\(s_t\)</span> is the partial completion and each <span class="arithmatex">\(a_t\)</span> is the next token of the solution. The episode ends with the &lt;|end_of_text|&gt; token.</p>
+<h3 id="trajectories">Trajectories</h3>
+<p>In reinforcement learning, we start at an initial state drawn from a starting distribution. We then sample an action <span class="arithmatex">\(a_t\)</span> from the policy <span class="arithmatex">\(\pi_t\)</span>, transition to the next state according to some next-state distribution <span class="arithmatex">\(s_{t+1} \sim \text{next\_state}(s_t, a_t)\)</span>, and repeat. This series of states and actions then forms a trajectory.</p>
+<div class="arithmatex">\[ \tau = (s_0, a_0, s_1, a_1, \dots , s_T, a_T)\]</div>
+<p>where <span class="arithmatex">\(T\)</span> is the length of the trajectory, i.e., <span class="arithmatex">\(a_T\)</span> is an end-of-text token or we have reached the maximum budget of tokens. Trajectories are also called episodes or rollouts.</p>
+<h3 id="rewards-and-return">Rewards and Return</h3>
+<p>In RL, a scalar reward <span class="arithmatex">\(r_t = r(s_t, a_t)\)</span> judges the immediate quality of action <span class="arithmatex">\(a_t\)</span> taken at state <span class="arithmatex">\(s_t\)</span>. But for our use case, we observe zero reward for intermediate reasoning steps until we output the answer. We then receive a verified reward on the terminal action.</p>
+<div class="arithmatex">\[ r_T = r(s_T, a_T) := \begin{cases} 1 &amp; \text{if trajectory } \tau \text{ matches the ground-truth according to our reward function} \\ 0 &amp; \text{otherwise} \end{cases}.\]</div>
+<p>In our case, <span class="arithmatex">\(r_t\)</span> is 1 if our final answer is correct, and 0 otherwise. The return <span class="arithmatex">\(R(\tau)\)</span> aggregates the rewards along the trajectory, and in our case it is just <span class="arithmatex">\(r_T\)</span>.</p>
+<p>The objective is to maximize the expected return
+$$ J_\theta = \mathbb{E}<em _theta="\theta">{\tau \sim \pi</em>[r(\tau)] $$}</p>
+<p>where <span class="arithmatex">\(\tau \sim \pi_{\theta}\)</span> is the distribution over trajectories where we first sample <span class="arithmatex">\(s_0 \sim \rho\)</span> and we then sample actions from the policy and the next states from the next-state distribution.
+In our case, this means we first sample our math problem from our dataset, and then sample tokens until we hit the end of our response — a process we can denote by <span class="arithmatex">\(y \sim \pi_{\theta}(y \mid x)\)</span>. This objective leads to the optimization of</p>
+<div class="arithmatex">\[ \theta^* = \arg\max_\theta J_\theta \]</div>
+<h3 id="policy-gradients">Policy Gradients</h3>
+<p>Instead of using action <span class="arithmatex">\(a_t\)</span> and states <span class="arithmatex">\(s_t\)</span>, we will use <span class="arithmatex">\((x, y)\)</span> denoting prompts and responses.</p>
+<p>We want to optimize the model's expected reward (i.e., accuracy), given by</p>
+<div class="arithmatex">\[J_\theta = \mathbb{E}_{x \sim \rho} \mathbb{E}_{y \sim \pi_\theta(y \mid x)} [r(y \mid x)]\tag{1}\]</div>
+<p>where <span class="arithmatex">\(r(y \mid x)\)</span> denotes whether the response <span class="arithmatex">\(y\)</span> is correct for prompt <span class="arithmatex">\(x\)</span>. Our approach will be to do gradient ascent on the objective:</p>
+<div class="arithmatex">\[\theta_{k+1} = \theta_k + \alpha \nabla_\theta J_{\theta_k},\tag{2}\]</div>
+<p>Equation 1 reads as follows: we draw a prompt from our training dataset of prompts, and then — given the prompt — the inner expectation draws a response <span class="arithmatex">\(y\)</span> from the policy's distribution.
+$<span class="arithmatex">\(\mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)}[r(y \mid x)] = \sum_{y} \pi_\theta(y \mid x) \, r(y \mid x). \tag{3}\)</span>$</p>
+<p>This sum is astronomical: there are many possible token sequences that we cannot enumerate.</p>
+<p>So in practice you replace it with a Monte Carlo estimate: sample a finite number of responses and average. That gives an unbiased estimate of the true expectation. Two knobs:</p>
+<ol>
+<li>How many prompts you sample per batch (estimating the outer expectation).</li>
+<li>How many responses you sample per prompt (estimating the inner one).</li>
+</ol>
+<p>The second knob is where different algorithms diverge:</p>
+<ul>
+<li>Vanilla REINFORCE-style policy gradient: often just 1 response per prompt. Cheap, noisy.</li>
+<li>Group-relative methods like GRPO: intentionally sample <span class="arithmatex">\(G\)</span> responses per prompt (e.g., 4, 8, 16) so you can compare them against each other and use the group mean as a baseline for
+  variance reduction.</li>
+</ul>
+<p>Coming back to equation 2, we need to compute <span class="arithmatex">\(\nabla_\theta J_{\theta_k}\)</span>, the gradient from samples.</p>
+<h3 id="the-log-derivative-trick">The Log-Derivative Trick</h3>
+<p>The gradient of the objective is</p>
+<div class="arithmatex">\[\nabla_\theta J_\theta = \nabla_\theta \, \mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)} [r(y \mid x)] = \nabla_\theta \sum_y \pi_\theta(y \mid x) \, r(y \mid x).\]</div>
+<p>We can't just push the gradient inside the sum and Monte-Carlo it directly because the distribution we are sampling from itself depends on <span class="arithmatex">\(\theta\)</span>. The standard trick is to multiply and divide by <span class="arithmatex">\(\pi_\theta(y \mid x)\)</span>:</p>
+<div class="arithmatex">\[\nabla_\theta \pi_\theta(y \mid x) = \pi_\theta(y \mid x) \, \frac{\nabla_\theta \pi_\theta(y \mid x)}{\pi_\theta(y \mid x)} = \pi_\theta(y \mid x) \, \nabla_\theta \log \pi_\theta(y \mid x).\]</div>
+<p>Plugging this back in:</p>
+<div class="arithmatex">\[\nabla_\theta J_\theta = \mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)} \big[\, r(y \mid x) \, \nabla_\theta \log \pi_\theta(y \mid x) \,\big]. \tag{4}\]</div>
+<p>This is the REINFORCE estimator. The expectation is now over the same distribution on both sides, so we can replace it with a Monte Carlo average over sampled responses:</p>
+<div class="arithmatex">\[\nabla_\theta J_\theta \approx \frac{1}{N} \sum_{i=1}^N r(y_i \mid x) \, \nabla_\theta \log \pi_\theta(y_i \mid x), \quad y_i \sim \pi_\theta(\cdot \mid x).\]</div>
+<p>Intuition: each sampled response <span class="arithmatex">\(y_i\)</span> contributes a gradient that pushes the model to make <span class="arithmatex">\(y_i\)</span> more likely, weighted by how good <span class="arithmatex">\(y_i\)</span> was. Good responses get amplified, bad ones get suppressed.</p>
+<h3 id="per-token-decomposition">Per-Token Decomposition</h3>
+<p>Since a response is a sequence of tokens, the log-probability factorizes:</p>
+<div class="arithmatex">\[\log \pi_\theta(y \mid x) = \sum_{t=1}^{|y|} \log \pi_\theta(y_t \mid x, y_{&lt;t}).\]</div>
+<p>So the gradient becomes</p>
+<div class="arithmatex">\[\nabla_\theta \log \pi_\theta(y \mid x) = \sum_{t=1}^{|y|} \nabla_\theta \log \pi_\theta(y_t \mid x, y_{&lt;t}).\]</div>
+<p>Every token in the response gets the same scalar weight <span class="arithmatex">\(r(y \mid x)\)</span> — there is no per-token reward, only the final outcome. The reward is broadcast back to every token that produced it.</p>
+<h3 id="the-variance-problem">The Variance Problem</h3>
+<p>REINFORCE is unbiased but extremely high-variance. Two reasons:</p>
+<ol>
+<li>The reward <span class="arithmatex">\(r(y \mid x) \in \{0, 1\}\)</span> is a coarse signal — the gradient is either "push up" or do nothing.</li>
+<li>The magnitude of <span class="arithmatex">\(\nabla_\theta \log \pi_\theta(y \mid x)\)</span> can be huge for long sequences.</li>
+</ol>
+<p>The fix is a <strong>baseline</strong>. Subtracting any function <span class="arithmatex">\(b(x)\)</span> that depends only on the prompt (not on the action) leaves the estimator unbiased:</p>
+<div class="arithmatex">\[\mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)} \big[\, b(x) \, \nabla_\theta \log \pi_\theta(y \mid x) \,\big] = b(x) \, \nabla_\theta \underbrace{\sum_y \pi_\theta(y \mid x)}_{= 1} = 0.\]</div>
+<p>So the new estimator</p>
+<div class="arithmatex">\[\nabla_\theta J_\theta = \mathbb{E}\big[\, (r(y \mid x) - b(x)) \, \nabla_\theta \log \pi_\theta(y \mid x) \,\big]\]</div>
+<p>has the same mean but lower variance, provided <span class="arithmatex">\(b(x)\)</span> is a good prediction of the expected reward at <span class="arithmatex">\(x\)</span>. The quantity <span class="arithmatex">\(A(x, y) = r(y \mid x) - b(x)\)</span> is called the <strong>advantage</strong> — how much better this response was than average for this prompt.</p>
+<p>In PPO, <span class="arithmatex">\(b(x)\)</span> is learned by a separate value network (the critic). That doubles the memory footprint and adds training complexity. GRPO's contribution is to skip the value network entirely.</p>
+<h3 id="group-relative-advantage">Group-Relative Advantage</h3>
+<p>GRPO's key idea: for each prompt, sample a group of <span class="arithmatex">\(G\)</span> responses and use the group's own mean (and std) as the baseline.</p>
+<p>For each prompt <span class="arithmatex">\(x\)</span>, sample <span class="arithmatex">\(\{y_1, \dots, y_G\} \sim \pi_{\theta_{\text{old}}}(\cdot \mid x)\)</span> and compute the rewards <span class="arithmatex">\(\{r_1, \dots, r_G\}\)</span>. The group-relative advantage for response <span class="arithmatex">\(i\)</span> is</p>
+<div class="arithmatex">\[A_i = \frac{r_i - \text{mean}(\{r_1, \dots, r_G\})}{\text{std}(\{r_1, \dots, r_G\}) + \varepsilon}.\]</div>
+<p>This is just z-scoring the rewards within the group. The mean serves as the baseline; the std normalizes so the magnitudes don't blow up.</p>
+<p>Why this works for verifiable rewards: when all <span class="arithmatex">\(G\)</span> responses to a prompt are correct (<span class="arithmatex">\(r_i = 1\)</span> for all <span class="arithmatex">\(i\)</span>), every advantage is <span class="arithmatex">\(0\)</span> — no gradient. Same when all are wrong. The model only learns from prompts where the group disagrees, which are precisely the prompts at the edge of its current ability. This is automatic curriculum learning.</p>
+<p>In code:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">group_relative_advantage</span><span class="p">(</span><span class="n">rewards</span><span class="p">):</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="c1"># rewards: tensor of shape (G,) for one prompt</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">mean</span> <span class="o">=</span> <span class="n">rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">std</span> <span class="o">=</span> <span class="n">rewards</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">rewards</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+</span></code></pre></div>
+<h3 id="normalizations">Normalizations</h3>
+<h4 id="advantage-normalization">Advantage Normalization</h4>
+<p>The next modification in GRPO, after subtracting the group mean, will be to divide by the standard deviation.</p>
+<div class="arithmatex">\[\hat{g} \leftarrow \frac{1}{BG} \sum_{i=1}^{B} \sum_{j=1}^{G} \frac{r(y^{(i,j)} \mid x^{(i)}) - \mu_i}{\text{std}_i} \, \nabla_\theta \log \pi_\theta(y^{(i,j)} \mid x^{(i)}), \tag{25}\]</div>
+<p>where,
+$<span class="arithmatex">\(\text{std}_i = \sqrt{\frac{1}{G} \sum_{j=1}^{G} \left( r(y^{(i,j)} \mid x^{(i)}) - \mu_i \right)^2}\)</span>$</p>
+<p>(note that the default <code>torch.std</code> function uses a slightly different sample std expression to do bias correction; you should use the default <code>torch.std</code> in your implementation).</p>
+<p>Dividing by the standard deviation no longer preserves the expectation of the estimator, so we are no longer doing gradient ascent on our original estimator <span class="arithmatex">\(J_{\theta}\)</span>. One way to think about this modification is as a stability trick: assuming each gradient vector is iid Gaussian, dividing by the group std ensures that each group's gradient update is roughly equal in norm.</p>
+<h4 id="sequence-normalization">Sequence Normalization</h4>
+<p>There is one other detail in GRPO called sequence normalization that is inherited from PPO implementations.
+GRPO adds an additional sequence-length normalization term.
+Longer responses accumulate more log-probability terms, so their gradient contribution grows with length. To prevent long rollouts from dominating the update, GRPO averages the per-token log-probs over the response length before summing across rollouts:</p>
+<div class="arithmatex">\[\hat{g} \leftarrow \frac{1}{BG} \sum_{i=1}^{B} \sum_{j=1}^{G} \frac{r(y^{(i,j)} \mid x^{(i)}) - \mu_i}{\text{std}_i} \, \nabla_\theta \left( \frac{1}{\text{len}(y^{(i,j)})} \sum_{t=1}^{\text{len}(y^{(i,j)})} \log \pi_\theta\big(y_t^{(i,j)} \mid x^{(i)}, y_{&lt;t}^{(i,j)}\big) \right). \tag{27}\]</div>
+<p>Each rollout's contribution is the <em>average</em> per-token log-prob rather than the <em>sum</em>, so a 500-token response and a 50-token response are weighted equally by the outer <span class="arithmatex">\(\frac{1}{BG}\)</span>.</p>
+<h4 id="implementing-on-policy-grpo">Implementing On-Policy GRPO</h4>
+<p><img alt="On-Policy GRPO algorithm" src="image-2.png" /></p>
+<p>This is the complete on-policy GRPO implementation.</p>
+<p>Putting the group-relative advantage and sequence normalization together, the on-policy GRPO objective is:</p>
+<div class="arithmatex">\[J_\theta^{\text{GRPO-on-policy}} = \frac{1}{BG} \sum_{i=1}^{B} \sum_{j=1}^{G} \frac{1}{\text{len}(y^{(i,j)})} \sum_{t=1}^{\text{len}(y^{(i,j)})} \frac{r(y^{(i,j)} \mid x^{(i)}) - \mu_i}{\text{std}_i} \, \log \pi_\theta\big(y_t^{(i,j)} \mid x^{(i)}, y_{&lt;t}^{(i,j)}\big). \tag{32}\]</div>
+<h3 id="rl-algorithm-variants">RL Algorithm Variants</h3>
+<h4 id="dr-grpo">Dr. GRPO</h4>
+<p>During the GRPO derivation, you may have noticed a series of choices that meant the GRPO policy gradient estimator was not "true/correct" with respect to the expected reward <span class="arithmatex">\(J_\theta\)</span>. These two choices were adding the standard-deviation advantage normalization and sequence-length normalization. Removing these, we get the Dr. GRPO gradient estimator:</p>
+<div class="arithmatex">\[\hat{g} \leftarrow \frac{1}{Z} \sum_{i=1}^{B} \sum_{j=1}^{G} \sum_{t=1}^{\text{len}(y^{(i,j)})} \big(r(y^{(i,j)} \mid x^{(i)}) - \mu_i\big) \, \nabla_\theta \log \pi_\theta\big(y_t^{(i,j)} \mid x^{(i)}, y_{&lt;t}^{(i,j)}\big),\]</div>
+<p>where <span class="arithmatex">\(Z\)</span> is a normalization constant (typically chosen so the estimator has a stable scale, e.g. the total number of tokens across the batch, or <span class="arithmatex">\(BG \cdot L_{\max}\)</span> where <span class="arithmatex">\(L_{\max}\)</span> is the maximum response length).</p>
+<p>Compared to standard GRPO, Dr. GRPO drops two things:</p>
+<ol>
+<li>The per-group std <span class="arithmatex">\(\text{std}_i\)</span> in the denominator (no advantage-normalization stability trick).</li>
+<li>The per-response length normalization <span class="arithmatex">\(\frac{1}{\text{len}(y^{(i,j)})}\)</span> (no sequence-length averaging).</li>
+</ol>
+<p>Removing these keeps the estimator unbiased with respect to the true expected reward <span class="arithmatex">\(J_\theta\)</span>, at the cost of the stability properties GRPO gained from them.</p>
+<p><strong>When to use Dr. GRPO:</strong></p>
+<ul>
+<li><strong>You care about unbiased optimization of <span class="arithmatex">\(J_\theta\)</span>.</strong> Research settings, ablation studies, or anywhere you want the gradient to actually correspond to the reward you're maximizing.</li>
+<li><strong>You've observed length bias with standard GRPO.</strong> The <span class="arithmatex">\(\frac{1}{\text{len}(y)}\)</span> term in standard GRPO makes long incorrect rollouts contribute less per-token, which can subtly bias the policy toward shorter (or longer) responses depending on the reward structure. Dr. GRPO removes this.</li>
+<li><strong>Rewards are already well-calibrated across prompts.</strong> If prompt difficulty is roughly uniform, you don't need the std-normalization stability trick — the group mean baseline is enough.</li>
+<li><strong>Avoid</strong> when reward variance across groups is very different (some prompts have all-1s or all-0s, some have mixed) — you'll want std normalization back for stability.</li>
+</ul>
+<h4 id="rejection-fine-tuning">Rejection Fine-tuning</h4>
+<p>The next variant is a much simpler algorithm typically referred to as "rejection fine-tuning (RFT)" or "expert iteration." As the name suggests, the algorithm involves sampling a bunch of rollouts, keeping the ones that are correct, and doing supervised fine-tuning on them (i.e., minimizing next-word prediction log loss). The RFT gradient is</p>
+<div class="arithmatex">\[\hat{g} \leftarrow \nabla_\theta \left[ \frac{1}{Z} \sum_{i=1}^{B} \sum_{j=1}^{G} \mathbb{1}\!\left\{ r(y^{(i,j)} \mid x^{(i)}) = 1 \right\} \sum_{t=1}^{\text{len}(y^{(i,j)})} \log \pi_\theta\!\left(y_t^{(i,j)} \mid x^{(i)}, y_{&lt;t}^{(i,j)}\right) \right],\]</div>
+<p>where <span class="arithmatex">\(\mathbb{1}\{\cdot\}\)</span> is the indicator function that gates on whether the rollout was correct. Only successful rollouts contribute to the gradient — you're literally just doing SFT on the model's own correct samples. There is no baseline, no advantage, no clipping. That simplicity is the appeal: no critic, no reference model, no importance ratio, nothing to tune besides <span class="arithmatex">\(Z\)</span>.</p>
+<p><strong>When to use RFT:</strong></p>
+<ul>
+<li><strong>Sparse / binary rewards.</strong> When most rollouts fail, the indicator throws them away cleanly — you don't waste gradient signal trying to "push down" bad responses. GRPO with mostly-failed groups produces near-zero advantages anyway; RFT skips the ceremony.</li>
+<li><strong>Bootstrapping / cold start.</strong> Early in training, the model produces mostly garbage. RFT keeps the loop stable by only learning from the rare successes. Once success rate rises, you can switch to full GRPO.</li>
+<li><strong>Compute-constrained settings.</strong> No reference model, no old policy snapshot, no KL estimator, no clipping. One forward pass per correct sample. Fits comfortably on smaller GPUs.</li>
+<li><strong>Strong verifier + iterative self-improvement.</strong> If you can score rollouts cheaply and correctly (math, code, formal proofs), RFT + rejection sampling is a well-understood self-improvement loop (STaR, ReST, expert iteration).</li>
+<li><strong>Avoid</strong> when success rate is very high — you throw away the signal in the small number of failures, which is often where the interesting gradient lives. Also avoid when the reward is a continuous score rather than pass/fail; RFT's indicator can't use graded signals.</li>
+</ul>
+<h4 id="maxrl">MaxRL</h4>
+<p>The most recent method is Maximum Likelihood Reinforcement Learning, or MaxRL[4]. MaxRL proposes that instead of normalizing the advantage by the group std, we divide by the group mean. This gives the estimator</p>
+<div class="arithmatex">\[\hat{g} \leftarrow \frac{1}{Z} \sum_{i=1}^{B} \sum_{j=1}^{G} \sum_{t=1}^{\text{len}(y^{(i,j)})} \frac{r(y^{(i,j)} \mid x^{(i)}) - \mu_i}{\mu_i} \, \nabla_\theta \log \pi_\theta\!\left(y_t^{(i,j)} \mid x^{(i)}, y_{&lt;t}^{(i,j)}\right).\]</div>
+<p>Note that in the original MaxRL paper, the normalizer <span class="arithmatex">\(Z\)</span> is the total number of tokens in the batch <span class="arithmatex">\(\sum_{i=1}^{B} \sum_{j=1}^{G} \text{len}(y^{(i,j)})\)</span>, which is batch-dependent. Using a constant <span class="arithmatex">\(Z\)</span> (as in this derivation) keeps the estimator on the same footing as the other baselines and isolates the effect of normalizing by <span class="arithmatex">\(\mu_i\)</span> instead of <span class="arithmatex">\(\text{std}_i\)</span>.</p>
+<p><strong>Reading the advantage <span class="arithmatex">\((r - \mu_i)/\mu_i\)</span>:</strong></p>
+<p>This is a <em>relative improvement</em> — how much better a rollout did compared to the group average, as a fraction of the group average. Some concrete cases:</p>
+<ul>
+<li><strong>Hard group (<span class="arithmatex">\(\mu_i = 0.1\)</span>, i.e. 10% success rate):</strong> a correct rollout (<span class="arithmatex">\(r = 1\)</span>) gets advantage <span class="arithmatex">\((1 - 0.1)/0.1 = 9\)</span>. A wrong rollout gets <span class="arithmatex">\((0 - 0.1)/0.1 = -1\)</span>. The correct rollout is amplified 9× because success on a hard prompt is a big deal.</li>
+<li><strong>Easy group (<span class="arithmatex">\(\mu_i = 0.9\)</span>, 90% success rate):</strong> a correct rollout gets <span class="arithmatex">\((1 - 0.9)/0.9 \approx 0.11\)</span>. A wrong rollout gets <span class="arithmatex">\(-1\)</span>. Now the correct rollout barely matters — the informative signal is on the <em>failures</em>.</li>
+</ul>
+<p>Compare to std normalization in standard GRPO: at <span class="arithmatex">\(\mu_i = 0.5\)</span>, <span class="arithmatex">\(\text{std}_i = 0.5\)</span>, so both denominators are similar. But away from 0.5, they diverge — <span class="arithmatex">\(\mu_i\)</span> shrinks (or grows) faster than <span class="arithmatex">\(\text{std}_i\)</span>, so MaxRL applies more asymmetric weighting on skewed groups.</p>
+<p><strong>When to use MaxRL:</strong></p>
+<ul>
+<li><strong>Bimodal / skewed groups.</strong> When success rate within a group is far from 50%, MaxRL amplifies the rare outcome more than std normalization. Good for prompts where the model is either "mostly getting it" or "mostly missing it" — you push harder on the minority signal.</li>
+<li><strong>Hard-prompt emphasis.</strong> If your dataset has a mix of easy and hard prompts, MaxRL naturally weights hard prompts more (small <span class="arithmatex">\(\mu_i\)</span> → large advantages). Useful when you want the policy to focus on frontier prompts.</li>
+<li><strong>You want a "percent improvement" interpretation.</strong> The advantage is literally the fractional improvement over group mean, which is more interpretable than a z-score for some workflows.</li>
+<li><strong>Avoid</strong> when <span class="arithmatex">\(\mu_i \approx 0\)</span> across many groups — the denominator blows up. Need to add an <span class="arithmatex">\(\varepsilon\)</span> or clip. Standard GRPO's std normalization is more graceful in this regime.</li>
+<li><strong>Avoid</strong> with negative or unbounded rewards — the sign of <span class="arithmatex">\(\mu_i\)</span> affects the direction of the update, which is not what you want.</li>
+</ul>
+<h4 id="choosing-between-variants">Choosing between variants</h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Preferred</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verifiable reward, mid-range success rate (say 20–80%)</td>
+<td><strong>Standard GRPO</strong> — the std norm keeps groups with mixed outcomes stable</td>
+</tr>
+<tr>
+<td>Very low success rate (&lt; 10%) or cold-start training</td>
+<td><strong>RFT</strong> — most groups have zero informative gradient anyway</td>
+</tr>
+<tr>
+<td>High success rate + you want to squeeze the last few %</td>
+<td><strong>Dr. GRPO</strong> — removes length bias so the tail improvements aren't washed out</td>
+</tr>
+<tr>
+<td>Graded / continuous reward (e.g. reward model score)</td>
+<td><strong>Standard GRPO</strong> — RFT can't use the shading</td>
+</tr>
+<tr>
+<td>Research / theoretical analysis</td>
+<td><strong>Dr. GRPO</strong> — unbiased, matches <span class="arithmatex">\(\nabla J_\theta\)</span></td>
+</tr>
+<tr>
+<td>Minimal infra, no reference/critic models</td>
+<td><strong>RFT</strong> — the whole loop is a fine-tune</td>
+</tr>
+<tr>
+<td>Mixed easy/hard prompts, want to focus on hard ones</td>
+<td><strong>MaxRL</strong> — small <span class="arithmatex">\(\mu_i\)</span> amplifies hard-group gradients</td>
+</tr>
+<tr>
+<td>Skewed groups (bimodal success rates far from 0.5)</td>
+<td><strong>MaxRL</strong> — asymmetric scaling emphasizes the minority outcome</td>
+</tr>
+</tbody>
+</table>
+<h3 id="off-policy-rl">Off-Policy RL</h3>
+<p>We have been talking about full on-policy RL, meaning every gradient estimator uses samples drawn from the model being updated. This means we took 1 training step per inference batch, and the training batch size was set equal to the inference batch size.</p>
+<p>Off-policy RL, on the other hand, takes multiple training steps per inference batch and has the potential to speed up training. But this comes at the cost of potential instability and increased algorithm complexity.</p>
+<h4 id="importance-sampling-and-clipping">Importance Sampling and Clipping</h4>
+<p>So far we have been sampling from the current policy <span class="arithmatex">\(\pi_\theta\)</span>. But in practice we want to take multiple gradient steps on the same batch of rollouts (for sample efficiency). After the first step, <span class="arithmatex">\(\pi_\theta \neq \pi_{\theta_{\text{old}}}\)</span>, so the samples are no longer from the right distribution.</p>
+<p>Importance sampling corrects for this:</p>
+<div class="arithmatex">\[\mathbb{E}_{y \sim \pi_\theta} [f(y)] = \mathbb{E}_{y \sim \pi_{\theta_{\text{old}}}} \left[\, \frac{\pi_\theta(y \mid x)}{\pi_{\theta_{\text{old}}}(y \mid x)} \, f(y) \,\right].\]</div>
+<p>What we are essentially doing is upweighting <span class="arithmatex">\(y\)</span>'s that are still relevant for the current policy <span class="arithmatex">\(\pi_\theta\)</span>, and downweighting the "stale" samples with low <span class="arithmatex">\(\pi_0\)</span>.</p>
+<p>Applying importance sampling per-token to the on-policy GRPO objective (equation 32) gives the off-policy version, without any clipping yet:</p>
+<div class="arithmatex">\[J_\theta^{\text{GRPO-off-policy-noclip}} = \frac{1}{BG} \sum_{i=1}^{B} \sum_{j=1}^{G} \frac{1}{\text{len}(y^{(i,j)})} \sum_{t=1}^{\text{len}(y^{(i,j)})} \frac{r(y^{(i,j)} \mid x^{(i)}) - \mu_i}{\text{std}_i} \, \frac{\pi_\theta(y_t \mid x, y_{&lt;t})}{\pi_0(y_t \mid x, y_{&lt;t})}, \tag{56}\]</div>
+<p>where <span class="arithmatex">\(\pi_0\)</span> is the behavior policy that generated the rollouts (i.e. <span class="arithmatex">\(\pi_{\theta_\text{old}}\)</span>).</p>
+<p>The problem: the ratio <span class="arithmatex">\(\rho_t(\theta) = \frac{\pi_\theta(y_t \mid x, y_{&lt;t})}{\pi_0(y_t \mid x, y_{&lt;t})}\)</span> can blow up when the new policy diverges from the behavior policy. A single token with <span class="arithmatex">\(\rho_t = 20\)</span> can dominate the whole batch's gradient.</p>
+<p>PPO's solution — which GRPO inherits — is to clip the ratio. Let</p>
+<div class="arithmatex">\[A^{(i,j)} = \frac{r(y^{(i,j)} \mid x^{(i)}) - \mu_i}{\text{std}_i}, \qquad w_t^{(i,j)} = \frac{\pi_\theta(y_t \mid x, y_{&lt;t})}{\pi_0(y_t \mid x, y_{&lt;t})}\]</div>
+<p>denote the advantage of response <span class="arithmatex">\(j\)</span> on prompt <span class="arithmatex">\(i\)</span> and the <span class="arithmatex">\(t\)</span>-th token's importance ratio. The clipped off-policy objective becomes:</p>
+<div class="arithmatex">\[J_\theta^{\text{GRPO-off-policy-clip}} = \frac{1}{BG} \sum_{i=1}^{B} \sum_{j=1}^{G} \frac{1}{\text{len}(y^{(i,j)})} \sum_{t=1}^{\text{len}(y^{(i,j)})} \min\!\Big( A^{(i,j)} w_t^{(i,j)}, \; A^{(i,j)} \, \text{clip}\big(w_t^{(i,j)}, [1-\epsilon, 1+\epsilon]\big) \Big). \tag{57}\]</div>
+<p>The clipping caps how much any single token can pull the update, so a large per-token drift can't dominate the batch. Typical <span class="arithmatex">\(\epsilon = 0.2\)</span>.</p>
+<h4 id="kl-regularization">KL Regularization</h4>
+<p>Even with clipping, the policy can drift far from the original reference model (the SFT checkpoint) over many steps. This causes "alignment tax" — the model forgets things it knew. GRPO adds a KL penalty against a frozen reference policy <span class="arithmatex">\(\pi_{\text{ref}}\)</span>:</p>
+<div class="arithmatex">\[\mathbb{D}_{\text{KL}}\big[\pi_\theta \,\|\, \pi_{\text{ref}}\big] = \mathbb{E}_{y \sim \pi_\theta} \left[\, \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)} \,\right].\]</div>
+<p>In practice GRPO uses an unbiased low-variance estimator from Schulman:</p>
+<div class="arithmatex">\[\hat{\mathbb{D}}_{\text{KL}} = \frac{\pi_{\text{ref}}(y_{i,t} \mid x, y_{i,&lt;t})}{\pi_\theta(y_{i,t} \mid x, y_{i,&lt;t})} - \log \frac{\pi_{\text{ref}}(y_{i,t} \mid x, y_{i,&lt;t})}{\pi_\theta(y_{i,t} \mid x, y_{i,&lt;t})} - 1.\]</div>
+<p>This is always <span class="arithmatex">\(\geq 0\)</span> and equals <span class="arithmatex">\(0\)</span> when <span class="arithmatex">\(\pi_\theta = \pi_{\text{ref}}\)</span>.</p>
+<h4 id="the-full-off-policy-grpo-objective">The Full Off-Policy GRPO Objective</h4>
+<p>Putting it together, for a batch of prompts <span class="arithmatex">\(\{x\}\)</span> each with <span class="arithmatex">\(G\)</span> sampled responses <span class="arithmatex">\(\{y_i\}_{i=1}^G\)</span>:</p>
+<div class="arithmatex">\[\mathcal{J}_{\text{GRPO}}(\theta) = \mathbb{E}_{x, \{y_i\}} \left[\, \frac{1}{G} \sum_{i=1}^G \frac{1}{|y_i|} \sum_{t=1}^{|y_i|} \Big( \min(\rho_{i,t} A_i, \, \text{clip}(\rho_{i,t}, 1-\epsilon, 1+\epsilon) A_i) - \beta \, \hat{\mathbb{D}}_{\text{KL}}[\pi_\theta \| \pi_{\text{ref}}] \Big) \,\right]\]</div>
+<p>where</p>
+<ul>
+<li><span class="arithmatex">\(\rho_{i,t} = \frac{\pi_\theta(y_{i,t} \mid x, y_{i,&lt;t})}{\pi_{\theta_{\text{old}}}(y_{i,t} \mid x, y_{i,&lt;t})}\)</span> — the importance ratio at token <span class="arithmatex">\(t\)</span> of response <span class="arithmatex">\(i\)</span></li>
+<li><span class="arithmatex">\(A_i\)</span> — the group-relative advantage of response <span class="arithmatex">\(i\)</span> (constant across tokens within a response)</li>
+<li><span class="arithmatex">\(\epsilon\)</span> — clipping range (e.g. <span class="arithmatex">\(0.2\)</span>)</li>
+<li><span class="arithmatex">\(\beta\)</span> — KL penalty coefficient (e.g. <span class="arithmatex">\(0.04\)</span>)</li>
+</ul>
+<p>The training loop:</p>
+<ol>
+<li>Sample a batch of prompts.</li>
+<li>For each prompt, generate <span class="arithmatex">\(G\)</span> responses from <span class="arithmatex">\(\pi_{\theta_{\text{old}}}\)</span>.</li>
+<li>Score each response with the reward function (rule-based for math/code, or a reward model otherwise).</li>
+<li>Compute group-relative advantages <span class="arithmatex">\(A_i\)</span> for each prompt.</li>
+<li>Take several gradient steps on the GRPO objective with the same rollouts.</li>
+<li>Copy <span class="arithmatex">\(\theta \to \theta_{\text{old}}\)</span> and repeat.</li>
+</ol>
+<p>The trick is that we only sample once (from the old policy), then we score those exact tokens under both policies.</p>
+<p>Step by step:</p>
+<ol>
+<li>Rollout phase (using π_old): For each prompt x, sample a response y from π_old(· | x). This gives you concrete token sequences y_1, y_2, ..., y_T. You store them.</li>
+<li>Freeze old_log_probs: Compute log π_old(y_t | x, y_&lt;t) for those specific stored tokens. Save these — they're constants for the rest of training. Shape: (batch, seq).</li>
+<li>Training loop (using π_θ): For those same tokens y from the rollout, compute log π_θ(y_t | x, y_&lt;t) — i.e., "what probability would the current policy assign to the exact token that π_old sampled?" Shape: (batch, seq).</li>
+<li>Importance ratio: π_θ(y_t) / π_old(y_t) — the ratio for the same token under the two policies.</li>
+</ol>
+<p>So you're never comparing "what would π_θ have sampled" vs. "what π_old sampled." You're comparing "what probability π_θ assigns to π_old's sample" vs. "what probability π_old assigned to its own sample."</p>
+<p>Why this is legit — the math:</p>
+<p>We want the gradient of E_{y ~ π_θ}[R(y)]. But we only have samples from π_old. Importance sampling identity:</p>
+<div class="arithmatex">\[\mathbb{E}_{y \sim \pi_\theta}[R(y)] = \mathbb{E}_{y \sim \pi_{\text{old}}}\left[\frac{\pi_\theta(y)}{\pi_{\text{old}}(y)} R(y)\right]\]</div>
+<p>So we can estimate an expectation under π_θ using samples from π_old, as long as we reweight by the ratio. That's why we need both log-probs for the same tokens.</p>
+<p>Why this matters practically:</p>
+<ul>
+<li>Rollout is expensive (generation is autoregressive and slow). You want to reuse each rollout for multiple gradient steps.</li>
+<li>On the first gradient step, π_θ == π_old, so the ratio is exactly 1 everywhere and PPO reduces to vanilla policy gradient.</li>
+<li>As π_θ drifts from π_old over multiple update steps, the ratio deviates from 1 — that's when clipping kicks in to prevent trusting the importance-sampling estimate too far.</li>
+<li>Once π_θ has drifted too far (typically after a few epochs), you do a fresh rollout to get a new π_old.</li>
+</ul>
+<h3 id="why-grpo-works-for-reasoning">Why GRPO Works for Reasoning</h3>
+<p>For tasks with a verifiable reward (math, code), GRPO has three nice properties:</p>
+<ol>
+<li><strong>No value network.</strong> Halves the memory footprint vs PPO. Important when training 7B+ models.</li>
+<li><strong>Self-normalizing.</strong> The group baseline adapts to each prompt's difficulty — easy prompts produce small gradients, hard prompts produce informative ones.</li>
+<li><strong>Robust to reward scale.</strong> The std-normalization in the advantage makes the algorithm insensitive to whether rewards are <span class="arithmatex">\(\{0, 1\}\)</span> or <span class="arithmatex">\(\{-10, 10\}\)</span> — only the relative ordering within a group matters.</li>
+</ol>
+<p>The main weakness is that GRPO needs <span class="arithmatex">\(G\)</span> rollouts per prompt, which is expensive when generation dominates the compute (long chain-of-thought responses). Picking <span class="arithmatex">\(G\)</span> is the main knob: too small and the baseline is noisy, too large and you waste compute.</p>
+<h3 id="gspo">GSPO</h3>
+<p>In the GSPO paper[5], the authors find that GRPO is unstable and argue that we should do sequence-level reweighting instead. To get around the fact that the sequence-level ratio is a product of <span class="arithmatex">\(L\)</span> terms, they simply take the expression to the power <span class="arithmatex">\(1/L\)</span>. They reweight by the geometric mean importance weight over the sequence rather than the product. The result is the following loss:</p>
+<div class="arithmatex">\[J_\theta^{\text{GRPO-off-policy-gspo}} = \frac{1}{BG} \sum_{i=1}^{B} \sum_{j=1}^{G} \min\!\Big( A^{(i,j)} s^{(i,j)}, \; A^{(i,j)} \, \text{clip}\big(s^{(i,j)}, [1-\epsilon, 1+\epsilon]\big) \Big), \tag{62}\]</div>
+<p>where we now have a sequence-level importance weight <span class="arithmatex">\(s^{(i,j)}\)</span> that is shared across time steps:</p>
+<div class="arithmatex">\[s^{(i,j)} = \left( \prod_{t=1}^{\text{len}(y^{(i,j)})} \frac{\pi_\theta(y_t \mid x, y_{&lt;t})}{\pi_0(y_t \mid x, y_{&lt;t})} \right)^{\!\frac{1}{\text{len}(y^{(i,j)})}}. \tag{63}\]</div>
+<p>Note that without the power <span class="arithmatex">\(\frac{1}{\text{len}(y^{(i,j)})}\)</span> and without clipping, this objective becomes the sequence-level importance-reweighted policy gradient loss. Taking the geometric mean and clipping reduce variance at the cost of bias. One other note is that when taking the gradient, we naturally get sequence-length normalization due to the geometric mean power (clipping is ignored in the equation below for brevity).</p>
+<p>References:</p>
+<ol>
+<li>CS336n <a href="https://github.com/stanford-cs336/assignment5-alignment">Assignment 5</a></li>
+<li>DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models — <a href="https://arxiv.org/abs/2402.03300">https://arxiv.org/abs/2402.03300</a> (original GRPO paper)</li>
+<li>Schulman et al., Proximal Policy Optimization Algorithms — <a href="https://arxiv.org/abs/1707.06347">https://arxiv.org/abs/1707.06347</a></li>
+<li>F. Tajwar et al., “Maximum Likelihood Reinforcement Learning.” <a href="https://arxiv.org/abs/2602.02710">https://arxiv.org/abs/2602.02710</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../rlhf/" class="md-footer__link md-footer__link--prev" aria-label="Previous: RLHF">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                RLHF
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "navigation.path", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

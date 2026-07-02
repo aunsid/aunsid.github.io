@@ -1,0 +1,2284 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A walkthrough of Byte-Pair Encoding tokenization — from unicode code points to a full BPE implementation.">
+      
+      
+        <meta name="author" content="Aun">
+      
+      
+        <link rel="canonical" href="https://aunsid.github.io/ml/tokenizer/notes/">
+      
+      
+        <link rel="prev" href="../tokens/">
+      
+      
+        <link rel="next" href="../../embeddings/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Byte Pair Encoding - Aun</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bpe-algorithm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Aun" class="md-header__button md-logo" aria-label="Aun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Aun
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Byte Pair Encoding
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experience/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Experience
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Aun" class="md-nav__button md-logo" aria-label="Aun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Aun
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experience/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experience
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 — Language Models From Scratch
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 — Language Models From Scratch
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_2" id="__nav_4_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokenization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tokenization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tokens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Byte Pair Encoding
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Byte Pair Encoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bpe-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BPE Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpe-implementation-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE Implementation Walkthrough
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BPE Implementation Walkthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-tokenization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-tokenization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_stats
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        merge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpe_encode_chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE._encode_chunk()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpeencode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE.encode()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpedecode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE.decode()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embeddings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embeddings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../attention/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attention
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_4" id="__nav_4_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Attention
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../attention/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Types of Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../normalization/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Normalization
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_5" id="__nav_4_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Normalization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../normalization/pre_post/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pre-Norm vs Post-Norm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_6" id="__nav_4_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/kv_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KV Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../vision/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 — Vision
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 — Vision
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vision/cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolutions & CNNs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../post_training/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 — Post-Training
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 — Post-Training
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../post_training/rlhf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RLHF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../post_training/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GRPO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bpe-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE Algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BPE Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpe-implementation-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE Implementation Walkthrough
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BPE Implementation Walkthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-tokenization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-tokenization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_stats
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        merge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpe_encode_chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE._encode_chunk()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpeencode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE.encode()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpedecode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE.decode()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 1 — Language Models From Scratch
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../tokens/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Tokenization
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Byte Pair Encoding</h1>
+
+<p>Text in Python is an immutable sequence of unicode code points — each character maps to a unique integer. Unicode covers ~300k characters, defining which integer represents each one.</p>
+<p>To look up the integer for a character, use <code>ord()</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># to access a unicode character use ord()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Output:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>104
+</span></code></pre></div></p>
+<p>To convert a string to bytes, we start with a string:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">test_string</span> <span class="o">=</span> <span class="s2">&quot;This is an example string&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">test_string</span>
+</span></code></pre></div>
+<p><strong>Output:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&#39;This is an example string&#39;
+</span></code></pre></div></p>
+<p>To convert a string into bytes we use <code>.encode()</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">print</span><span class="p">(</span><span class="n">test_string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+</span></code></pre></div>
+<p><strong>Output:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>b&#39;This is an example string&#39;
+</span></code></pre></div></p>
+<p>This returns a bytes object. To get the individual integer ids for each byte, we wrap it with <code>list()</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">test_string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)))</span>
+</span></code></pre></div>
+<p><strong>Output:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>[84, 104, 105, 115, 32, 105, 115, 32, 97, 110, 32, 101, 120, 97, 109, 112, 108, 101, 32, 115, 116, 114, 105, 110, 103]
+</span></code></pre></div></p>
+<p><strong>Why can't we natively use these unicodes?</strong>
+Character level tokenization would be a valid approach, but there are ~300k unique characters defined. Since each character gets a token id, the input sequence is as long as the character count — making the attention mechanism computationally expensive on large sequences and forcing shorter context lengths.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of characters in sequence: </span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_string</span><span class="p">))</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of tokenids in sequence: </span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="n">test_string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)))))</span>
+</span></code></pre></div>
+<p><strong>Output:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Number of characters in sequence:    25
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Number of tokenids in sequence:      25
+</span></code></pre></div></p>
+<h2 id="bpe-algorithm">BPE Algorithm</h2>
+<p>For every iteration:</p>
+<ol>
+<li>Identify the most common pair</li>
+<li>Assign new id to the pair. Store this in a look up table</li>
+<li>Replace all occurrences of these pairs with the new id</li>
+<li>Do this till you reach the desired vocab size</li>
+</ol>
+<h4 id="decoding">Decoding</h4>
+<p>To restore the original text, look up each id in the look up table to get its byte sequence, concatenate all byte sequences, then decode the result as UTF-8</p>
+<p><img alt="BPE Algorithm" src="../../../assets/images/bpe_algorithm.png" /></p>
+<h2 id="bpe-implementation-walkthrough">BPE Implementation Walkthrough</h2>
+<p>The implementation has three layers: pre-tokenization splits raw text into chunks, two helper functions (<code>get_stats</code> and <code>merge</code>) do the heavy lifting, and the <code>BPE</code> class ties everything together with <code>train()</code>, <code>encode()</code>, and <code>decode()</code>.</p>
+<h3 id="pre-tokenization">Pre-tokenization</h3>
+<p>Before BPE runs, raw text is split into chunks using a regex pattern. This ensures that merges happen only within letter or digit runs, and that whitespace and punctuation are not folded into the merges.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">PAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;&#39;(?:[sdmt]|ll|ve|re)| ?\p</span><span class="si">{L}</span><span class="s2">+| ?\p</span><span class="si">{N}</span><span class="s2">+| ?[^\s\p</span><span class="si">{L}</span><span class="s2">\p</span><span class="si">{N}</span><span class="s2">]+|\s+(?!\S)|\s+&quot;&quot;&quot;</span>
+</span></code></pre></div>
+<p>The pattern is a sequence of <code>|</code> alternatives tried left to right:</p>
+<table>
+<thead>
+<tr>
+<th>Alternative</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'(?:[sdmt]\|ll\|ve\|re)</code></td>
+<td>Contractions: <code>'s</code>, <code>'t</code>, <code>'ll</code>, <code>'ve</code>, <code>'re</code>, <code>'d</code>, <code>'m</code></td>
+</tr>
+<tr>
+<td><code>?\p{L}+</code></td>
+<td>Optional space + one or more Unicode letters</td>
+</tr>
+<tr>
+<td><code>?\p{N}+</code></td>
+<td>Optional space + one or more Unicode digits</td>
+</tr>
+<tr>
+<td><code>?[^\s\p{L}\p{N}]+</code></td>
+<td>Optional space + punctuation/symbols</td>
+</tr>
+<tr>
+<td><code>\s+(?!\S)</code></td>
+<td>Trailing whitespace (not followed by non-whitespace)</td>
+</tr>
+<tr>
+<td><code>\s+</code></td>
+<td>Any remaining whitespace</td>
+</tr>
+</tbody>
+</table>
+<p>With pre-tokenization in place, the two helper functions that drive both training and encoding are <code>get_stats</code> and <code>merge</code>.</p>
+<h2 id="get_stats">get_stats</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">counts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">counts</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="k">for</span> <span class="n">id0</span><span class="p">,</span> <span class="n">id1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">ids</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>        <span class="n">counts</span><span class="p">[(</span><span class="n">id0</span><span class="p">,</span> <span class="n">id1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">id0</span><span class="p">,</span> <span class="n">id1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="k">return</span> <span class="n">counts</span>
+</span></code></pre></div>
+<p>Counts how often each adjacent pair of token ids appears. The optional <code>counts</code> argument allows accumulating stats across multiple chunks without creating a new dict each time — used in <code>train()</code> to aggregate stats across all chunks in one pass.</p>
+<hr />
+<h2 id="merge">merge</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">newids</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>        <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>            <span class="n">newids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>            <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>            <span class="n">newids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="k">return</span> <span class="n">newids</span>
+</span></code></pre></div>
+<p>Replaces every occurrence of <code>pair</code> in <code>ids</code> with <code>idx</code>. Walks through the list once — when a match is found, appends the new id and skips two positions; otherwise appends the original and advances one.</p>
+<p><strong>Pre-tokenization</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">for</span> <span class="n">special_chunk</span> <span class="ow">in</span> <span class="n">special_chunks</span><span class="p">:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="k">if</span> <span class="n">special_chunk</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="p">:</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        <span class="n">chunks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">special_chunk</span><span class="p">]</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>        <span class="n">chunks</span> <span class="o">+=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">PAT</span><span class="p">,</span> <span class="n">special_chunk</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Non-special chunks are further split by PAT. The result is a flat list where each element is either a special token string or a regex-matched word/punctuation chunk.</p>
+<p><strong>Converting to ids</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="p">:</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>        <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)))</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>        <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">256</span> <span class="o">+</span> <span class="n">special_bank</span><span class="p">[</span><span class="n">ch</span><span class="p">]])</span>
+</span></code></pre></div>
+<p><code>ids</code> is a list of lists — each inner list is one chunk's token ids. Regular chunks start as raw UTF-8 bytes (integers 0–255). Special tokens get their pre-assigned id directly.</p>
+<p><strong>The merge loop</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_merges</span><span class="p">):</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>        <span class="n">get_stats</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">pair</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">vocab</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">vocab</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">idx</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">special_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">merge</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">pair</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="n">merges</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="n">vocab</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</span></code></pre></div>
+<p>Each iteration:
+1. Counts all adjacent pairs across all chunks
+2. Picks the most frequent pair — ties broken lexicographically on the byte representations
+3. Assigns the next available id (<code>256 + len(special_tokens) + n</code>)
+4. Replaces the pair in every chunk
+5. Records the merge and adds the new token to the vocab</p>
+<h2 id="bpe_encode_chunk">BPE._encode_chunk()</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">_encode_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byt</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span><span class="p">[</span><span class="nb">bytes</span><span class="p">([</span><span class="n">b</span><span class="p">])]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">byt</span><span class="p">]</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>        <span class="n">stats</span> <span class="o">=</span> <span class="n">get_stats</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>        <span class="n">pair</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)))</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>        <span class="k">if</span> <span class="n">pair</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">:</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>            <span class="k">break</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>        <span class="n">ids</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">pair</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>    <span class="k">return</span> <span class="n">ids</span>
+</span></code></pre></div>
+<p>Encodes a single pre-tokenized chunk. Two things to note:</p>
+<ul>
+<li><code>bytes([b])</code> — iterating over a <code>bytes</code> object gives integers, not single-byte <code>bytes</code>, so each integer must be rewrapped before looking it up in <code>inverse_vocab</code></li>
+<li><code>min(..., key=lambda p: self.merges.get(p, float("inf")))</code> — finds the pair with the lowest merge index, i.e. the merge learned earliest during training. Merges must be applied in training order, otherwise the same text could tokenize differently than it did during training. Pairs not in <code>merges</code> get <code>inf</code> and are never selected.</li>
+</ul>
+<hr />
+<h2 id="bpeencode">BPE.encode()</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">:</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>        <span class="n">special_pattern</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>        <span class="n">special_chunks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">special_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>        <span class="n">special_bank</span> <span class="o">=</span> <span class="p">{</span><span class="n">special_token</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">special_token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">)}</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>        <span class="n">special_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>        <span class="n">special_bank</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="n">encoding</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">special_chunks</span><span class="p">:</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>        <span class="k">if</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="p">:</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>            <span class="n">encoding</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span><span class="p">[</span><span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)])</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>            <span class="n">encoding</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encode_ordinary</span><span class="p">(</span><span class="n">chunk</span><span class="p">))</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="k">return</span> <span class="n">encoding</span>
+</span></code></pre></div>
+<p>Mirrors the structure of <code>train()</code>. Special tokens are split out first — sorted by descending length so longer tokens (e.g. <code>&lt;|endoftext|&gt;</code>) are matched before any shorter prefix. Each non-special chunk is encoded via <code>_encode_ordinary</code>, which applies PAT splitting then <code>_encode_chunk</code> on each piece.</p>
+<hr />
+<h2 id="bpedecode">BPE.decode()</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">part_bytes</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>        <span class="n">part_bytes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">text_bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part_bytes</span><span class="p">)</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="k">return</span> <span class="n">text_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Each id maps directly to its byte sequence via <code>vocab</code>. Concatenating all byte sequences and decoding as UTF-8 recovers the original text. <code>errors='replace'</code> handles cases where merging byte fragments produces invalid UTF-8 at chunk boundaries.</p>
+<hr />
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/understanding-tokens">Understanding Tokens — Microsoft</a></li>
+<li><a href="https://sebastianraschka.com/blog/2025/bpe-from-scratch.html">BPE From Scratch — Sebastian Raschka</a></li>
+<li><a href="https://github.com/karpathy/minbpe">minBPE — Andrej Karpathy</a></li>
+<li><a href="https://github.com/stanford-cs336/assignment1-basics/tree/main">Stanford CS336 Assignment 1</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Byte-pair_encoding">Byte-Pair Encoding — Wikipedia</a></li>
+</ol>
+<hr />
+<h2 id="full-implementation">Full Implementation</h2>
+<p>Source: <code>cs336_basics/tokenizer.py</code></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">regex</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">re</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># The net effect: words, numbers, punctuation, and contractions each become separate chunks before BPE sees them, so the merge algorithm can&#39;t</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># create tokens that span across e.g. a word and a punctuation mark. This is why \p{L} and \p{N} require the regex library rather than stdlib</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># re — they&#39;re Unicode property classes.</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">PAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;&#39;(?:[sdmt]|ll|ve|re)| ?\p</span><span class="si">{L}</span><span class="s2">+| ?\p</span><span class="si">{N}</span><span class="s2">+| ?[^\s\p</span><span class="si">{L}</span><span class="s2">\p</span><span class="si">{N}</span><span class="s2">]+|\s+(?!\S)|\s+&quot;&quot;&quot;</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="sd">    Count adjacent token pair frequencies in ids, accumulating into counts if provided.</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">counts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">counts</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>    <span class="c1"># count adj pair of characters</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    <span class="k">for</span> <span class="n">id0</span><span class="p">,</span> <span class="n">id1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">ids</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>        <span class="n">counts</span><span class="p">[(</span><span class="n">id0</span><span class="p">,</span> <span class="n">id1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">id0</span><span class="p">,</span> <span class="n">id1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>    <span class="k">return</span> <span class="n">counts</span>
+</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>
+</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="sd">    Replace all occurrences of pair in ids with idx.</span>
+</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a>    <span class="n">newids</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a>    <span class="c1"># iterate over ids</span>
+</span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+</span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a>        <span class="c1"># if match found append newidx</span>
+</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a>        <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
+</span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a>            <span class="n">newids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+</span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a>            <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
+</span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a>        <span class="c1"># append original id</span>
+</span><span id="__span-19-33"><a id="__codelineno-19-33" name="__codelineno-19-33" href="#__codelineno-19-33"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-19-34"><a id="__codelineno-19-34" name="__codelineno-19-34" href="#__codelineno-19-34"></a>            <span class="n">newids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span><span id="__span-19-35"><a id="__codelineno-19-35" name="__codelineno-19-35" href="#__codelineno-19-35"></a>            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-19-36"><a id="__codelineno-19-36" name="__codelineno-19-36" href="#__codelineno-19-36"></a>    <span class="k">return</span> <span class="n">newids</span>
+</span><span id="__span-19-37"><a id="__codelineno-19-37" name="__codelineno-19-37" href="#__codelineno-19-37"></a>
+</span><span id="__span-19-38"><a id="__codelineno-19-38" name="__codelineno-19-38" href="#__codelineno-19-38"></a>
+</span><span id="__span-19-39"><a id="__codelineno-19-39" name="__codelineno-19-39" href="#__codelineno-19-39"></a><span class="k">class</span><span class="w"> </span><span class="nc">BPE</span><span class="p">:</span>
+</span><span id="__span-19-40"><a id="__codelineno-19-40" name="__codelineno-19-40" href="#__codelineno-19-40"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Byte-Pair Encoding tokenizer supporting training, encoding, and decoding.&quot;&quot;&quot;</span>
+</span><span id="__span-19-41"><a id="__codelineno-19-41" name="__codelineno-19-41" href="#__codelineno-19-41"></a>
+</span><span id="__span-19-42"><a id="__codelineno-19-42" name="__codelineno-19-42" href="#__codelineno-19-42"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-19-43"><a id="__codelineno-19-43" name="__codelineno-19-43" href="#__codelineno-19-43"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-19-44"><a id="__codelineno-19-44" name="__codelineno-19-44" href="#__codelineno-19-44"></a>        <span class="n">vocab</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-45"><a id="__codelineno-19-45" name="__codelineno-19-45" href="#__codelineno-19-45"></a>        <span class="n">merges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-46"><a id="__codelineno-19-46" name="__codelineno-19-46" href="#__codelineno-19-46"></a>        <span class="n">special_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-47"><a id="__codelineno-19-47" name="__codelineno-19-47" href="#__codelineno-19-47"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-19-48"><a id="__codelineno-19-48" name="__codelineno-19-48" href="#__codelineno-19-48"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="o">=</span> <span class="n">vocab</span> <span class="k">if</span> <span class="n">vocab</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-19-49"><a id="__codelineno-19-49" name="__codelineno-19-49" href="#__codelineno-19-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">merges</span> <span class="o">=</span> <span class="n">merges</span> <span class="k">if</span> <span class="n">merges</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-19-50"><a id="__codelineno-19-50" name="__codelineno-19-50" href="#__codelineno-19-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span> <span class="o">=</span> <span class="n">special_tokens</span> <span class="k">if</span> <span class="n">special_tokens</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-19-51"><a id="__codelineno-19-51" name="__codelineno-19-51" href="#__codelineno-19-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-19-52"><a id="__codelineno-19-52" name="__codelineno-19-52" href="#__codelineno-19-52"></a>
+</span><span id="__span-19-53"><a id="__codelineno-19-53" name="__codelineno-19-53" href="#__codelineno-19-53"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span>
+</span><span id="__span-19-54"><a id="__codelineno-19-54" name="__codelineno-19-54" href="#__codelineno-19-54"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-19-55"><a id="__codelineno-19-55" name="__codelineno-19-55" href="#__codelineno-19-55"></a>        <span class="n">vocab</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span>
+</span><span id="__span-19-56"><a id="__codelineno-19-56" name="__codelineno-19-56" href="#__codelineno-19-56"></a>        <span class="n">merges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+</span><span id="__span-19-57"><a id="__codelineno-19-57" name="__codelineno-19-57" href="#__codelineno-19-57"></a>        <span class="n">special_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+</span><span id="__span-19-58"><a id="__codelineno-19-58" name="__codelineno-19-58" href="#__codelineno-19-58"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-19-59"><a id="__codelineno-19-59" name="__codelineno-19-59" href="#__codelineno-19-59"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-60"><a id="__codelineno-19-60" name="__codelineno-19-60" href="#__codelineno-19-60"></a><span class="sd">        Load a pre-trained vocab and merge table into the tokenizer.</span>
+</span><span id="__span-19-61"><a id="__codelineno-19-61" name="__codelineno-19-61" href="#__codelineno-19-61"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-62"><a id="__codelineno-19-62" name="__codelineno-19-62" href="#__codelineno-19-62"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="o">=</span> <span class="n">vocab</span>
+</span><span id="__span-19-63"><a id="__codelineno-19-63" name="__codelineno-19-63" href="#__codelineno-19-63"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span><span id="__span-19-64"><a id="__codelineno-19-64" name="__codelineno-19-64" href="#__codelineno-19-64"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span> <span class="o">=</span> <span class="n">special_tokens</span>
+</span><span id="__span-19-65"><a id="__codelineno-19-65" name="__codelineno-19-65" href="#__codelineno-19-65"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">merges</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-19-66"><a id="__codelineno-19-66" name="__codelineno-19-66" href="#__codelineno-19-66"></a>        <span class="c1"># merges are in-order when the merge occurred.</span>
+</span><span id="__span-19-67"><a id="__codelineno-19-67" name="__codelineno-19-67" href="#__codelineno-19-67"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">merges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+</span><span id="__span-19-68"><a id="__codelineno-19-68" name="__codelineno-19-68" href="#__codelineno-19-68"></a>            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">merges</span><span class="p">):</span>
+</span><span id="__span-19-69"><a id="__codelineno-19-69" name="__codelineno-19-69" href="#__codelineno-19-69"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</span><span id="__span-19-70"><a id="__codelineno-19-70" name="__codelineno-19-70" href="#__codelineno-19-70"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-19-71"><a id="__codelineno-19-71" name="__codelineno-19-71" href="#__codelineno-19-71"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">merges</span> <span class="o">=</span> <span class="n">merges</span>
+</span><span id="__span-19-72"><a id="__codelineno-19-72" name="__codelineno-19-72" href="#__codelineno-19-72"></a>
+</span><span id="__span-19-73"><a id="__codelineno-19-73" name="__codelineno-19-73" href="#__codelineno-19-73"></a>        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+</span><span id="__span-19-74"><a id="__codelineno-19-74" name="__codelineno-19-74" href="#__codelineno-19-74"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-19-75"><a id="__codelineno-19-75" name="__codelineno-19-75" href="#__codelineno-19-75"></a>        <span class="c1"># this is to handle special tokens</span>
+</span><span id="__span-19-76"><a id="__codelineno-19-76" name="__codelineno-19-76" href="#__codelineno-19-76"></a>        <span class="c1"># if the tokenizer was trained with special tokens</span>
+</span><span id="__span-19-77"><a id="__codelineno-19-77" name="__codelineno-19-77" href="#__codelineno-19-77"></a>        <span class="c1"># if trained with special tokens use existing id</span>
+</span><span id="__span-19-78"><a id="__codelineno-19-78" name="__codelineno-19-78" href="#__codelineno-19-78"></a>        <span class="c1"># else assign new id</span>
+</span><span id="__span-19-79"><a id="__codelineno-19-79" name="__codelineno-19-79" href="#__codelineno-19-79"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-19-80"><a id="__codelineno-19-80" name="__codelineno-19-80" href="#__codelineno-19-80"></a>            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">):</span>
+</span><span id="__span-19-81"><a id="__codelineno-19-81" name="__codelineno-19-81" href="#__codelineno-19-81"></a>                <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-19-82"><a id="__codelineno-19-82" name="__codelineno-19-82" href="#__codelineno-19-82"></a>                <span class="n">token_bytes</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</span><span id="__span-19-83"><a id="__codelineno-19-83" name="__codelineno-19-83" href="#__codelineno-19-83"></a>                <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="nb">bytes</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-19-84"><a id="__codelineno-19-84" name="__codelineno-19-84" href="#__codelineno-19-84"></a>                    <span class="k">if</span> <span class="nb">bytes</span> <span class="o">==</span> <span class="n">token_bytes</span><span class="p">:</span>
+</span><span id="__span-19-85"><a id="__codelineno-19-85" name="__codelineno-19-85" href="#__codelineno-19-85"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span><span class="p">[</span><span class="n">token_bytes</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+</span><span id="__span-19-86"><a id="__codelineno-19-86" name="__codelineno-19-86" href="#__codelineno-19-86"></a>                        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-19-87"><a id="__codelineno-19-87" name="__codelineno-19-87" href="#__codelineno-19-87"></a>                        <span class="k">break</span>
+</span><span id="__span-19-88"><a id="__codelineno-19-88" name="__codelineno-19-88" href="#__codelineno-19-88"></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+</span><span id="__span-19-89"><a id="__codelineno-19-89" name="__codelineno-19-89" href="#__codelineno-19-89"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span><span class="p">[</span><span class="n">token_bytes</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="n">i</span>
+</span><span id="__span-19-90"><a id="__codelineno-19-90" name="__codelineno-19-90" href="#__codelineno-19-90"></a>
+</span><span id="__span-19-91"><a id="__codelineno-19-91" name="__codelineno-19-91" href="#__codelineno-19-91"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span>
+</span><span id="__span-19-92"><a id="__codelineno-19-92" name="__codelineno-19-92" href="#__codelineno-19-92"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-19-93"><a id="__codelineno-19-93" name="__codelineno-19-93" href="#__codelineno-19-93"></a>        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-19-94"><a id="__codelineno-19-94" name="__codelineno-19-94" href="#__codelineno-19-94"></a>        <span class="n">vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-19-95"><a id="__codelineno-19-95" name="__codelineno-19-95" href="#__codelineno-19-95"></a>        <span class="n">special_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+</span><span id="__span-19-96"><a id="__codelineno-19-96" name="__codelineno-19-96" href="#__codelineno-19-96"></a>        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-19-97"><a id="__codelineno-19-97" name="__codelineno-19-97" href="#__codelineno-19-97"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-19-98"><a id="__codelineno-19-98" name="__codelineno-19-98" href="#__codelineno-19-98"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-99"><a id="__codelineno-19-99" name="__codelineno-19-99" href="#__codelineno-19-99"></a><span class="sd">        Learn BPE merges from text until vocab_size is reached.</span>
+</span><span id="__span-19-100"><a id="__codelineno-19-100" name="__codelineno-19-100" href="#__codelineno-19-100"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-101"><a id="__codelineno-19-101" name="__codelineno-19-101" href="#__codelineno-19-101"></a>        <span class="c1"># combine all special tokens</span>
+</span><span id="__span-19-102"><a id="__codelineno-19-102" name="__codelineno-19-102" href="#__codelineno-19-102"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">:</span>
+</span><span id="__span-19-103"><a id="__codelineno-19-103" name="__codelineno-19-103" href="#__codelineno-19-103"></a>            <span class="n">special_tokens</span> <span class="o">=</span> <span class="n">special_tokens</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span>
+</span><span id="__span-19-104"><a id="__codelineno-19-104" name="__codelineno-19-104" href="#__codelineno-19-104"></a>
+</span><span id="__span-19-105"><a id="__codelineno-19-105" name="__codelineno-19-105" href="#__codelineno-19-105"></a>        <span class="c1"># number of merges should consider count of special tokens as well</span>
+</span><span id="__span-19-106"><a id="__codelineno-19-106" name="__codelineno-19-106" href="#__codelineno-19-106"></a>        <span class="n">num_merges</span> <span class="o">=</span> <span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">256</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">special_tokens</span><span class="p">)</span>
+</span><span id="__span-19-107"><a id="__codelineno-19-107" name="__codelineno-19-107" href="#__codelineno-19-107"></a>        <span class="c1"># handle special tokens in input text</span>
+</span><span id="__span-19-108"><a id="__codelineno-19-108" name="__codelineno-19-108" href="#__codelineno-19-108"></a>        <span class="c1"># using regex pattern split the text if it has a special token</span>
+</span><span id="__span-19-109"><a id="__codelineno-19-109" name="__codelineno-19-109" href="#__codelineno-19-109"></a>        <span class="n">special_pattern</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">special_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+</span><span id="__span-19-110"><a id="__codelineno-19-110" name="__codelineno-19-110" href="#__codelineno-19-110"></a>        <span class="n">special_chunks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">special_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="__span-19-111"><a id="__codelineno-19-111" name="__codelineno-19-111" href="#__codelineno-19-111"></a>        <span class="c1"># keep track of all the special tokens in a lookup table</span>
+</span><span id="__span-19-112"><a id="__codelineno-19-112" name="__codelineno-19-112" href="#__codelineno-19-112"></a>        <span class="c1"># 256 + i (i is from 0 to N) where N is the number of special tokens specified</span>
+</span><span id="__span-19-113"><a id="__codelineno-19-113" name="__codelineno-19-113" href="#__codelineno-19-113"></a>        <span class="n">special_bank</span> <span class="o">=</span> <span class="p">{</span><span class="n">special_token</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">special_token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">special_tokens</span><span class="p">)}</span>
+</span><span id="__span-19-114"><a id="__codelineno-19-114" name="__codelineno-19-114" href="#__codelineno-19-114"></a>
+</span><span id="__span-19-115"><a id="__codelineno-19-115" name="__codelineno-19-115" href="#__codelineno-19-115"></a>        <span class="c1"># iterate over chunks of text</span>
+</span><span id="__span-19-116"><a id="__codelineno-19-116" name="__codelineno-19-116" href="#__codelineno-19-116"></a>        <span class="c1"># store them as a list of list of text chunks</span>
+</span><span id="__span-19-117"><a id="__codelineno-19-117" name="__codelineno-19-117" href="#__codelineno-19-117"></a>        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-118"><a id="__codelineno-19-118" name="__codelineno-19-118" href="#__codelineno-19-118"></a>        <span class="k">for</span> <span class="n">special_chunk</span> <span class="ow">in</span> <span class="n">special_chunks</span><span class="p">:</span>
+</span><span id="__span-19-119"><a id="__codelineno-19-119" name="__codelineno-19-119" href="#__codelineno-19-119"></a>            <span class="c1"># if text is a special token leave it as is</span>
+</span><span id="__span-19-120"><a id="__codelineno-19-120" name="__codelineno-19-120" href="#__codelineno-19-120"></a>            <span class="k">if</span> <span class="n">special_chunk</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="p">:</span>
+</span><span id="__span-19-121"><a id="__codelineno-19-121" name="__codelineno-19-121" href="#__codelineno-19-121"></a>                <span class="n">chunks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">special_chunk</span><span class="p">]</span>
+</span><span id="__span-19-122"><a id="__codelineno-19-122" name="__codelineno-19-122" href="#__codelineno-19-122"></a>            <span class="c1"># else use regex pattern to split text on words, numbers, punctuation, and contractions</span>
+</span><span id="__span-19-123"><a id="__codelineno-19-123" name="__codelineno-19-123" href="#__codelineno-19-123"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-19-124"><a id="__codelineno-19-124" name="__codelineno-19-124" href="#__codelineno-19-124"></a>                <span class="n">chunks</span> <span class="o">+=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">PAT</span><span class="p">,</span> <span class="n">special_chunk</span><span class="p">)</span>
+</span><span id="__span-19-125"><a id="__codelineno-19-125" name="__codelineno-19-125" href="#__codelineno-19-125"></a>
+</span><span id="__span-19-126"><a id="__codelineno-19-126" name="__codelineno-19-126" href="#__codelineno-19-126"></a>        <span class="c1"># go over these chunks of text</span>
+</span><span id="__span-19-127"><a id="__codelineno-19-127" name="__codelineno-19-127" href="#__codelineno-19-127"></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-128"><a id="__codelineno-19-128" name="__codelineno-19-128" href="#__codelineno-19-128"></a>        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+</span><span id="__span-19-129"><a id="__codelineno-19-129" name="__codelineno-19-129" href="#__codelineno-19-129"></a>            <span class="c1"># if not a special character</span>
+</span><span id="__span-19-130"><a id="__codelineno-19-130" name="__codelineno-19-130" href="#__codelineno-19-130"></a>            <span class="c1"># convert it into bytes</span>
+</span><span id="__span-19-131"><a id="__codelineno-19-131" name="__codelineno-19-131" href="#__codelineno-19-131"></a>            <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="p">:</span>
+</span><span id="__span-19-132"><a id="__codelineno-19-132" name="__codelineno-19-132" href="#__codelineno-19-132"></a>                <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)))</span>
+</span><span id="__span-19-133"><a id="__codelineno-19-133" name="__codelineno-19-133" href="#__codelineno-19-133"></a>            <span class="c1"># if it is special character assign correct id from lookup table</span>
+</span><span id="__span-19-134"><a id="__codelineno-19-134" name="__codelineno-19-134" href="#__codelineno-19-134"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-19-135"><a id="__codelineno-19-135" name="__codelineno-19-135" href="#__codelineno-19-135"></a>                <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">256</span> <span class="o">+</span> <span class="n">special_bank</span><span class="p">[</span><span class="n">ch</span><span class="p">]])</span>
+</span><span id="__span-19-136"><a id="__codelineno-19-136" name="__codelineno-19-136" href="#__codelineno-19-136"></a>
+</span><span id="__span-19-137"><a id="__codelineno-19-137" name="__codelineno-19-137" href="#__codelineno-19-137"></a>        <span class="n">merges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># merged pair -&gt; id mapping</span>
+</span><span id="__span-19-138"><a id="__codelineno-19-138" name="__codelineno-19-138" href="#__codelineno-19-138"></a>        <span class="n">vocab</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)}</span>  <span class="c1"># stores id -&gt; bytes</span>
+</span><span id="__span-19-139"><a id="__codelineno-19-139" name="__codelineno-19-139" href="#__codelineno-19-139"></a>        <span class="c1"># store idx -&gt; bytes</span>
+</span><span id="__span-19-140"><a id="__codelineno-19-140" name="__codelineno-19-140" href="#__codelineno-19-140"></a>        <span class="k">for</span> <span class="n">sp</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-19-141"><a id="__codelineno-19-141" name="__codelineno-19-141" href="#__codelineno-19-141"></a>            <span class="n">vocab</span><span class="p">[</span><span class="mi">256</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</span><span id="__span-19-142"><a id="__codelineno-19-142" name="__codelineno-19-142" href="#__codelineno-19-142"></a>        <span class="c1"># stores the bytes -&gt; id for special tokens</span>
+</span><span id="__span-19-143"><a id="__codelineno-19-143" name="__codelineno-19-143" href="#__codelineno-19-143"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span> <span class="o">=</span> <span class="p">{</span><span class="n">sp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">):</span> <span class="mi">256</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">sp</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span><span id="__span-19-144"><a id="__codelineno-19-144" name="__codelineno-19-144" href="#__codelineno-19-144"></a>
+</span><span id="__span-19-145"><a id="__codelineno-19-145" name="__codelineno-19-145" href="#__codelineno-19-145"></a>        <span class="c1"># iterate till we get the required vocab size.</span>
+</span><span id="__span-19-146"><a id="__codelineno-19-146" name="__codelineno-19-146" href="#__codelineno-19-146"></a>        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_merges</span><span class="p">):</span>
+</span><span id="__span-19-147"><a id="__codelineno-19-147" name="__codelineno-19-147" href="#__codelineno-19-147"></a>            <span class="c1"># find the most common pair</span>
+</span><span id="__span-19-148"><a id="__codelineno-19-148" name="__codelineno-19-148" href="#__codelineno-19-148"></a>            <span class="n">stats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-19-149"><a id="__codelineno-19-149" name="__codelineno-19-149" href="#__codelineno-19-149"></a>            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="__span-19-150"><a id="__codelineno-19-150" name="__codelineno-19-150" href="#__codelineno-19-150"></a>                <span class="n">get_stats</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span>
+</span><span id="__span-19-151"><a id="__codelineno-19-151" name="__codelineno-19-151" href="#__codelineno-19-151"></a>            <span class="c1"># get the max count if it is a tie use lexicography to break the tie</span>
+</span><span id="__span-19-152"><a id="__codelineno-19-152" name="__codelineno-19-152" href="#__codelineno-19-152"></a>            <span class="n">pair</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">vocab</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">vocab</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+</span><span id="__span-19-153"><a id="__codelineno-19-153" name="__codelineno-19-153" href="#__codelineno-19-153"></a>            <span class="c1"># generate new idx</span>
+</span><span id="__span-19-154"><a id="__codelineno-19-154" name="__codelineno-19-154" href="#__codelineno-19-154"></a>            <span class="c1"># remember after the 256 bytes we have special tokens and then new tokens</span>
+</span><span id="__span-19-155"><a id="__codelineno-19-155" name="__codelineno-19-155" href="#__codelineno-19-155"></a>            <span class="n">idx</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">special_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span>
+</span><span id="__span-19-156"><a id="__codelineno-19-156" name="__codelineno-19-156" href="#__codelineno-19-156"></a>            <span class="c1"># replace the most common pair with new idx</span>
+</span><span id="__span-19-157"><a id="__codelineno-19-157" name="__codelineno-19-157" href="#__codelineno-19-157"></a>            <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">merge</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">pair</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
+</span><span id="__span-19-158"><a id="__codelineno-19-158" name="__codelineno-19-158" href="#__codelineno-19-158"></a>            <span class="c1"># save the merge</span>
+</span><span id="__span-19-159"><a id="__codelineno-19-159" name="__codelineno-19-159" href="#__codelineno-19-159"></a>            <span class="n">merges</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
+</span><span id="__span-19-160"><a id="__codelineno-19-160" name="__codelineno-19-160" href="#__codelineno-19-160"></a>            <span class="n">vocab</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">vocab</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</span><span id="__span-19-161"><a id="__codelineno-19-161" name="__codelineno-19-161" href="#__codelineno-19-161"></a>
+</span><span id="__span-19-162"><a id="__codelineno-19-162" name="__codelineno-19-162" href="#__codelineno-19-162"></a>        <span class="c1"># store the merges, vocabs, tokens, and inverse_vocab for encoding and decoding</span>
+</span><span id="__span-19-163"><a id="__codelineno-19-163" name="__codelineno-19-163" href="#__codelineno-19-163"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">merges</span> <span class="o">=</span> <span class="n">merges</span>
+</span><span id="__span-19-164"><a id="__codelineno-19-164" name="__codelineno-19-164" href="#__codelineno-19-164"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="o">=</span> <span class="n">vocab</span>
+</span><span id="__span-19-165"><a id="__codelineno-19-165" name="__codelineno-19-165" href="#__codelineno-19-165"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span> <span class="o">=</span> <span class="n">special_tokens</span>
+</span><span id="__span-19-166"><a id="__codelineno-19-166" name="__codelineno-19-166" href="#__codelineno-19-166"></a>        <span class="c1"># inverse vocab stores bytes to id pairs</span>
+</span><span id="__span-19-167"><a id="__codelineno-19-167" name="__codelineno-19-167" href="#__codelineno-19-167"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span><span id="__span-19-168"><a id="__codelineno-19-168" name="__codelineno-19-168" href="#__codelineno-19-168"></a>
+</span><span id="__span-19-169"><a id="__codelineno-19-169" name="__codelineno-19-169" href="#__codelineno-19-169"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_encode_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byt</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-19-170"><a id="__codelineno-19-170" name="__codelineno-19-170" href="#__codelineno-19-170"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-171"><a id="__codelineno-19-171" name="__codelineno-19-171" href="#__codelineno-19-171"></a><span class="sd">        Apply BPE merges to a single pre-tokenized chunk of bytes.</span>
+</span><span id="__span-19-172"><a id="__codelineno-19-172" name="__codelineno-19-172" href="#__codelineno-19-172"></a><span class="sd">        An example of bytes object is  b&quot;hello&quot;</span>
+</span><span id="__span-19-173"><a id="__codelineno-19-173" name="__codelineno-19-173" href="#__codelineno-19-173"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-174"><a id="__codelineno-19-174" name="__codelineno-19-174" href="#__codelineno-19-174"></a>        <span class="c1"># convert bytes objects to ids from vocab</span>
+</span><span id="__span-19-175"><a id="__codelineno-19-175" name="__codelineno-19-175" href="#__codelineno-19-175"></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_vocab</span><span class="p">[</span><span class="nb">bytes</span><span class="p">([</span><span class="n">b</span><span class="p">])]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">byt</span><span class="p">]</span>
+</span><span id="__span-19-176"><a id="__codelineno-19-176" name="__codelineno-19-176" href="#__codelineno-19-176"></a>        <span class="c1"># iterate over pairs</span>
+</span><span id="__span-19-177"><a id="__codelineno-19-177" name="__codelineno-19-177" href="#__codelineno-19-177"></a>        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+</span><span id="__span-19-178"><a id="__codelineno-19-178" name="__codelineno-19-178" href="#__codelineno-19-178"></a>            <span class="c1"># get counts of ids</span>
+</span><span id="__span-19-179"><a id="__codelineno-19-179" name="__codelineno-19-179" href="#__codelineno-19-179"></a>            <span class="n">stats</span> <span class="o">=</span> <span class="n">get_stats</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+</span><span id="__span-19-180"><a id="__codelineno-19-180" name="__codelineno-19-180" href="#__codelineno-19-180"></a>            <span class="c1"># apply the earliest merges FIRST!</span>
+</span><span id="__span-19-181"><a id="__codelineno-19-181" name="__codelineno-19-181" href="#__codelineno-19-181"></a>            <span class="n">pair</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)))</span>
+</span><span id="__span-19-182"><a id="__codelineno-19-182" name="__codelineno-19-182" href="#__codelineno-19-182"></a>            <span class="c1"># break if there are no candidates pairs to merge</span>
+</span><span id="__span-19-183"><a id="__codelineno-19-183" name="__codelineno-19-183" href="#__codelineno-19-183"></a>            <span class="k">if</span> <span class="n">pair</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">:</span>
+</span><span id="__span-19-184"><a id="__codelineno-19-184" name="__codelineno-19-184" href="#__codelineno-19-184"></a>                <span class="k">break</span>
+</span><span id="__span-19-185"><a id="__codelineno-19-185" name="__codelineno-19-185" href="#__codelineno-19-185"></a>            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span>
+</span><span id="__span-19-186"><a id="__codelineno-19-186" name="__codelineno-19-186" href="#__codelineno-19-186"></a>            <span class="c1"># replace the pair with the idx</span>
+</span><span id="__span-19-187"><a id="__codelineno-19-187" name="__codelineno-19-187" href="#__codelineno-19-187"></a>            <span class="n">ids</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">pair</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+</span><span id="__span-19-188"><a id="__codelineno-19-188" name="__codelineno-19-188" href="#__codelineno-19-188"></a>        <span class="k">return</span> <span class="n">ids</span>
+</span><span id="__span-19-189"><a id="__codelineno-19-189" name="__codelineno-19-189" href="#__codelineno-19-189"></a>
+</span><span id="__span-19-190"><a id="__codelineno-19-190" name="__codelineno-19-190" href="#__codelineno-19-190"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_encode_ordinary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-19-191"><a id="__codelineno-19-191" name="__codelineno-19-191" href="#__codelineno-19-191"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-192"><a id="__codelineno-19-192" name="__codelineno-19-192" href="#__codelineno-19-192"></a><span class="sd">        Encode text without handling special tokens.</span>
+</span><span id="__span-19-193"><a id="__codelineno-19-193" name="__codelineno-19-193" href="#__codelineno-19-193"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-194"><a id="__codelineno-19-194" name="__codelineno-19-194" href="#__codelineno-19-194"></a>        <span class="c1"># split chunk on the regex pattern based words, punctuation, whitespaces, numbers etc</span>
+</span><span id="__span-19-195"><a id="__codelineno-19-195" name="__codelineno-19-195" href="#__codelineno-19-195"></a>        <span class="n">text_chunks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">PAT</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="__span-19-196"><a id="__codelineno-19-196" name="__codelineno-19-196" href="#__codelineno-19-196"></a>        <span class="n">enc</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-197"><a id="__codelineno-19-197" name="__codelineno-19-197" href="#__codelineno-19-197"></a>        <span class="c1"># iterate over the chunks</span>
+</span><span id="__span-19-198"><a id="__codelineno-19-198" name="__codelineno-19-198" href="#__codelineno-19-198"></a>        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">text_chunks</span><span class="p">:</span>
+</span><span id="__span-19-199"><a id="__codelineno-19-199" name="__codelineno-19-199" href="#__codelineno-19-199"></a>            <span class="n">chunk_bytes</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</span><span id="__span-19-200"><a id="__codelineno-19-200" name="__codelineno-19-200" href="#__codelineno-19-200"></a>            <span class="n">chunk_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode_chunk</span><span class="p">(</span><span class="n">chunk_bytes</span><span class="p">)</span>
+</span><span id="__span-19-201"><a id="__codelineno-19-201" name="__codelineno-19-201" href="#__codelineno-19-201"></a>            <span class="n">enc</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunk_ids</span><span class="p">)</span>
+</span><span id="__span-19-202"><a id="__codelineno-19-202" name="__codelineno-19-202" href="#__codelineno-19-202"></a>        <span class="k">return</span> <span class="n">enc</span>
+</span><span id="__span-19-203"><a id="__codelineno-19-203" name="__codelineno-19-203" href="#__codelineno-19-203"></a>
+</span><span id="__span-19-204"><a id="__codelineno-19-204" name="__codelineno-19-204" href="#__codelineno-19-204"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-19-205"><a id="__codelineno-19-205" name="__codelineno-19-205" href="#__codelineno-19-205"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-206"><a id="__codelineno-19-206" name="__codelineno-19-206" href="#__codelineno-19-206"></a><span class="sd">        Encode text to token ids, preserving special tokens.</span>
+</span><span id="__span-19-207"><a id="__codelineno-19-207" name="__codelineno-19-207" href="#__codelineno-19-207"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-208"><a id="__codelineno-19-208" name="__codelineno-19-208" href="#__codelineno-19-208"></a>        <span class="c1"># if special tokens are present</span>
+</span><span id="__span-19-209"><a id="__codelineno-19-209" name="__codelineno-19-209" href="#__codelineno-19-209"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">:</span>
+</span><span id="__span-19-210"><a id="__codelineno-19-210" name="__codelineno-19-210" href="#__codelineno-19-210"></a>            <span class="c1"># break the text the same way as we did in the train step</span>
+</span><span id="__span-19-211"><a id="__codelineno-19-211" name="__codelineno-19-211" href="#__codelineno-19-211"></a>            <span class="n">special_pattern</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+</span><span id="__span-19-212"><a id="__codelineno-19-212" name="__codelineno-19-212" href="#__codelineno-19-212"></a>            <span class="n">special_chunks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">special_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="__span-19-213"><a id="__codelineno-19-213" name="__codelineno-19-213" href="#__codelineno-19-213"></a>            <span class="n">special_bank</span> <span class="o">=</span> <span class="p">{</span><span class="n">special_token</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">special_token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">special_tokens</span><span class="p">)}</span>
+</span><span id="__span-19-214"><a id="__codelineno-19-214" name="__codelineno-19-214" href="#__codelineno-19-214"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-19-215"><a id="__codelineno-19-215" name="__codelineno-19-215" href="#__codelineno-19-215"></a>            <span class="n">special_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+</span><span id="__span-19-216"><a id="__codelineno-19-216" name="__codelineno-19-216" href="#__codelineno-19-216"></a>            <span class="n">special_bank</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-19-217"><a id="__codelineno-19-217" name="__codelineno-19-217" href="#__codelineno-19-217"></a>
+</span><span id="__span-19-218"><a id="__codelineno-19-218" name="__codelineno-19-218" href="#__codelineno-19-218"></a>        <span class="n">encoding</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-219"><a id="__codelineno-19-219" name="__codelineno-19-219" href="#__codelineno-19-219"></a>        <span class="c1"># iterate over chunks</span>
+</span><span id="__span-19-220"><a id="__codelineno-19-220" name="__codelineno-19-220" href="#__codelineno-19-220"></a>        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">special_chunks</span><span class="p">:</span>
+</span><span id="__span-19-221"><a id="__codelineno-19-221" name="__codelineno-19-221" href="#__codelineno-19-221"></a>            <span class="c1"># if chunk is a special chunk</span>
+</span><span id="__span-19-222"><a id="__codelineno-19-222" name="__codelineno-19-222" href="#__codelineno-19-222"></a>            <span class="c1"># get corresponding id</span>
+</span><span id="__span-19-223"><a id="__codelineno-19-223" name="__codelineno-19-223" href="#__codelineno-19-223"></a>            <span class="k">if</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">special_bank</span><span class="p">:</span>
+</span><span id="__span-19-224"><a id="__codelineno-19-224" name="__codelineno-19-224" href="#__codelineno-19-224"></a>                <span class="n">encoding</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_special_tokens</span><span class="p">[</span><span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)])</span>
+</span><span id="__span-19-225"><a id="__codelineno-19-225" name="__codelineno-19-225" href="#__codelineno-19-225"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-19-226"><a id="__codelineno-19-226" name="__codelineno-19-226" href="#__codelineno-19-226"></a>                <span class="n">encoding</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encode_ordinary</span><span class="p">(</span><span class="n">chunk</span><span class="p">))</span>
+</span><span id="__span-19-227"><a id="__codelineno-19-227" name="__codelineno-19-227" href="#__codelineno-19-227"></a>        <span class="k">return</span> <span class="n">encoding</span>
+</span><span id="__span-19-228"><a id="__codelineno-19-228" name="__codelineno-19-228" href="#__codelineno-19-228"></a>
+</span><span id="__span-19-229"><a id="__codelineno-19-229" name="__codelineno-19-229" href="#__codelineno-19-229"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">encode_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="__span-19-230"><a id="__codelineno-19-230" name="__codelineno-19-230" href="#__codelineno-19-230"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-231"><a id="__codelineno-19-231" name="__codelineno-19-231" href="#__codelineno-19-231"></a><span class="sd">        Encode an iterable of strings, yielding token ids one at a time.</span>
+</span><span id="__span-19-232"><a id="__codelineno-19-232" name="__codelineno-19-232" href="#__codelineno-19-232"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-233"><a id="__codelineno-19-233" name="__codelineno-19-233" href="#__codelineno-19-233"></a>        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+</span><span id="__span-19-234"><a id="__codelineno-19-234" name="__codelineno-19-234" href="#__codelineno-19-234"></a>            <span class="n">ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+</span><span id="__span-19-235"><a id="__codelineno-19-235" name="__codelineno-19-235" href="#__codelineno-19-235"></a>            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="__span-19-236"><a id="__codelineno-19-236" name="__codelineno-19-236" href="#__codelineno-19-236"></a>                <span class="k">yield</span> <span class="nb">id</span>
+</span><span id="__span-19-237"><a id="__codelineno-19-237" name="__codelineno-19-237" href="#__codelineno-19-237"></a>
+</span><span id="__span-19-238"><a id="__codelineno-19-238" name="__codelineno-19-238" href="#__codelineno-19-238"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-19-239"><a id="__codelineno-19-239" name="__codelineno-19-239" href="#__codelineno-19-239"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-19-240"><a id="__codelineno-19-240" name="__codelineno-19-240" href="#__codelineno-19-240"></a><span class="sd">        Decode a list of token ids back to a string.</span>
+</span><span id="__span-19-241"><a id="__codelineno-19-241" name="__codelineno-19-241" href="#__codelineno-19-241"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-19-242"><a id="__codelineno-19-242" name="__codelineno-19-242" href="#__codelineno-19-242"></a>        <span class="n">part_bytes</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-19-243"><a id="__codelineno-19-243" name="__codelineno-19-243" href="#__codelineno-19-243"></a>        <span class="c1"># iterate over ids</span>
+</span><span id="__span-19-244"><a id="__codelineno-19-244" name="__codelineno-19-244" href="#__codelineno-19-244"></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="__span-19-245"><a id="__codelineno-19-245" name="__codelineno-19-245" href="#__codelineno-19-245"></a>            <span class="c1"># for every id get corresponding bytes</span>
+</span><span id="__span-19-246"><a id="__codelineno-19-246" name="__codelineno-19-246" href="#__codelineno-19-246"></a>            <span class="n">part_bytes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span>
+</span><span id="__span-19-247"><a id="__codelineno-19-247" name="__codelineno-19-247" href="#__codelineno-19-247"></a>        <span class="c1"># join the bytes</span>
+</span><span id="__span-19-248"><a id="__codelineno-19-248" name="__codelineno-19-248" href="#__codelineno-19-248"></a>        <span class="n">text_bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part_bytes</span><span class="p">)</span>
+</span><span id="__span-19-249"><a id="__codelineno-19-249" name="__codelineno-19-249" href="#__codelineno-19-249"></a>        <span class="c1"># and decode</span>
+</span><span id="__span-19-250"><a id="__codelineno-19-250" name="__codelineno-19-250" href="#__codelineno-19-250"></a>        <span class="k">return</span> <span class="n">text_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../tokens/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Tokens">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Tokens
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../embeddings/" class="md-footer__link md-footer__link--next" aria-label="Next: Embeddings">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Embeddings
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "navigation.path", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
